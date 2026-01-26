@@ -1,0 +1,11 @@
+{
+  "ExecutionReport": {
+    "orderId": "%1$s-order1",
+    "execId": "%1$s-exec-order1",
+    "type": "O",
+    "currency": "USD",
+    "tradeDate": "2015-01-07",
+    "txnTm": "2015-01-07T13:19:53.000000000Z",
+    "orderQuantity": "100"
+  }
+}

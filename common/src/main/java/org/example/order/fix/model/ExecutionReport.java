@@ -2,7 +2,6 @@ package org.example.order.fix.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -20,7 +19,6 @@ import java.util.Date;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ExecutionReport implements Serializable {
@@ -30,17 +28,16 @@ public class ExecutionReport implements Serializable {
     private String orderId;
 
     /**
-     * Identifier of the parent order, if this is part of a larger order
-     */
-    private String parentId;
-
-    /**
      * Unique identifier for this execution report
      */
     private String execId;
 
     /**
-     * Type of the execution report (e.g., '0' = New, '1' = Partial Fill, '2' = Fill, etc.)
+     * Type of the execution report.
+     * Common values include:
+     * - 'O' for Order (initial order)
+     * - 'F' for Fill (execution)
+     * - Other FIX protocol execution report types
      */
     private Character type;
 
@@ -62,12 +59,12 @@ public class ExecutionReport implements Serializable {
     /**
      * Total quantity of the order
      */
-    private int orderQuantity;
+    private long orderQuantity;
 
     /**
      * Quantity of shares bought/sold in this execution
      */
-    private int lastQty;
+    private long lastQty;
 
     /**
      * Price at which the execution occurred

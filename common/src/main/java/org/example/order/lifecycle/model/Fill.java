@@ -43,7 +43,7 @@ public class Fill implements Serializable {
      * The quantity of the instrument that was filled in this execution.
      * Must be a positive number representing the number of units filled.
      */
-    private int quantity;
+    private long quantity;
 
     /**
      * The price at which the fill occurred.
