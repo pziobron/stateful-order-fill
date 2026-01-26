@@ -1,0 +1,7 @@
+rootProject.name = 'stateful-order-fill'
+
+// Include all modules
+include 'common'
+include 'kafka-streams'
+include 'flink'
+
