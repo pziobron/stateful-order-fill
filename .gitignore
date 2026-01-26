@@ -1,0 +1,107 @@
+# Build output
+**/build/
+**/target/
+**/bin/
+**/out/
+**/logs/
+**/eclipse-build/
+**/eclipse-classes/
+**/eclipse-bin/
+**/.flink/
+
+# Gradle files
+.gradle/
+.gradletasknamecache
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/**/build/
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+.idea_modules/
+.idea/*
+!/.idea/codeStyles/
+!/.idea/inspectionProfiles/
+!/.idea/scopes/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Maven
+**/pom.xml.versionsBackup
+**/pom.xml.next
+**/release.properties
+**/dependency-reduced-pom.xml
+**/buildNumber.properties
+**/mvnw
+**/mvnw.cmd
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Mac OS X
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite
+*.db
+
+# Kafka
+**/data/
+**/kafka-logs/
+**/zookeeper/
+**/__consumer_offsets-*/
+**/__transaction_state-*/
+
+# Flink
+**/flink-*-bin/
+**/flink-dist/
+**/flink-*.jar
+**/flink-conf.yaml
+**/log/
+**/flink-savepoints/
+**/flink-checkpoints/
+**/flink-web-*
+
+# Testing
+**/surefire-reports/
+**/test-output/
+**/test-results/
+**/test-reports/
+
+# Temp files
+*.tmp
+*.bak
+*.swp
+*~
+.~lock.*
+*.orig
+*.rej
+
+# Local development environment
+.env
+.env.local
+.env.*.local
+
+# Build scan files
+build-scan-data/
+
+# Flink state backend
+**/state.backend.*
+
+# Kafka Streams
+**/streams-examples/
+**/kafka-streams-*/
