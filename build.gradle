@@ -1,0 +1,45 @@
+// Top-level build file with common configurations for all subprojects
+
+plugins {
+    id 'java'
+    id 'idea'
+    // Removed groovy plugin as it's not being used
+}
+
+// Common configuration for all projects
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'idea'
+
+    group = 'org.example.order.lifecycle'
+    version = '1.0-SNAPSHOT'
+
+    repositories {
+        mavenCentral()
+    }
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(25)
+        }
+    }
+}
+
+// Configuration for all subprojects (excluding root project)
+subprojects {
+    // Common dependencies for all subprojects
+    dependencies {
+        // Common dependencies
+        compileOnly libs.lombok
+        annotationProcessor libs.lombok
+
+        // Test dependencies
+        testCompileOnly libs.lombok
+        testAnnotationProcessor libs.lombok
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+}
