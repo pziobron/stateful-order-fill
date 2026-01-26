@@ -1,0 +1,12 @@
+{
+  "ExecutionReport": {
+    "orderId": "%1$s-order1",
+    "execId": "%1$s-exec-fill2",
+    "type": "F",
+    "currency": "USD",
+    "tradeDate": "2015-01-07",
+    "txnTm": "2015-01-07T13:22:55.000000000Z",
+    "lastQty": "40",
+    "lastPx": "191.0"
+  }
+}

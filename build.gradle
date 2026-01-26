@@ -40,6 +40,7 @@ subprojects {
 
     test {
         useJUnitPlatform()
+        jvmArgs '--enable-native-access=ALL-UNNAMED'
     }
 
 }
