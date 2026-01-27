@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.order.fix.model.ExecutionReport;
 import org.example.order.lifecycle.model.Fill;
+import org.example.order.lifecycle.model.OrderNode;
 import org.example.order.lifecycle.model.OrderState;
 import org.example.order.lifecycle.model.OrderStatus;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import java.time.ZonedDateTime;
 
 import static org.example.order.lifecycle.processor.util.ExecutionReportUtils.isFill;
 import static org.example.order.lifecycle.processor.util.ExecutionReportUtils.isOrder;
+import static org.example.order.lifecycle.processor.util.ExecutionReportUtils.isChild;
 import static org.example.order.lifecycle.processor.util.JsonUtils.toPrettyJson;
 
 /**
@@ -59,17 +61,22 @@ public class FillOrderService {
             orderState.setOrderId(orderId); // Ensure orderId  (kafka key) is set
         }
 
+        OrderNode targetOrderNode = isChild(executionReport) ?
+                orderState.getChildOrders().computeIfAbsent(executionReport.getOrderId(), _ -> new OrderNode()):
+                orderState;
+
+
         if (isOrder(executionReport)) {
-            orderStateUpdater.update(executionReport, orderState);
-            updateOrderStatusIfFullyFilled(orderState); //In case the order arrives after the fill -> may happen
+            orderStateUpdater.update(executionReport, targetOrderNode);
+            updateOrderStatusIfFullyFilled(orderState, targetOrderNode); //In case the order arrives after the fill -> may happen
         } else if (isFill(executionReport)) {
             Fill fill = new Fill(
                     executionReport.getExecId(),
                     executionReport.getTxnTime(),
                     executionReport.getLastQty(),
                     executionReport.getLastPx());
-            orderState.addFill(fill);
-            updateOrderStatusIfFullyFilled(orderState);
+            targetOrderNode.addFill(fill);
+            updateOrderStatusIfFullyFilled(orderState, targetOrderNode);
         }
         orderState.setLastActionTimestamp(ZonedDateTime.now());
         log.info("Updating Lifecycle: {}", toPrettyJson(orderState));
@@ -85,8 +92,13 @@ public class FillOrderService {
      * a log message is generated.
      *
      * @param orderState the order state to check and potentially update
+     * @param orderNode the order node to check and potentially update
      */
-    private void updateOrderStatusIfFullyFilled(OrderState orderState) {
+    private void updateOrderStatusIfFullyFilled(OrderState orderState, OrderNode orderNode) {
+        if (orderNode.isFullyFilled()) {
+            orderNode.setStatus(OrderStatus.FILLED);
+            log.info("The order: {} is fully filled !", orderNode.getOrderId());
+        }
         if (orderState.isFullyFilled()) {
             orderState.setStatus(OrderStatus.FILLED);
             log.info("The order: {} is fully filled !", orderState.getOrderId());
