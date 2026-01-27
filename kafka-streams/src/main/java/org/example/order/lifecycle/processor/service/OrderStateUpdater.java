@@ -1,14 +1,14 @@
 package org.example.order.lifecycle.processor.service;
 
 import org.example.order.fix.model.ExecutionReport;
-import org.example.order.lifecycle.model.OrderState;
+import org.example.order.lifecycle.model.OrderNode;
 import org.springframework.stereotype.Component;
 
 /**
  * Service component responsible for updating the state of an order based on execution reports.
  * <p>
  * This component transforms data from {@link ExecutionReport} objects into corresponding updates
- * for {@link OrderState} objects. It handles the mapping of trade execution details to the
+ * for {@link OrderNode} objects. It handles the mapping of trade execution details to the
  * appropriate fields in the order state.
  * </p>
  * <p>
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 public class OrderStateUpdater {
 
     /**
-     * Updates the provided {@link OrderState} with data from the given {@link ExecutionReport}.
+     * Updates the provided {@link OrderNode} with data from the given {@link ExecutionReport}.
      * <p>
      * This method maps the following fields from the execution report to the order state:
      * <ul>
@@ -33,15 +33,15 @@ public class OrderStateUpdater {
      * </ul>
      *
      * @param executionReport the execution report containing trade execution details (must not be null)
-     * @param orderState      the order state to be updated (must not be null)
+     * @param orderNode      the order node to be updated (must not be null)
      */
-    public void update(ExecutionReport executionReport, OrderState orderState) {
-        orderState.setOrderId(executionReport.getOrderId());
-        orderState.setMsgId(executionReport.getExecId());
-        orderState.setExpectedQuantity(executionReport.getOrderQuantity());
-        orderState.setTradeDate(executionReport.getTradeDate());
-        orderState.setTransactionTime(executionReport.getTxnTime());
-        orderState.setCurrency(executionReport.getCurrency());
+    public void update(ExecutionReport executionReport, OrderNode orderNode) {
+        orderNode.setOrderId(executionReport.getOrderId());
+        orderNode.setMsgId(executionReport.getExecId());
+        orderNode.setExpectedQuantity(executionReport.getOrderQuantity());
+        orderNode.setTradeDate(executionReport.getTradeDate());
+        orderNode.setTransactionTime(executionReport.getTxnTime());
+        orderNode.setCurrency(executionReport.getCurrency());
     }
 
 }
