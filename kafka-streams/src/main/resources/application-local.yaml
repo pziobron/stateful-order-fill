@@ -1,0 +1,6 @@
+kafka:
+  executions:
+    topic: org.example.order.executions
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092

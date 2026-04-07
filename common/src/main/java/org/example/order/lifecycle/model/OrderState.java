@@ -2,7 +2,6 @@ package org.example.order.lifecycle.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -30,7 +29,6 @@ import java.util.*;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OrderState implements Serializable {
@@ -38,6 +36,12 @@ public class OrderState implements Serializable {
      * Unique identifier for the order.
      */
     private String orderId;
+
+    /**
+     * Unique identifier for the message associated with this order.
+     * This field tracks the original message ID that created or modified the order.
+     */
+    private String msgId;
 
     /**
      * The trade date of the order.
@@ -57,12 +61,12 @@ public class OrderState implements Serializable {
     /**
      * Current status of the order.
      */
-    private OrderStatus status = OrderStatus.NEW;
+    private OrderStatus status = OrderStatus.NOT_FILLED;
 
     /**
      * The total quantity expected to be filled for this order.
      */
-    private int expectedQuantity;
+    private long expectedQuantity;
 
     /**
      * List of all fills associated with this order.
@@ -72,7 +76,7 @@ public class OrderState implements Serializable {
     /**
      * Map of fill IDs to their respective quantities for quick lookup.
      */
-    private Map<String, Integer> filledQuantityMap = new HashMap<>();
+    private Map<String, Long> filledQuantityMap = new HashMap<>();
 
     /**
      * Timestamp of the last action performed on this order.
@@ -84,8 +88,8 @@ public class OrderState implements Serializable {
      *
      * @return the total quantity that has been filled for this order
      */
-    public int getFilledQuantity() {
-        return filledQuantityMap.values().stream().mapToInt(Integer::intValue).sum();
+    public long getFilledQuantity() {
+        return filledQuantityMap.values().stream().mapToLong(Long::longValue).sum();
     }
 
     /**

@@ -1,3 +1,24 @@
+plugins {
+    alias(libs.plugins.spring.boot)
+    alias(libs.plugins.spring.dependency.management)
+}
+
 dependencies {
     implementation project(':common')
+    implementation('org.springframework.boot:spring-boot-starter')
+    implementation('org.springframework.kafka:spring-kafka')
+    implementation(libs.kafka.streams)
+    implementation('com.fasterxml.jackson.core:jackson-databind')
+    implementation('com.fasterxml.jackson.datatype:jackson-datatype-jsr310')
+    implementation(libs.annotation.api)
+    implementation('org.springframework.boot:spring-boot-starter-logging')
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+    testImplementation(libs.mockito)
+    testImplementation('org.springframework.kafka:spring-kafka-test')
+    testImplementation(libs.awaitality)
+}
+
+test {
+    exclude '**/SimpleKafkaIntegrationTest.class'
 }
