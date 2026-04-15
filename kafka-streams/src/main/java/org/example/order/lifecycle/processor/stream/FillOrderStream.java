@@ -19,15 +19,19 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.util.Properties;
 
+import static org.example.order.lifecycle.processor.util.ExecutionReportUtils.isChild;
+
 /**
  * Kafka Streams implementation for processing order fills and maintaining order state.
  * <p>
  * This service consumes execution reports from a Kafka topic, processes them to update
- * the state of orders, and maintains the state in a state store.
+ * the state of orders, and maintains the state in a state store. It handles both
+ * parent and child execution reports, aggregating them by order ID.
  * <p>
  * The stream processing pipeline:
  * <ol>
  *   <li>Consumes execution reports from the configured topic</li>
+ *   <li>Selects the appropriate key (parent ID for child orders, order ID otherwise)</li>
  *   <li>Aggregates execution reports to maintain order state</li>
  *   <li>Stores the latest order state in a persistent state store</li>
  * </ol>
@@ -96,8 +100,11 @@ public class FillOrderStream implements DisposableBean {
                     streamsBuilder.stream(executionReportsTopic,
                                     Consumed.with(Serdes.String(), executionReportSerde));
 
-            // Group by order ID and aggregate order states
-            KTable<String, OrderState> orderStates = executionReportStream.groupByKey(Grouped.with(Serdes.String(), executionReportSerde))
+            // Merge orders, child-keyed fills and parent-keyed fills into a single stream
+            KStream<String, ExecutionReport> updates = executionReportStream
+                    .selectKey((_, msg) -> isChild(msg) ? msg.getParentId() : msg.getOrderId());
+
+            KTable<String, OrderState> orderStates = updates.groupByKey(Grouped.with(Serdes.String(), executionReportSerde))
                     .aggregate(
                             OrderState::new, //initialize the state
                             fillOrderService::processExecutionReport,

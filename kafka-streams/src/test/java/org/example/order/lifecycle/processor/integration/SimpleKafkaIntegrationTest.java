@@ -21,9 +21,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.awaitility.Awaitility.await;
 import static org.example.order.lifecycle.processor.utils.TestUtils.generateExecutionReportMessage;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Simple Kafka producer test using real Kafka.
@@ -126,7 +124,57 @@ public class SimpleKafkaIntegrationTest {
 
         await().atMost(10, TimeUnit.SECONDS).untilAsserted(() -> {
             assertTrue(allFuturesDone(futures), "All messages should be sent successfully");
-            log.info("All {} messages sent successfully", futures.size());
+            log.info("All {} messages form simple fill scenario sent successfully", futures.size());
+        });
+    }
+
+    @Test
+    void testParentOrderFill() throws IOException {
+        String prefix = random();
+        String inputDir = "jsonData/fillOrder/fullyFilled/parent_order/";
+
+        ExecutionReport parentOrder = generateExecutionReportMessage(prefix, inputDir + "parent_order.json");
+        ExecutionReport childOrder1 = generateExecutionReportMessage(prefix, inputDir + "child_order1.json");
+        ExecutionReport childOrder2 = generateExecutionReportMessage(prefix, inputDir + "child_order2.json");
+        ExecutionReport fill1ChildOrder1 = generateExecutionReportMessage(prefix, inputDir + "fill01_child_order1.json");
+        ExecutionReport fill2ChildOrder2 = generateExecutionReportMessage(prefix, inputDir + "fill02_child_order2.json");
+
+
+        // Validate test data before sending
+        assertNotNull(parentOrder.getOrderId(), "Order ID should not be null");
+        assertNotNull(childOrder1.getOrderId(), "Child Order 1 ID should not be null");
+        assertNotNull(childOrder2.getOrderId(), "Child Order 2 ID should not be null");
+        assertNotNull(fill1ChildOrder1.getOrderId(), "Child Order 1 Fill ID should not be null");
+        assertNotNull(fill2ChildOrder2.getOrderId(), "Child Order 2 Fill ID should not be null");
+
+        List<Future<?>> futures = new ArrayList<>();
+
+        try {
+            log.info("Sending parent order {} to topic {}", parentOrder.getOrderId(), topic);
+            futures.add(producer.send(new ProducerRecord<>(topic, parentOrder.getOrderId(), parentOrder)));
+
+            log.info("Sending child order 1 {} to topic {}", childOrder1.getOrderId(), childOrder1.getOrderId());
+            futures.add(producer.send(new ProducerRecord<>(topic, childOrder1.getOrderId(), childOrder1)));
+
+            log.info("Sending child order 2 {} to topic {}", childOrder2.getOrderId(), childOrder2.getOrderId());
+            futures.add(producer.send(new ProducerRecord<>(topic, childOrder2.getOrderId(), childOrder2)));
+
+            log.info("Sending fill {} for child order 2 {}", fill2ChildOrder2.getOrderId(), fill2ChildOrder2.getOrderId());
+            futures.add(producer.send(new ProducerRecord<>(topic, fill2ChildOrder2.getOrderId(), fill2ChildOrder2)));
+
+            log.info("Sending fill {} for child order 1 {}", fill1ChildOrder1.getOrderId(), fill1ChildOrder1.getOrderId());
+            futures.add(producer.send(new ProducerRecord<>(topic, fill1ChildOrder1.getOrderId(), fill1ChildOrder1)));
+
+            log.info("Sending fill {} for child order 2 {}", fill2ChildOrder2.getOrderId(), fill2ChildOrder2.getOrderId());
+            futures.add(producer.send(new ProducerRecord<>(topic, fill2ChildOrder2.getOrderId(), fill2ChildOrder2)));
+        } catch (Exception e) {
+            log.error("Failed to send messages", e);
+            fail("Message sending failed: " + e.getMessage());
+        }
+
+        await().atMost(10, TimeUnit.SECONDS).untilAsserted(() -> {
+            assertTrue(allFuturesDone(futures), "All messages should be sent successfully");
+            log.info("All {} messages for parent order scenario sent successfully", futures.size());
         });
     }
 

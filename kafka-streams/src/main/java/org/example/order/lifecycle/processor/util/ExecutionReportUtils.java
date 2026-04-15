@@ -7,7 +7,7 @@ import org.example.order.fix.model.ExecutionReport;
  * <p>
  * This class provides static helper methods to determine the type and relationships
  * of execution reports in the order processing pipeline. It helps in identifying
- * whether an execution report represents a child order, or a fill.
+ * whether an execution report represents a parent order, a child order, or a fill.
  * </p>
  * <p>
  * The class is designed to be used as a utility with no state, and all methods are
@@ -23,6 +23,22 @@ public final class ExecutionReportUtils {
      */
     private ExecutionReportUtils() {
         // Prevent instantiation
+    }
+
+    /**
+     * Determines if the execution report represents a child order.
+     * <p>
+     * A child order is one that has a parent order ID associated with it.
+     * This is typically used in order splitting or algorithmic trading scenarios
+     * where a large order is broken down into smaller child orders.
+     *
+     * @param msg the execution report to check, must not be {@code null}
+     * @return {@code true} if the execution report has a non-null parent ID,
+     * indicating it's a child order; {@code false} otherwise
+     * @throws NullPointerException if the input message is {@code null}
+     */
+    public static boolean isChild(ExecutionReport msg) {
+        return msg.getParentId() != null;
     }
 
     /**

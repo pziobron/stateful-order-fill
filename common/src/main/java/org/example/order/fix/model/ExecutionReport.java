@@ -28,6 +28,11 @@ public class ExecutionReport implements Serializable {
     private String orderId;
 
     /**
+     * Identifier of the parent order, if this is part of a larger order
+     */
+    private String parentId;
+
+    /**
      * Unique identifier for this execution report
      */
     private String execId;

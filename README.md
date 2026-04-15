@@ -109,7 +109,7 @@ until each article is published.
 This repository accompanies a series of articles explaining the design decisions,
 trade-offs, and implementation details step by step:
 - Part 1: Stateful Order Fill Matching with Kafka Streams – The Basics
-- Part 2: Order Hierarchies (Parent / Child Orders) [Not ready yet]
+- Part 2: Order Hierarchies (Parent / Child Orders)
 - Part 3: Late Events, Ordering, and Windowing [Not ready yet]
 - Part 4: Horizontal Scaling, Partitions, and Parallelism [Not ready yet]
 - Part 5: Kafka Streams vs Apache Flink [Not ready yet]
