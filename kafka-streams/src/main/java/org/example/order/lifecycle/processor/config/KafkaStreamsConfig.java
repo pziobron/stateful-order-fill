@@ -4,6 +4,7 @@ import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.example.order.fix.model.ExecutionReport;
+import org.example.order.lifecycle.model.ExecutionVolumeMetrics;
 import org.example.order.lifecycle.model.OrderState;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -87,6 +88,18 @@ public class KafkaStreamsConfig {
     @SuppressWarnings("unused")
     public Serde<OrderState> orderStateSerde() {
         return createJsonSerde(OrderState.class);
+    }
+
+    /**
+     * Creates a JSON Serde for serializing and deserializing ExecutionVolumeMetrics objects.
+     *
+     * @return Configured Serde for ExecutionVolumeMetrics objects
+     * @see org.example.order.lifecycle.model.OrderState
+     */
+    @Bean
+    @SuppressWarnings("unused")
+    public Serde<ExecutionVolumeMetrics> executionVolumeMetricsSerde() {
+        return createJsonSerde(ExecutionVolumeMetrics.class);
     }
 
     /**

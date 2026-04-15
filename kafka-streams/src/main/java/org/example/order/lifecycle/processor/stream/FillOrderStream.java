@@ -12,6 +12,7 @@ import org.apache.kafka.streams.state.KeyValueStore;
 import org.example.order.fix.model.ExecutionReport;
 import org.example.order.lifecycle.model.OrderState;
 import org.example.order.lifecycle.processor.service.FillOrderService;
+import org.example.order.lifecycle.processor.util.BusinessTimestampExtractor;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -71,6 +72,11 @@ public class FillOrderStream implements DisposableBean {
      * Service for processing execution reports and updating order state.
      */
     private final FillOrderService fillOrderService;
+    
+    /**
+     * Service for windowed analytics on execution volume.
+     */
+    private final ExecutionVolumeAnalytics executionVolumeAnalytics;
     /**
      * Name of the topic from which execution reports are consumed.
      * Configured via Spring's property injection.
@@ -94,11 +100,16 @@ public class FillOrderStream implements DisposableBean {
     @PostConstruct
     public void startKafkaStream() {
         try {
-            // Create a stream from the execution reports topic
+            // Create a stream from the execution reports topic with business timestamp extractor
             log.info("Creating stream from topic: {}", executionReportsTopic);
+            
             KStream<String, ExecutionReport> executionReportStream =
                     streamsBuilder.stream(executionReportsTopic,
-                                    Consumed.with(Serdes.String(), executionReportSerde));
+                                    Consumed.with(Serdes.String(), executionReportSerde)
+                                            .withTimestampExtractor(new BusinessTimestampExtractor()));
+
+            // Add windowed analytics to the stream
+            executionVolumeAnalytics.addWindowedAnalytics(executionReportStream);
 
             // Merge orders, child-keyed fills and parent-keyed fills into a single stream
             KStream<String, ExecutionReport> updates = executionReportStream
