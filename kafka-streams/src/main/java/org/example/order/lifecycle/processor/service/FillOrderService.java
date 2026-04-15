@@ -9,11 +9,10 @@ import org.example.order.lifecycle.model.OrderState;
 import org.example.order.lifecycle.model.OrderStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
-import static org.example.order.lifecycle.processor.util.ExecutionReportUtils.isFill;
-import static org.example.order.lifecycle.processor.util.ExecutionReportUtils.isOrder;
-import static org.example.order.lifecycle.processor.util.ExecutionReportUtils.isChild;
+import static org.example.order.lifecycle.processor.util.ExecutionReportUtils.*;
 import static org.example.order.lifecycle.processor.util.JsonUtils.toPrettyJson;
 
 /**
@@ -70,16 +69,14 @@ public class FillOrderService {
             orderStateUpdater.update(executionReport, targetOrderNode);
             updateOrderStatusIfFullyFilled(orderState, targetOrderNode); //In case the order arrives after the fill -> may happen
         } else if (isFill(executionReport)) {
-            Fill fill = new Fill(
-                    executionReport.getExecId(),
-                    executionReport.getTxnTime(),
-                    executionReport.getLastQty(),
-                    executionReport.getLastPx());
-            targetOrderNode.addFill(fill);
-            updateOrderStatusIfFullyFilled(orderState, targetOrderNode);
+            handleFillWithLateEventLogic(orderId, executionReport, targetOrderNode, orderState);
+        } else if (isCancel(executionReport)) {
+            handleCancel(executionReport, targetOrderNode);
         }
+
         orderState.setLastActionTimestamp(ZonedDateTime.now());
         log.info("Updating Lifecycle: {}", toPrettyJson(orderState));
+
         return orderState;
     }
 
@@ -109,6 +106,56 @@ public class FillOrderService {
             node.setStatus(OrderStatus.FILLED);
             log.info("The order: {} is fully filled!", node.getOrderId());
         }
+    }
+
+    private void handleFillWithLateEventLogic(
+            String orderId,
+            ExecutionReport report,
+            OrderNode orderNode,
+            OrderState orderState) {
+
+        LocalDateTime eventTime = report.getTxnTime();
+
+        // CASE 1: Order already cancelled
+        if (orderNode.getStatus() == OrderStatus.CANCELLED) {
+
+            LocalDateTime cancelTime = orderNode.getCancelTime();
+
+            if (cancelTime != null && eventTime.isAfter(cancelTime)) {
+                // Truly late fill (after cancel in event time)
+                log.warn("Ignoring late fill AFTER cancel. orderId={}, eventTime={}, cancelTime={}",
+                        orderId, eventTime, cancelTime);
+                return;
+            }
+
+            // Fill happened BEFORE cancel (event-time wise)
+            log.info("Applying late-arriving but valid fill BEFORE cancel. orderId={}", orderId);
+        }
+
+        // Apply fill
+        Fill fill = new Fill(
+                report.getExecId(),
+                report.getTxnTime(),
+                report.getLastQty(),
+                report.getLastPx()
+        );
+        orderNode.addFill(fill);
+        updateOrderStatusIfFullyFilled(orderState, orderNode);
+    }
+
+    private void handleCancel(ExecutionReport report, OrderNode orderNode) {
+
+        LocalDateTime cancelTime = report.getTxnTime();
+
+        // If already cancelled → idempotency
+        if (orderNode.getStatus() == OrderStatus.CANCELLED) {
+            log.warn("Duplicate cancel received for orderId={}", orderNode.getOrderId());
+            return;
+        }
+
+        orderNode.markCancelled(report);
+
+        log.info("Order cancelled at eventTime={}", cancelTime);
     }
 
 }

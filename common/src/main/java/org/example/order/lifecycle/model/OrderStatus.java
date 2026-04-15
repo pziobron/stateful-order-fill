@@ -23,5 +23,11 @@ public enum OrderStatus {
      *
      * @see OrderState#isFullyFilled()
      */
-    FILLED
+    FILLED,
+
+    /**
+     * The order has been cancelled.
+     * No further executions are expected for this order.
+     */
+    CANCELLED
 }

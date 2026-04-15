@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.order.fix.model.ExecutionReport;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -52,6 +53,11 @@ public class OrderNode implements Serializable {
      * The trade date of the order.
      */
     private Date tradeDate;
+
+    /**
+     * The timestamp when the order was cancelled.
+     */
+    private LocalDateTime cancelTime;
 
     /**
      * The timestamp when the order was last updated.
@@ -146,6 +152,16 @@ public class OrderNode implements Serializable {
         List<Fill> allFills = new ArrayList<>(getFills());
         allFills.addAll(getChildFills());
         return allFills;
+    }
+
+    /**
+     * Marks the order as cancelled and records the cancellation time.
+     *
+     * @param report the execution report containing the cancellation details
+     */
+    public void markCancelled(ExecutionReport report) {
+        this.status = OrderStatus.CANCELLED;
+        this.cancelTime = report.getTxnTime();
     }
 
 }

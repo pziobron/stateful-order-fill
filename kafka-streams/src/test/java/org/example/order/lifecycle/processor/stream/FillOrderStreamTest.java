@@ -16,6 +16,7 @@ import org.example.order.lifecycle.processor.service.OrderStateUpdater;
 import org.example.order.lifecycle.processor.util.JsonUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -285,6 +286,93 @@ public class FillOrderStreamTest {
         assertEquals(fill.getExecId(), orderNode.getFills().getFirst().getFillId());
         assertNotNull(orderNode.getFilledQuantityMap().get(fill.getExecId()));
         assertEquals(fill.getLastQty(), orderNode.getFilledQuantityMap().get(fill.getExecId()));
+    }
+
+    @Test
+    public void testLateFillAfterCancel() throws IOException {
+        // Arrange
+        String prefix = "test-late-fill";
+        String orderId = prefix + "-order1";
+        String inputDir = "jsonData/fillOrder/lateFill/";
+
+        ExecutionReport order = generateExecutionReportMessage(prefix, inputDir + "order.json");
+        ExecutionReport cancel = generateExecutionReportMessage(prefix, inputDir + "cancel.json");
+        ExecutionReport lateFill = generateExecutionReportMessage(prefix, inputDir + "late_fill_after_cancel.json");
+
+        // Act - Process order, cancel, then late fill
+        pipeInput(order);
+        pipeInput(cancel);
+        pipeInput(lateFill);
+
+        // Assert
+        verify(streamsBuilder, times(1)).stream(
+                eq(fillOrderStream.executionReportsTopic), any());
+        KeyValueStore<String, OrderState> store = testDriver.getKeyValueStore(ORDER_STATE_STORE);
+
+        OrderState orderState = store.get(orderId);
+        assertNotNull(orderState, "OrderState should not be null");
+
+        // Check if order state is correct
+        verifyOrderNodeCancelled(orderState, order, cancel);
+
+        // Check that the late fill was ignored (no fills should be recorded)
+        assertEquals(0, orderState.getFills().size());
+        assertEquals(0, orderState.getFilledQuantityMap().size());
+        assertEquals(0, orderState.getAllFills().size());
+
+        // Check if last action timestamp is not null
+        assertNotNull(orderState.getLastActionTimestamp());
+    }
+
+    @Test
+    public void testValidFillBeforeCancel() throws IOException {
+        // Arrange
+        String prefix = "test-valid-fill";
+        String orderId = prefix + "-order1";
+        String inputDir = "jsonData/fillOrder/lateFill/";
+
+        ExecutionReport order = generateExecutionReportMessage(prefix, inputDir + "order.json");
+        ExecutionReport cancel = generateExecutionReportMessage(prefix, inputDir + "cancel.json");
+        ExecutionReport validFill = generateExecutionReportMessage(prefix, inputDir + "valid_fill_before_cancel.json");
+
+        // Act - Process order, cancel first, then fill (fill arrives after cancel in processing time 
+        // but happened before cancel in event time: fill at 13:20:30, cancel at 13:20:53)
+        pipeInput(order);
+        pipeInput(cancel);
+        pipeInput(validFill); // This fill should be processed despite arriving after cancel
+
+        // Assert
+        verify(streamsBuilder, times(1)).stream(
+                eq(fillOrderStream.executionReportsTopic), any());
+        KeyValueStore<String, OrderState> store = testDriver.getKeyValueStore(ORDER_STATE_STORE);
+
+        OrderState orderState = store.get(orderId);
+        assertNotNull(orderState, "OrderState should not be null");
+
+        // Check if order state is correct
+        verifyOrderNodeCancelled(orderState, order, cancel);
+
+        // Check that the valid fill was recorded (even though it arrived after cancel)
+        assertEquals(1, orderState.getFills().size());
+        assertEquals(validFill.getExecId(), orderState.getFills().getFirst().getFillId());
+        assertEquals(1, orderState.getFilledQuantityMap().size());
+        assertNotNull(orderState.getFilledQuantityMap().get(validFill.getExecId()));
+        assertEquals(validFill.getLastQty(), orderState.getFilledQuantityMap().get(validFill.getExecId()));
+        assertEquals(1, orderState.getAllFills().size());
+
+        // Check if last action timestamp is not null
+        assertNotNull(orderState.getLastActionTimestamp());
+    }
+
+    private void verifyOrderNodeCancelled(OrderNode orderNode, ExecutionReport order, ExecutionReport cancel) {
+        assertEquals(order.getOrderId(), orderNode.getOrderId());
+        assertEquals(order.getExecId(), orderNode.getMsgId());
+        assertEquals(order.getTradeDate(), orderNode.getTradeDate());
+        assertEquals(order.getTxnTime(), orderNode.getTransactionTime());
+        assertEquals(order.getCurrency(), orderNode.getCurrency());
+        assertEquals(order.getOrderQuantity(), orderNode.getExpectedQuantity());
+        assertEquals(OrderStatus.CANCELLED, orderNode.getStatus());
+        assertEquals(cancel.getTxnTime(), orderNode.getCancelTime());
     }
 
     private void pipeInput(ExecutionReport message) {

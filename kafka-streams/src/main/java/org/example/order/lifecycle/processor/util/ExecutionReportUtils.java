@@ -70,4 +70,19 @@ public final class ExecutionReportUtils {
     public static boolean isFill(ExecutionReport msg) {
         return msg.getType() == 'F';
     }
+
+    /**
+     * Determines if the execution report represents a cancellation.
+     * <p>
+     * A cancellation indicates that an order has been cancelled and will no longer
+     * be executed. It is identified by having a type of 'C' (Cancel).
+     *
+     * @param msg execution report to check, must not be {@code null}
+     * @return {@code true} if the execution report type is 'C',
+     * indicating it's a cancellation; {@code false} otherwise
+     * @throws NullPointerException if the input message is {@code null}
+     */
+    public static boolean isCancel(ExecutionReport msg) {
+        return msg.getType() == 'C';
+    }
 }

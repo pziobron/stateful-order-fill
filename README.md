@@ -83,7 +83,7 @@ and to make architectural trade-offs explicit.
 
 ## Branching and Article Scope
 
-The `main` branch contains the implementation described in **Part 1** of the article series.
+The `main` branch contains the implementation described in the articles published so far.
 
 Support for parent orders, order hierarchies, late events, and more advanced scenarios
 will be introduced incrementally in subsequent parts and is developed on separate branches
@@ -110,7 +110,7 @@ This repository accompanies a series of articles explaining the design decisions
 trade-offs, and implementation details step by step:
 - Part 1: Stateful Order Fill Matching with Kafka Streams – The Basics
 - Part 2: Order Hierarchies (Parent / Child Orders)
-- Part 3: Late Events, Ordering, and Windowing [Not ready yet]
+- Part 3: Late Events, Ordering, and Windowing
 - Part 4: Horizontal Scaling, Partitions, and Parallelism [Not ready yet]
 - Part 5: Kafka Streams vs Apache Flink [Not ready yet]
 - Part 6: Stream Processing vs DB-centric Architectures [Not ready yet]
