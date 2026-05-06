@@ -46,9 +46,15 @@ public class SimpleKafkaIntegrationTest {
     void setUp() {
         // Load properties from YAML file
         Properties appProps = loadApplicationProperties();
-        String bootstrapServers = appProps.getProperty("spring.kafka.bootstrap-servers");
+
+        String bootstrapServers = System.getProperty(
+                "kafka.bootstrapServers",
+                appProps.getProperty("spring.kafka.bootstrap-servers")
+        );
+
         this.topic = appProps.getProperty("kafka.executions.topic");
-        
+
+
         log.info("Loaded configuration - Bootstrap servers: {}, Topic: {}", bootstrapServers, topic);
 
         // Create and configure the JsonSerializer with custom ObjectMapper

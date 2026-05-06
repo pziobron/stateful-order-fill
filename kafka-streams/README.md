@@ -39,41 +39,135 @@ The logic is implemented using **Kafka Streams DSL**.
 
 ---
 
-## Running locally
+## Running the Application
+
+The application can be launched in two environments:
+1. **Locally** using Docker Compose for Kafka + local Spring Boot application
+2. **Kubernetes** using Helm charts
+
+---
+
+## 1. Running Locally
 
 ### Prerequisites
 - Java 25+
 - Docker & Docker Compose
 
----
-
-### 1. Start Kafka
+### 1.1 Start Kafka
 
 Kafka is provided by the root `docker-compose.yml`.
 
 From the project root:
 
 ```bash
-docker compose up -d
+docker compose -f ./kafka-streams/docker-compose.yml up -d
 ```
+
 This will start:
-•	a single Kafka broker (KRaft mode)
-•	topic: org.example.order.executions
+- A single Kafka broker (KRaft mode)
+- Topic: `org.example.order.executions`
+
+### 1.2 Run the Kafka Streams Application
+
+From this module:
+
+```bash
+./gradlew bootRun --args='--spring.profiles.active=local'
+```
+
+The application will start consuming events from Kafka and building order state.
+
+
+### 1.3 Run Integration Test
+
+To execute the integration test from gradle:
+
+```bash
+./gradlew test -PincludeIntegrationTests -Dkafka.bootstrapServers=localhost:9092 --tests SimpleKafkaIntegrationTest --info --rerun-tasks
+```
+
+This requires Kafka to be running (see 1.1). The test connects to real Kafka, produces sample ExecutionReport events, and verifies successful message production.
+
+### 1.4 Stop Kafka
+
+```bash
+docker compose -f ./kafka-streams/docker-compose.yml down -v
+```
 
 ---
 
-### 2. Run the Kafka Streams application
+## 2. Running in Kubernetes
 
-From this module:
-```bash
-../gradlew bootRun --args='--spring.profiles.active=local'
-```
-The application will start consuming events from Kafka and building order state.
+### Prerequisites
+- Kubernetes cluster (local or remote)
+- Helm 3.x
+- kubectl
 
-### 3. Stop Kafka
+### 2.1 Deploy Kafka
+
 ```bash
-docker compose down -v
+kubectl apply -f kafka-streams/k8s/kafka/
 ```
+
+### 2.2 Build the Docker Image
+
+From the project root:
+
+```bash
+docker build -t order-state-processor:latest -f kafka-streams/Dockerfile .
+```
+
+### 2.3 Deploy the Application
+
+```bash
+helm install order-processor kafka-streams/k8s/helm-chart --set kafka.bootstrapServers=kafka-broker:9092
+```
+
+### 2.4 Run Integration Tests in Kubernetes
+
+Integration tests run in a Docker container with all code baked in — no hostPath required.
+
+#### Build the Test Image
+
+From the project root:
+
+```bash
+docker build -t order-state-processor-test:latest -f kafka-streams/Dockerfile.test .
+```
+
+#### Run the Integration Test Job
+
+```bash
+kubectl delete job integration-test --ignore-not-found=true
+kubectl apply -f kafka-streams/k8s/tests/integration-test-job.yaml
+kubectl logs -f job/integration-test
+```
+
+Or as a one-liner that forces recreation:
+
+```bash
+kubectl replace --force -f kafka-streams/k8s/tests/integration-test-job.yaml
+kubectl logs -f job/integration-test
+```
+
+### 2.5 Cleanup / Remove All Resources
+
+To remove everything deployed in Kubernetes:
+
+```bash
+# Remove the application
+helm uninstall order-processor --ignore-not-found
+
+# Remove Kafka
+kubectl delete -f kafka-streams/k8s/kafka/ --ignore-not-found
+
+# Remove integration test job
+kubectl delete job integration-test --ignore-not-found
+
+# Verify cleanup
+kubectl get all
+```
+
 ---
 
 ## Configuration

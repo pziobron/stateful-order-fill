@@ -1,0 +1,40 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: integration-test
+  labels:
+    app: integration-test
+spec:
+  template:
+    metadata:
+      labels:
+        app: integration-test
+    spec:
+      restartPolicy: Never
+      initContainers:
+        - name: wait-for-kafka
+          image: busybox:1.36
+          command:
+            - /bin/sh
+            - -c
+            - |
+              echo 'Waiting for Kafka broker to be ready...'
+              until nc -z kafka-broker 29092; do
+                echo 'Kafka not ready yet, waiting...'
+                sleep 5
+              done
+              echo 'Kafka is ready!'
+      containers:
+        - name: test-runner
+          image: order-state-processor-test:latest
+          imagePullPolicy: IfNotPresent
+          command:
+            - ./gradlew
+            - test
+            - --tests
+            - org.example.order.lifecycle.processor.integration.SimpleKafkaIntegrationTest
+            - -PincludeIntegrationTests
+            - --no-daemon
+            - -Dkafka.bootstrapServers=kafka-broker:29092
+            - --info
+  backoffLimit: 1

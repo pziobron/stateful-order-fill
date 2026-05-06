@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-order-processor
+  labels:
+    app: order-processor
+    release: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: order-processor
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: order-processor
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: order-processor
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - name: config
+              mountPath: /app/config
+          env:
+            - name: SPRING_CONFIG_LOCATION
+              value: "classpath:/,file:/app/config/"
+            - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+              value: "{{ .Values.kafka.bootstrapServers }}"
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 1Gi
+            requests:
+              cpu: 500m
+              memory: 512Mi
+      volumes:
+        - name: config
+          configMap:
+            name: {{ .Release.Name }}-order-processor-config

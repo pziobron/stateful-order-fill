@@ -1,0 +1,43 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kafka-topic-creator
+  labels:
+    app: kafka-topic-creator
+spec:
+  template:
+    metadata:
+      labels:
+        app: kafka-topic-creator
+    spec:
+      restartPolicy: OnFailure
+      initContainers:
+        - name: wait-for-kafka
+          image: apache/kafka:latest
+          command:
+            - /bin/sh
+            - -c
+            - |
+              echo 'Waiting for Kafka broker to be ready...'
+              until /opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server kafka-broker:29092; do
+                echo 'Kafka not ready yet, waiting...'
+                sleep 5
+              done
+              echo 'Kafka is ready!'
+      containers:
+        - name: topic-creator
+          image: apache/kafka:latest
+          command:
+            - /bin/sh
+            - -c
+            - |
+              echo 'Creating topic org.example.order.executions...'
+              /opt/kafka/bin/kafka-topics.sh \
+                --bootstrap-server kafka-broker:29092 \
+                --create \
+                --if-not-exists \
+                --topic org.example.order.executions \
+                --partitions 3 \
+                --replication-factor 1
+              echo 'Topic org.example.order.executions created successfully'
+  backoffLimit: 10

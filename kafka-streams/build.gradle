@@ -20,5 +20,9 @@ dependencies {
 }
 
 test {
-    exclude '**/SimpleKafkaIntegrationTest.class'
+    systemProperty "kafka.bootstrapServers", System.getProperty("kafka.bootstrapServers")
+
+    if (!project.hasProperty('includeIntegrationTests')) {
+        exclude '**/SimpleKafkaIntegrationTest.class'
+    }
 }

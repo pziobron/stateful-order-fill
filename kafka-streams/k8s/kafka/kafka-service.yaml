@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-broker
+  labels:
+    app: kafka-broker
+spec:
+  selector:
+    app: kafka-broker
+  ports:
+    - port: 9092
+      targetPort: 9092
+      name: plaintext-host
+      nodePort: 30092
+    - port: 29092
+      targetPort: 29092
+      name: plaintext
+  type: NodePort
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-broker-headless
+  labels:
+    app: kafka-broker
+spec:
+  selector:
+    app: kafka-broker
+  ports:
+    - port: 29092
+      targetPort: 29092
+      name: plaintext
+    - port: 29093
+      targetPort: 29093
+      name: controller
+  clusterIP: None
