@@ -37,6 +37,8 @@ public class SimpleKafkaIntegrationTest {
     private KafkaProducer<String, ExecutionReport> producer;
     private String topic;
 
+    private int testIterations = 1;
+
     /**
      * Sets up the test environment by initializing the Kafka producer.
      * Loads configuration from application-local.yaml and configures the producer
@@ -44,6 +46,19 @@ public class SimpleKafkaIntegrationTest {
      */
     @BeforeEach
     void setUp() {
+        // Read test iterations from system property (set by gradle -DtestIterations) or env var
+        String iterationsProp = System.getProperty("testIterations");
+        if (iterationsProp == null) {
+            iterationsProp = System.getenv("TEST_ITERATIONS");
+        }
+        if (iterationsProp != null) {
+            try {
+                this.testIterations = Integer.parseInt(iterationsProp);
+                log.info("Test iterations configured: {}", testIterations);
+            } catch (NumberFormatException e) {
+                log.warn("Invalid testIterations value '{}', using default 1", iterationsProp);
+            }
+        }
         // Load properties from YAML file
         Properties appProps = loadApplicationProperties();
 
@@ -136,52 +151,56 @@ public class SimpleKafkaIntegrationTest {
 
     @Test
     void testParentOrderFill() throws IOException {
-        String prefix = random();
-        String inputDir = "jsonData/fillOrder/fullyFilled/parent_order/";
+        log.info("Running testParentOrderFill {} iteration(s)", testIterations);
+        for (int i = 0; i < testIterations; i++) {
+            log.info("testParentOrderFill - iteration {}/{}", i + 1, testIterations);
+            String prefix = random();
+            String inputDir = "jsonData/fillOrder/fullyFilled/parent_order/";
 
-        ExecutionReport parentOrder = generateExecutionReportMessage(prefix, inputDir + "parent_order.json");
-        ExecutionReport childOrder1 = generateExecutionReportMessage(prefix, inputDir + "child_order1.json");
-        ExecutionReport childOrder2 = generateExecutionReportMessage(prefix, inputDir + "child_order2.json");
-        ExecutionReport fill1ChildOrder1 = generateExecutionReportMessage(prefix, inputDir + "fill01_child_order1.json");
-        ExecutionReport fill2ChildOrder2 = generateExecutionReportMessage(prefix, inputDir + "fill02_child_order2.json");
+            ExecutionReport parentOrder = generateExecutionReportMessage(prefix, inputDir + "parent_order.json");
+            ExecutionReport childOrder1 = generateExecutionReportMessage(prefix, inputDir + "child_order1.json");
+            ExecutionReport childOrder2 = generateExecutionReportMessage(prefix, inputDir + "child_order2.json");
+            ExecutionReport fill1ChildOrder1 = generateExecutionReportMessage(prefix, inputDir + "fill01_child_order1.json");
+            ExecutionReport fill2ChildOrder2 = generateExecutionReportMessage(prefix, inputDir + "fill02_child_order2.json");
 
 
-        // Validate test data before sending
-        assertNotNull(parentOrder.getOrderId(), "Order ID should not be null");
-        assertNotNull(childOrder1.getOrderId(), "Child Order 1 ID should not be null");
-        assertNotNull(childOrder2.getOrderId(), "Child Order 2 ID should not be null");
-        assertNotNull(fill1ChildOrder1.getOrderId(), "Child Order 1 Fill ID should not be null");
-        assertNotNull(fill2ChildOrder2.getOrderId(), "Child Order 2 Fill ID should not be null");
+            // Validate test data before sending
+            assertNotNull(parentOrder.getOrderId(), "Order ID should not be null");
+            assertNotNull(childOrder1.getOrderId(), "Child Order 1 ID should not be null");
+            assertNotNull(childOrder2.getOrderId(), "Child Order 2 ID should not be null");
+            assertNotNull(fill1ChildOrder1.getOrderId(), "Child Order 1 Fill ID should not be null");
+            assertNotNull(fill2ChildOrder2.getOrderId(), "Child Order 2 Fill ID should not be null");
 
-        List<Future<?>> futures = new ArrayList<>();
+            List<Future<?>> futures = new ArrayList<>();
 
-        try {
-            log.info("Sending parent order {} to topic {}", parentOrder.getOrderId(), topic);
-            futures.add(producer.send(new ProducerRecord<>(topic, parentOrder.getOrderId(), parentOrder)));
+            try {
+                log.info("Sending parent order {} to topic {}", parentOrder.getOrderId(), topic);
+                futures.add(producer.send(new ProducerRecord<>(topic, parentOrder.getOrderId(), parentOrder)));
 
-            log.info("Sending child order 1 {} to topic {}", childOrder1.getOrderId(), childOrder1.getOrderId());
-            futures.add(producer.send(new ProducerRecord<>(topic, childOrder1.getOrderId(), childOrder1)));
+                log.info("Sending child order 1 {} to topic {}", childOrder1.getOrderId(), childOrder1.getOrderId());
+                futures.add(producer.send(new ProducerRecord<>(topic, childOrder1.getOrderId(), childOrder1)));
 
-            log.info("Sending child order 2 {} to topic {}", childOrder2.getOrderId(), childOrder2.getOrderId());
-            futures.add(producer.send(new ProducerRecord<>(topic, childOrder2.getOrderId(), childOrder2)));
+                log.info("Sending child order 2 {} to topic {}", childOrder2.getOrderId(), childOrder2.getOrderId());
+                futures.add(producer.send(new ProducerRecord<>(topic, childOrder2.getOrderId(), childOrder2)));
 
-            log.info("Sending fill {} for child order 2 {}", fill2ChildOrder2.getOrderId(), fill2ChildOrder2.getOrderId());
-            futures.add(producer.send(new ProducerRecord<>(topic, fill2ChildOrder2.getOrderId(), fill2ChildOrder2)));
+                log.info("Sending fill {} for child order 2 {}", fill2ChildOrder2.getOrderId(), fill2ChildOrder2.getOrderId());
+                futures.add(producer.send(new ProducerRecord<>(topic, fill2ChildOrder2.getOrderId(), fill2ChildOrder2)));
 
-            log.info("Sending fill {} for child order 1 {}", fill1ChildOrder1.getOrderId(), fill1ChildOrder1.getOrderId());
-            futures.add(producer.send(new ProducerRecord<>(topic, fill1ChildOrder1.getOrderId(), fill1ChildOrder1)));
+                log.info("Sending fill {} for child order 1 {}", fill1ChildOrder1.getOrderId(), fill1ChildOrder1.getOrderId());
+                futures.add(producer.send(new ProducerRecord<>(topic, fill1ChildOrder1.getOrderId(), fill1ChildOrder1)));
 
-            log.info("Sending fill {} for child order 2 {}", fill2ChildOrder2.getOrderId(), fill2ChildOrder2.getOrderId());
-            futures.add(producer.send(new ProducerRecord<>(topic, fill2ChildOrder2.getOrderId(), fill2ChildOrder2)));
-        } catch (Exception e) {
-            log.error("Failed to send messages", e);
-            fail("Message sending failed: " + e.getMessage());
+                log.info("Sending fill {} for child order 2 {}", fill2ChildOrder2.getOrderId(), fill2ChildOrder2.getOrderId());
+                futures.add(producer.send(new ProducerRecord<>(topic, fill2ChildOrder2.getOrderId(), fill2ChildOrder2)));
+            } catch (Exception e) {
+                log.error("Failed to send messages", e);
+                fail("Message sending failed: " + e.getMessage());
+            }
+
+            await().atMost(10, TimeUnit.SECONDS).untilAsserted(() -> {
+                assertTrue(allFuturesDone(futures), "All messages should be sent successfully");
+                log.info("All {} messages for parent order scenario sent successfully", futures.size());
+            });
         }
-
-        await().atMost(10, TimeUnit.SECONDS).untilAsserted(() -> {
-            assertTrue(allFuturesDone(futures), "All messages should be sent successfully");
-            log.info("All {} messages for parent order scenario sent successfully", futures.size());
-        });
     }
 
     /**

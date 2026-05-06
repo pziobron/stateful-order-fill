@@ -28,6 +28,9 @@ spec:
         - name: test-runner
           image: order-state-processor-test:latest
           imagePullPolicy: IfNotPresent
+          env:
+            - name: TEST_ITERATIONS
+              value: "10"
           command:
             - ./gradlew
             - test

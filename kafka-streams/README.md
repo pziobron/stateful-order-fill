@@ -123,6 +123,14 @@ docker build -t order-state-processor:latest -f kafka-streams/Dockerfile .
 helm install order-processor kafka-streams/k8s/helm-chart --set kafka.bootstrapServers=kafka-broker:9092
 ```
 
+To deploy with multiple replicas (e.g., 3 replicas for testing partitioning):
+
+```bash
+helm install order-processor kafka-streams/k8s/helm-chart \
+  --set kafka.bootstrapServers=kafka-broker:9092 \
+  --set replicas=3
+```
+
 ### 2.4 Run Integration Tests in Kubernetes
 
 Integration tests run in a Docker container with all code baked in — no hostPath required.
@@ -141,6 +149,14 @@ docker build -t order-state-processor-test:latest -f kafka-streams/Dockerfile.te
 kubectl delete job integration-test --ignore-not-found=true
 kubectl apply -f kafka-streams/k8s/tests/integration-test-job.yaml
 kubectl logs -f job/integration-test
+```
+
+To run tests multiple times (e.g., 10 iterations for stress testing), edit `k8s/tests/integration-test-job.yaml` and set the `TEST_ITERATIONS` environment variable:
+
+```yaml
+env:
+  - name: TEST_ITERATIONS
+    value: "10"
 ```
 
 Or as a one-liner that forces recreation:

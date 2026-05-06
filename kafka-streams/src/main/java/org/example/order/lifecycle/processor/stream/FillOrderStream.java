@@ -83,6 +83,10 @@ public class FillOrderStream implements DisposableBean {
      */
     @Value("${kafka.executions.topic}")
     protected String executionReportsTopic;
+
+    @Value("${POD_ID:unknown}")
+    protected String podId;
+
     /**
      * The Kafka Streams instance.
      */
@@ -124,6 +128,7 @@ public class FillOrderStream implements DisposableBean {
                                     .withValueSerde(orderStateSerde));
 
             orderStates.toStream().print(Printed.<String, OrderState>toSysOut().withLabel("LIFECYCLES"));
+            log.info("Kafka Streams topology started with POD_ID: {}", podId);
 
             var topology = streamsBuilder.build();
             streams = new KafkaStreams(topology, kafkaStreamsProperties);
