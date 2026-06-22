@@ -1,12 +1,14 @@
 package org.example.order.lifecycle.processor.utils;
 
 import org.example.order.fix.model.ExecutionReport;
+import org.example.order.lifecycle.util.JsonUtils;
+import org.springframework.kafka.support.serializer.JsonSerde;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
-import static org.example.order.lifecycle.processor.util.JsonUtils.readJsonToObject;
+import static org.example.order.lifecycle.util.JsonUtils.readJsonToObject;
 
 /**
  * Utility class providing helper methods for test data generation and manipulation.
@@ -52,6 +54,19 @@ public final class TestUtils {
         );
 
         return tokenToReplace != null ? jsonContent.formatted(tokenToReplace) : jsonContent;
+    }
+
+    /**
+     * Creates a new {@link JsonSerde} instance for the specified class using the pre-configured ObjectMapper.
+     * This ensures consistent JSON serialization/deserialization behavior across the application.
+     *
+     * @param <T>   the type of object to be serialized/deserialized
+     * @param clazz the class of the object to be serialized/deserialized
+     * @return a new JsonSerde instance configured with the application's ObjectMapper
+     * @throws IllegalArgumentException if clazz is null
+     */
+    public static <T> JsonSerde<T> createJsonSerde(Class<T> clazz) {
+        return new JsonSerde<>(clazz, JsonUtils.getObjectMapper());
     }
 
 }

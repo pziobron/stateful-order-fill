@@ -12,7 +12,7 @@ import org.apache.kafka.streams.state.KeyValueStore;
 import org.example.order.fix.model.ExecutionReport;
 import org.example.order.fix.model.VerificationRecord;
 import org.example.order.lifecycle.model.OrderState;
-import org.example.order.lifecycle.processor.service.FillOrderService;
+import org.example.order.lifecycle.service.FillOrderService;
 import org.example.order.lifecycle.processor.util.BusinessTimestampExtractor;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +22,7 @@ import javax.annotation.PostConstruct;
 import java.time.Instant;
 import java.util.Properties;
 
-import static org.example.order.lifecycle.processor.util.ExecutionReportUtils.isChild;
+import static org.example.order.lifecycle.util.ExecutionReportUtils.isChild;
 
 /**
  * Kafka Streams implementation for processing order fills and maintaining order state.
@@ -39,7 +39,7 @@ import static org.example.order.lifecycle.processor.util.ExecutionReportUtils.is
  *   <li>Stores the latest order state in a persistent state store</li>
  * </ol>
  *
- * @see org.example.order.lifecycle.processor.service.FillOrderService
+ * @see FillOrderService
  * @see org.example.order.fix.model.ExecutionReport
  * @see org.example.order.lifecycle.model.OrderState
  */

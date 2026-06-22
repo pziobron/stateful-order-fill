@@ -42,7 +42,7 @@ docker build -t order-state-processor-test:latest \
 ### Configuration
 
 | Parameter  | Value |
-| ---------- | ----- |
+|------------|-------|
 | Partitions | 3     |
 | Pods       | 4     |
 | Iterations | 1,000 |
@@ -78,7 +78,7 @@ kubectl logs -f job/integration-test
 ### Configuration
 
 | Parameter  | Value  |
-| ---------- | ------ |
+|------------|--------|
 | Partitions | 3      |
 | Pods       | 4      |
 | Iterations | 10,000 |
@@ -111,7 +111,7 @@ kubectl logs -f job/integration-test
 ### Configuration
 
 | Parameter  | Value  |
-| ---------- | ------ |
+|------------|--------|
 | Partitions | 6      |
 | Pods       | 3      |
 | Iterations | 10,000 |
@@ -178,7 +178,7 @@ kubectl logs -f job/integration-test
 ### Configuration
 
 | Parameter  | Value  |
-| ---------- | ------ |
+|------------|--------|
 | Partitions | 6      |
 | Pods       | 6      |
 | Iterations | 10,000 |
@@ -211,7 +211,7 @@ kubectl logs -f job/integration-test
 ### Configuration
 
 | Parameter  | Value   |
-| ---------- | ------- |
+|------------|---------|
 | Partitions | 6       |
 | Pods       | 3       |
 | Iterations | 100,000 |
@@ -244,7 +244,7 @@ kubectl logs -f job/integration-test
 ### Configuration
 
 | Parameter  | Value   |
-| ---------- | ------- |
+|------------|---------|
 | Partitions | 6       |
 | Pods       | 6       |
 | Iterations | 100,000 |
@@ -275,7 +275,7 @@ kubectl logs -f job/integration-test
 ### Results
 
 | Scenario | Partitions | Pods | Iterations | Messages | Hierarchies | End-to-End (ms) | Processing Window (ms) | End-to-End Msg/s | Processing Msg/s |
-| -------- | ---------: | ---: | ---------: | -------: | ----------: | --------------: | ---------------------: | ---------------: | ---------------: |
+|----------|-----------:|-----:|-----------:|---------:|------------:|----------------:|-----------------------:|-----------------:|-----------------:|
 | 1        |          3 |    4 |      1,000 |    5,000 |       1,000 |           7,069 |                    112 |           707.31 |        44,642.86 |
 | 2        |          3 |    4 |     10,000 |   50,000 |      10,000 |           8,876 |                    771 |         5,633.17 |        64,850.84 |
 | 3        |          6 |    3 |     10,000 |   50,000 |      10,000 |          27,379 |                    715 |         1,826.22 |        69,930.07 |

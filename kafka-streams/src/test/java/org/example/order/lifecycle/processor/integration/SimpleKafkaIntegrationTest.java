@@ -11,7 +11,7 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.example.order.fix.model.ExecutionReport;
 import org.example.order.fix.model.VerificationRecord;
-import org.example.order.lifecycle.processor.util.JsonUtils;
+import org.example.order.lifecycle.util.JsonUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

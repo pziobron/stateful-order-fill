@@ -7,13 +7,13 @@ import org.example.order.fix.model.ExecutionReport;
 import org.example.order.fix.model.VerificationRecord;
 import org.example.order.lifecycle.model.ExecutionVolumeMetrics;
 import org.example.order.lifecycle.model.OrderState;
+import org.example.order.lifecycle.util.JsonUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.support.serializer.JsonSerde;
 
 import java.util.Properties;
-
-import static org.example.order.lifecycle.processor.util.JsonUtils.createJsonSerde;
 
 /**
  * Configuration class for Kafka Streams in the order lifecycle processor.
@@ -76,7 +76,10 @@ public class KafkaStreamsConfig {
     @Bean
     @SuppressWarnings("unused")
     public Serde<ExecutionReport> executionReportSerde() {
-        return createJsonSerde(ExecutionReport.class);
+        return new JsonSerde<>(
+                ExecutionReport.class,
+                JsonUtils.getObjectMapper()
+        );
     }
 
     /**
@@ -88,7 +91,10 @@ public class KafkaStreamsConfig {
     @Bean
     @SuppressWarnings("unused")
     public Serde<OrderState> orderStateSerde() {
-        return createJsonSerde(OrderState.class);
+        return new JsonSerde<>(
+                OrderState.class,
+                JsonUtils.getObjectMapper()
+        );
     }
 
     /**
@@ -100,7 +106,10 @@ public class KafkaStreamsConfig {
     @Bean
     @SuppressWarnings("unused")
     public Serde<ExecutionVolumeMetrics> executionVolumeMetricsSerde() {
-        return createJsonSerde(ExecutionVolumeMetrics.class);
+        return new JsonSerde<>(
+                ExecutionVolumeMetrics.class,
+                JsonUtils.getObjectMapper()
+        );
     }
 
     /**
@@ -112,7 +121,10 @@ public class KafkaStreamsConfig {
     @Bean
     @SuppressWarnings("unused")
     public Serde<VerificationRecord> verificationRecordSerde() {
-        return createJsonSerde(VerificationRecord.class);
+        return new JsonSerde<>(
+                VerificationRecord.class,
+                JsonUtils.getObjectMapper()
+        );
     }
 
     /**

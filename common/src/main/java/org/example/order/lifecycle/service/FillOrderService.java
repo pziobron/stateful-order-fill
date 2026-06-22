@@ -1,19 +1,17 @@
-package org.example.order.lifecycle.processor.service;
+package org.example.order.lifecycle.service;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.order.fix.model.ExecutionReport;
 import org.example.order.lifecycle.model.Fill;
 import org.example.order.lifecycle.model.OrderNode;
 import org.example.order.lifecycle.model.OrderState;
 import org.example.order.lifecycle.model.OrderStatus;
-import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
-import static org.example.order.lifecycle.processor.util.ExecutionReportUtils.*;
-import static org.example.order.lifecycle.processor.util.JsonUtils.toPrettyJson;
+import static org.example.order.lifecycle.util.ExecutionReportUtils.*;
+import static org.example.order.lifecycle.util.JsonUtils.toPrettyJson;
 
 /**
  * Service responsible for processing execution reports and managing the order state lifecycle.
@@ -30,11 +28,17 @@ import static org.example.order.lifecycle.processor.util.JsonUtils.toPrettyJson;
  * @see Fill
  */
 @Slf4j
-@Service
-@RequiredArgsConstructor
 public class FillOrderService {
 
     private final OrderStateUpdater orderStateUpdater;
+
+    /**
+     * The constructor
+     * @param orderStateUpdater the order state updater
+     */
+    public FillOrderService(OrderStateUpdater orderStateUpdater) {
+        this.orderStateUpdater = orderStateUpdater;
+    }
 
     /**
      * Processes an execution report and updates the order state based on the report type.

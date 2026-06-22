@@ -1,8 +1,7 @@
-package org.example.order.lifecycle.processor.service;
+package org.example.order.lifecycle.service;
 
 import org.example.order.fix.model.ExecutionReport;
 import org.example.order.lifecycle.model.OrderNode;
-import org.springframework.stereotype.Component;
 
 /**
  * Service component responsible for updating the state of an order based on execution reports.
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Component;
  * current state of orders as execution reports are received.
  * </p>
  */
-@Component
 public class OrderStateUpdater {
 
     /**

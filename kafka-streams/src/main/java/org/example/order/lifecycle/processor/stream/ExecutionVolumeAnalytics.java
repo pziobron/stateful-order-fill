@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 
-import static org.example.order.lifecycle.processor.util.ExecutionReportUtils.isFill;
-import static org.example.order.lifecycle.processor.util.ExecutionReportUtils.isOrder;
+import static org.example.order.lifecycle.util.ExecutionReportUtils.isFill;
+import static org.example.order.lifecycle.util.ExecutionReportUtils.isOrder;
 
 /**
  * Demonstrates TimeWindow usage for execution volume analytics in fintech.

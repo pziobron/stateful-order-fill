@@ -7,4 +7,5 @@ dependencies {
     implementation libs.jackson.databind
     implementation libs.jackson.annotations
     implementation libs.jackson.jsr310  // For Java 8 date/time support
+    implementation libs.slf4j.api
 }

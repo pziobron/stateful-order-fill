@@ -4,25 +4,25 @@ import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.TestInputTopic;
 import org.apache.kafka.streams.TopologyTestDriver;
 import org.apache.kafka.streams.kstream.Consumed;
-import org.apache.kafka.streams.state.WindowStore;
 import org.apache.kafka.streams.state.SessionStore;
+import org.apache.kafka.streams.state.WindowStore;
 import org.example.order.fix.model.ExecutionReport;
 import org.example.order.lifecycle.model.ExecutionVolumeMetrics;
 import org.example.order.lifecycle.processor.util.BusinessTimestampExtractor;
-import org.example.order.lifecycle.processor.util.JsonUtils;
+import org.example.order.lifecycle.processor.utils.TestUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.example.order.lifecycle.processor.stream.ExecutionVolumeAnalytics.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test class demonstrating TimeWindow functionality for order analytics.
@@ -38,12 +38,12 @@ class TimeWindowAnalyticsTest {
         // Setup test topology with TimeWindow analytics
         var streamsBuilder = new org.apache.kafka.streams.StreamsBuilder();
         ExecutionVolumeAnalytics executionVolumeAnalytics = new ExecutionVolumeAnalytics(
-                JsonUtils.createJsonSerde(ExecutionReport.class),
-                JsonUtils.createJsonSerde(ExecutionVolumeMetrics.class)
+                TestUtils.createJsonSerde(ExecutionReport.class),
+                TestUtils.createJsonSerde(ExecutionVolumeMetrics.class)
         );
         
         // Create the input topic first
-        var executionReportSerde = JsonUtils.createJsonSerde(ExecutionReport.class);
+        var executionReportSerde = TestUtils.createJsonSerde(ExecutionReport.class);
         
         // Add the analytics to the stream BEFORE building the topology
         // Use the same timestamp extractor as production to use business timestamp (TxnTime) for windowing

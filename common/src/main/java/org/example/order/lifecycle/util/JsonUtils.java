@@ -1,13 +1,11 @@
-package org.example.order.lifecycle.processor.util;
+package org.example.order.lifecycle.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.kafka.support.serializer.JsonSerde;
 
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 import static com.fasterxml.jackson.core.json.JsonWriteFeature.WRITE_NUMBERS_AS_STRINGS;
 import static com.fasterxml.jackson.databind.DeserializationFeature.UNWRAP_ROOT_VALUE;
 import static com.fasterxml.jackson.databind.SerializationFeature.WRAP_ROOT_VALUE;
@@ -30,7 +28,7 @@ public class JsonUtils {
             .enable(WRITE_NUMBERS_AS_STRINGS.mappedFeature())
             .enable(WRAP_ROOT_VALUE)
             .enable(UNWRAP_ROOT_VALUE)
-            .build().setSerializationInclusion(NON_EMPTY);
+            .build();
 
     private JsonUtils() {
     }
@@ -70,19 +68,6 @@ public class JsonUtils {
             log.error("Failed to deserialize JSON to type: " + type.getSimpleName(), e);
             return null;
         }
-    }
-
-    /**
-     * Creates a new {@link JsonSerde} instance for the specified class using the pre-configured ObjectMapper.
-     * This ensures consistent JSON serialization/deserialization behavior across the application.
-     *
-     * @param <T>   the type of object to be serialized/deserialized
-     * @param clazz the class of the object to be serialized/deserialized
-     * @return a new JsonSerde instance configured with the application's ObjectMapper
-     * @throws IllegalArgumentException if clazz is null
-     */
-    public static <T> JsonSerde<T> createJsonSerde(Class<T> clazz) {
-        return new JsonSerde<>(clazz, objectMapper);
     }
 
 }
