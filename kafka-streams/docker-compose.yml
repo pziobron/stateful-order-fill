@@ -46,6 +46,10 @@ services:
       echo 'Creating topic org.example.order.executions...'
       /opt/kafka/bin/kafka-topics.sh --bootstrap-server broker:29092 --create --if-not-exists --topic org.example.order.executions --partitions 3 --replication-factor 1
       echo 'Topic org.example.order.executions created successfully'
+
+      echo 'Creating topic org.example.order.verification...'
+      /opt/kafka/bin/kafka-topics.sh --bootstrap-server broker:29092 --create --if-not-exists --topic org.example.order.verification --partitions 3 --replication-factor 1
+      echo 'Topic org.example.order.verification created successfully'
       "
 
 networks:

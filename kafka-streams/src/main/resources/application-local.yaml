@@ -1,6 +1,8 @@
 kafka:
   executions:
     topic: org.example.order.executions
+  verification:
+    topic: org.example.order.verification
 spring:
   kafka:
     bootstrap-servers: localhost:9092

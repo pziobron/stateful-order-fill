@@ -10,6 +10,7 @@ import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.*;
 import org.apache.kafka.streams.state.KeyValueStore;
 import org.example.order.fix.model.ExecutionReport;
+import org.example.order.fix.model.VerificationRecord;
 import org.example.order.lifecycle.model.OrderState;
 import org.example.order.lifecycle.processor.service.FillOrderService;
 import org.example.order.lifecycle.processor.util.BusinessTimestampExtractor;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.time.Instant;
 import java.util.Properties;
 
 import static org.example.order.lifecycle.processor.util.ExecutionReportUtils.isChild;
@@ -64,6 +66,11 @@ public class FillOrderStream implements DisposableBean {
     private final Serde<OrderState> orderStateSerde;
 
     /**
+     * Serde for serializing/deserializing VerificationRecord objects.
+     */
+    private final Serde<VerificationRecord> verificationRecordSerde;
+
+    /**
      * Configuration properties for the Kafka Streams application.
      */
     private final Properties kafkaStreamsProperties;
@@ -77,12 +84,23 @@ public class FillOrderStream implements DisposableBean {
      * Service for windowed analytics on execution volume.
      */
     private final ExecutionVolumeAnalytics executionVolumeAnalytics;
+
     /**
      * Name of the topic from which execution reports are consumed.
      * Configured via Spring's property injection.
      */
     @Value("${kafka.executions.topic}")
     protected String executionReportsTopic;
+
+    @Value("${kafka.verification.topic}")
+    protected String verificationTopic;
+
+    @Value("${POD_ID:unknown}")
+    protected String podId;
+
+    @Value("${analytics.enabled:true}")
+    protected boolean analyticsEnabled;
+
     /**
      * The Kafka Streams instance.
      */
@@ -108,8 +126,10 @@ public class FillOrderStream implements DisposableBean {
                                     Consumed.with(Serdes.String(), executionReportSerde)
                                             .withTimestampExtractor(new BusinessTimestampExtractor()));
 
-            // Add windowed analytics to the stream
-            executionVolumeAnalytics.addWindowedAnalytics(executionReportStream);
+            if (analyticsEnabled) {
+                // Add windowed analytics to the stream
+                executionVolumeAnalytics.addWindowedAnalytics(executionReportStream);
+            }
 
             // Merge orders, child-keyed fills and parent-keyed fills into a single stream
             KStream<String, ExecutionReport> updates = executionReportStream
@@ -124,6 +144,18 @@ public class FillOrderStream implements DisposableBean {
                                     .withValueSerde(orderStateSerde));
 
             orderStates.toStream().print(Printed.<String, OrderState>toSysOut().withLabel("LIFECYCLES"));
+
+            // Write verification records to track which POD processed each order key
+            orderStates.toStream()
+                    .mapValues((key, _) ->
+                            new VerificationRecord(
+                                    key,
+                                    podId,
+                                    Instant.now().toString()
+                            ))
+                    .to(verificationTopic, Produced.with(Serdes.String(), verificationRecordSerde));
+
+            log.info("Kafka Streams topology started with POD_ID: {}", podId);
 
             var topology = streamsBuilder.build();
             streams = new KafkaStreams(topology, kafkaStreamsProperties);

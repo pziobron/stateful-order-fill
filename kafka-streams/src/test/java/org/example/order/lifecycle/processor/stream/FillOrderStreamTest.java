@@ -7,6 +7,7 @@ import org.apache.kafka.streams.TestInputTopic;
 import org.apache.kafka.streams.TopologyTestDriver;
 import org.apache.kafka.streams.state.KeyValueStore;
 import org.example.order.fix.model.ExecutionReport;
+import org.example.order.fix.model.VerificationRecord;
 import org.example.order.lifecycle.model.ExecutionVolumeMetrics;
 import org.example.order.lifecycle.model.OrderNode;
 import org.example.order.lifecycle.model.OrderState;
@@ -62,10 +63,12 @@ public class FillOrderStreamTest {
                 streamsBuilder,
                 createJsonSerde(ExecutionReport.class),
                 createJsonSerde(OrderState.class),
+                createJsonSerde(VerificationRecord.class),
                 kafkaStreamProperties,
                 new FillOrderService(new OrderStateUpdater()),
                 new ExecutionVolumeAnalytics(createJsonSerde(ExecutionReport.class), createJsonSerde(ExecutionVolumeMetrics.class)));
         fillOrderStream.executionReportsTopic = "test-topic";
+        fillOrderStream.verificationTopic = "test-verification-topic";
 
         fillOrderStream.startKafkaStream();
 

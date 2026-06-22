@@ -1,0 +1,26 @@
+# Dockerfile for running integration tests in Kubernetes
+# Builds from project root to include common module dependency
+
+FROM gradle:jdk25 AS builder
+
+WORKDIR /app
+
+# Copy gradle files first for better layer caching
+COPY gradle/ gradle/
+COPY gradlew gradlew.bat gradle.properties settings.gradle build.gradle ./
+COPY common/build.gradle ./common/
+COPY flink/build.gradle ./flink/
+COPY kafka-streams/build.gradle ./kafka-streams/
+
+# Download dependencies
+RUN ./gradlew dependencies --no-daemon || true
+
+# Copy source code
+COPY common/src/ common/src/
+COPY flink/src/ flink/src/
+COPY kafka-streams/src/ kafka-streams/src/
+
+# Default command runs the integration test from root
+WORKDIR /app
+ENTRYPOINT ["./gradlew"]
+CMD ["test", "--tests", "org.example.order.lifecycle.processor.integration.SimpleKafkaIntegrationTest", "-PincludeIntegrationTests", "--no-daemon", "--info"]

@@ -108,12 +108,13 @@ until each article is published.
 
 This repository accompanies a series of articles explaining the design decisions,
 trade-offs, and implementation details step by step:
-- Part 1: Stateful Order Fill Matching with Kafka Streams – The Basics
-- Part 2: Order Hierarchies (Parent / Child Orders)
-- Part 3: Late Events, Ordering, and Windowing
-- Part 4: Horizontal Scaling, Partitions, and Parallelism [Not ready yet]
-- Part 5: Kafka Streams vs Apache Flink [Not ready yet]
-- Part 6: Stream Processing vs DB-centric Architectures [Not ready yet]
+- Part 1: Stateful order fill processing with Kafka Streams
+- Part 2: Order hierarchy (parent / child orders)
+- Part 3: Late events and windowing
+- Part 4: Horizontal scaling and partitions
+- Part 5: Kafka Streams vs Apache Flink: Solving the Same Stateful Problem [Not ready yet]
+- Part 6: Stateful Streaming vs Database-Centric Processing [Planned]
+- Part 7: CQRS and Read Models [Planned]
 
 ---
 

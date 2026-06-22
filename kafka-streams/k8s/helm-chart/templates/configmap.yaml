@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-order-processor-config
+data:
+  application.yaml: |
+    kafka:
+      executions:
+        topic: org.example.order.executions
+    spring:
+      application:
+        name: {{ .Values.kafkaStreams.applicationId }}
+      kafka:
+        bootstrap-servers: {{ .Values.kafka.bootstrapServers }}
+        streams:
+          application-id: {{ .Values.kafkaStreams.applicationId }}
+          num-stream-threads: {{ .Values.kafkaStreams.numStreamThreads }}
+          processing-guarantee: exactly_once_v2
+          consumer:
+            auto-offset-reset: earliest
+    management:
+      endpoints:
+        web:
+          exposure:
+            include: health,info

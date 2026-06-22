@@ -4,6 +4,7 @@ import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.example.order.fix.model.ExecutionReport;
+import org.example.order.fix.model.VerificationRecord;
 import org.example.order.lifecycle.model.ExecutionVolumeMetrics;
 import org.example.order.lifecycle.model.OrderState;
 import org.springframework.beans.factory.annotation.Value;
@@ -100,6 +101,18 @@ public class KafkaStreamsConfig {
     @SuppressWarnings("unused")
     public Serde<ExecutionVolumeMetrics> executionVolumeMetricsSerde() {
         return createJsonSerde(ExecutionVolumeMetrics.class);
+    }
+
+    /**
+     * Creates a JSON Serde for serializing and deserializing VerificationRecord objects.
+     *
+     * @return Configured Serde for VerificationRecord objects
+     * @see org.example.order.fix.model.VerificationRecord
+     */
+    @Bean
+    @SuppressWarnings("unused")
+    public Serde<VerificationRecord> verificationRecordSerde() {
+        return createJsonSerde(VerificationRecord.class);
     }
 
     /**

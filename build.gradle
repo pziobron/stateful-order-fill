@@ -29,6 +29,8 @@ allprojects {
 subprojects {
     // Common dependencies for all subprojects
     dependencies {
+        implementation platform(libs.jackson.bom)
+
         // Common dependencies
         compileOnly libs.lombok
         annotationProcessor libs.lombok

@@ -1,0 +1,23 @@
+
+# Simple Helm chart for Kafka Streams Order Processor
+
+replicas: 4
+
+image:
+  repository: order-state-processor
+  tag: latest
+  pullPolicy: IfNotPresent
+
+# Kafka connection (use service name when running in Kubernetes)
+kafka:
+  bootstrapServers: kafka-broker:29092
+
+# Kafka Streams config
+kafkaStreams:
+  applicationId: order-state-processor
+  numStreamThreads: 2
+
+analytics:
+  enabled: "false"
+
+javaToolOptions: "--enable-native-access=ALL-UNNAMED"
