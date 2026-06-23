@@ -1,0 +1,78 @@
+services:
+  flink-jobmanager:
+    image: flink:2.2.1-java17
+    container_name: flink-jobmanager
+    ports:
+      - "8081:8081"
+    command: jobmanager
+
+    environment:
+      ROOT_LOG_LEVEL: WARN
+      FLINK_LOG_LEVEL: WARN
+      KAFKA_LOG_LEVEL: WARN
+      PEKKO_LOG_LEVEL: WARN
+      KAFKA_BOOTSTRAP_SERVERS: broker:29092
+      KAFKA_EXECUTIONS_TOPIC: org.example.order.executions
+      KAFKA_VERIFICATION_TOPIC: org.example.order.verification
+      FLINK_OFFSET_RESET: latest
+      FLINK_GROUP_ID: order-lifecycle-flink-docker
+      FLINK_PARALLELISM: "4"
+      FLINK_PRINT_LIFECYCLE: "false"
+      FLINK_CHECKPOINT_INTERVAL_MS: "10000"
+      KAFKA_COMMIT_OFFSETS_ON_CHECKPOINT: "false"
+
+      FLINK_PROPERTIES: |
+        jobmanager.rpc.address: flink-jobmanager
+        rest.address: 0.0.0.0
+        parallelism.default: 4
+        taskmanager.numberOfTaskSlots: 1
+
+    networks:
+      - flink-network
+      - kafka-network
+
+    volumes:
+      - ./build/libs/flink-1.0-SNAPSHOT-all.jar:/opt/flink/usrlib/order-lifecycle-flink.jar:ro
+      - ./docker/conf/log4j-console.properties:/opt/flink/conf/log4j-console.properties:ro
+
+  flink-taskmanager:
+    image: flink:2.2.1-java17
+    container_name: flink-taskmanager
+    depends_on:
+      - flink-jobmanager
+    command: taskmanager
+
+    environment:
+      ROOT_LOG_LEVEL: WARN
+      FLINK_LOG_LEVEL: WARN
+      KAFKA_LOG_LEVEL: WARN
+      PEKKO_LOG_LEVEL: WARN
+      KAFKA_BOOTSTRAP_SERVERS: broker:29092
+      KAFKA_EXECUTIONS_TOPIC: org.example.order.executions
+      KAFKA_VERIFICATION_TOPIC: org.example.order.verification
+      FLINK_OFFSET_RESET: latest
+      FLINK_GROUP_ID: order-lifecycle-flink-docker
+      FLINK_PARALLELISM: "4"
+      FLINK_PRINT_LIFECYCLE: "false"
+      FLINK_CHECKPOINT_INTERVAL_MS: "10000"
+      KAFKA_COMMIT_OFFSETS_ON_CHECKPOINT: "false"
+
+      FLINK_PROPERTIES: |
+        jobmanager.rpc.address: flink-jobmanager
+        taskmanager.numberOfTaskSlots: 1
+        parallelism.default: 4
+
+    networks:
+      - flink-network
+      - kafka-network
+
+    volumes:
+      - ./docker/conf/log4j-console.properties:/opt/flink/conf/log4j-console.properties:ro
+
+networks:
+  flink-network:
+    driver: bridge
+
+  kafka-network:
+    external: true
+    name: kafka-streams_kafka-network

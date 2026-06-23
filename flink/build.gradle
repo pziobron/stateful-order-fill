@@ -37,13 +37,23 @@ dependencies {
     testImplementation libs.junit.jupiter
 }
 
-tasks.named('run') {
-    jvmArgs = [
-            '-Dkafka.bootstrap.servers=localhost:9092',
-            '-Dflink.offset.reset=latest',
-            '-Dflink.parallelism=4',
-            '-Dflink.print.lifecycle=true'
-    ]
+tasks.named('run', JavaExec) {
+    [
+            'kafka.bootstrap.servers',
+            'kafka.executions.topic',
+            'kafka.verification.topic',
+            'kafka.commit.offsets.on.checkpoint',
+            'flink.offset.reset',
+            'flink.group.id',
+            'flink.parallelism',
+            'flink.print.lifecycle',
+            'flink.checkpoint.interval.ms'
+    ].each { propertyName ->
+        def value = System.getProperty(propertyName)
+        if (value != null) {
+            systemProperty propertyName, value
+        }
+    }
 }
 
 test {

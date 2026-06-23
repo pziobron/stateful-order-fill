@@ -38,9 +38,10 @@ A stateful stream processing implementation using:
 
 - Kafka Streams
 - Local state stores backed by changelog topics
-- Exactly-once processing semantics
+- Configurable processing guarantees, including at-least-once and exactly-once
 - Deterministic, per-key serial processing
-- Windowing and event-time handling for late events
+- Order-independent handling of late lifecycle events using durable state 
+- Separate event-time windowing examples for execution analytics
 
 ➡ Module: `kafka-streams`
 
@@ -50,18 +51,22 @@ This implementation serves as the **reference implementation** for the article s
 
 ### 2. Apache Flink
 
-A stream processing implementation focusing on:
+A functional implementation of the same order lifecycle processor using:
 
-- Event-time processing
-- Watermarks
-- Stateful operators
-- Explicit handling of late events
-- More fine-grained control over time and state
+- Flink DataStream API
+- Kafka Source and Sink connectors
+- Keyed managed state
+- Event timestamps and watermarks
+- Checkpoint-based recovery
+- Shared domain logic from the `common` module
 
-➡ Module: `flink` *(work in progress)*
+➡ Module: `flink`
 
-This module will be added incrementally to allow a **direct comparison**
-with Kafka Streams using the same business requirements.
+The implementation can be executed locally through Gradle or submitted to
+a Docker Compose Flink cluster. 
+The implementation can be executed locally, through Docker Compose,
+or on Kubernetes. The repository also contains repeatable 10K and
+100K benchmark scenarios comparing it with Kafka Streams.
 
 ---
 
@@ -95,11 +100,10 @@ until each article is published.
 
 ```text
 .
-├── kafka-streams/     # Kafka Streams implementation
-├── flink/             # Apache Flink implementation (WIP)
-├── db-centric/        # Database-centric approach (planned)
-├── docker-compose.yml # Local Kafka setup
-└── README.md          # This file
+├── common/          # Shared domain model and business logic
+├── kafka-streams/   # Kafka Streams implementation
+├── flink/           # Apache Flink implementation
+└── README.md
 ```
 
 ---
@@ -108,13 +112,13 @@ until each article is published.
 
 This repository accompanies a series of articles explaining the design decisions,
 trade-offs, and implementation details step by step:
-- Part 1: Stateful order fill processing with Kafka Streams
-- Part 2: Order hierarchy (parent / child orders)
-- Part 3: Late events and windowing
-- Part 4: Horizontal scaling and partitions
-- Part 5: Kafka Streams vs Apache Flink: Solving the Same Stateful Problem [Not ready yet]
-- Part 6: Stateful Streaming vs Database-Centric Processing [Planned]
-- Part 7: CQRS and Read Models [Planned]
+- Part 1: Stateful Order Fill Processing with Kafka Streams 
+- Part 2: Order Hierarchies — Parent and Child Orders 
+- Part 3: Time, Event Ordering, and the Limits of Windows 
+- Part 4: Horizontal Scaling and Kafka Partitions 
+- Part 5: Kafka Streams vs Apache Flink — Solving the Same Stateful Problem 
+- Part 6: Stateful Streaming vs Database-Centric Processing `[Planned]`
+- Part 7: CQRS and Read Models `[Planned]`
 
 ---
 
