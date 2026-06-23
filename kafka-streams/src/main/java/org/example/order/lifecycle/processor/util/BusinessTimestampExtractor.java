@@ -1,8 +1,9 @@
 package org.example.order.lifecycle.processor.util;
 
-import org.apache.kafka.streams.processor.TimestampExtractor;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.streams.processor.TimestampExtractor;
 import org.example.order.fix.model.ExecutionReport;
+import org.example.order.lifecycle.util.EventTimeUtils;
 
 /**
  * Timestamp extractor that uses the business transaction time (TxnTime) from ExecutionReport
@@ -15,10 +16,7 @@ public class BusinessTimestampExtractor implements TimestampExtractor {
     @Override
     public long extract(ConsumerRecord<Object, Object> record, long previousTimestamp) {
         if (record.value() instanceof ExecutionReport report) {
-            return report.getTxnTime()
-                    .atZone(java.time.ZoneId.systemDefault())
-                    .toInstant()
-                    .toEpochMilli();
+            return EventTimeUtils.extractEventTimestamp(report);
         }
         
         // Fallback to record timestamp if not an ExecutionReport

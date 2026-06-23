@@ -46,6 +46,19 @@ public class KafkaStreamsConfig {
     private String applicationName;
 
     /**
+     * The interval between commits of the state store.
+     * Injected from Spring's environment properties (spring.kafka.streams.properties.commit.interval.ms).
+     */
+    @Value("${spring.kafka.streams.properties.commit.interval.ms:30000}")
+    private long commitIntervalMs;
+
+    @Value("${spring.kafka.streams.num-stream-threads:1}")
+    private int numStreamThreads;
+
+    @Value("${spring.kafka.streams.processing-guarantee:at_least_once}")
+    private String processingGuarantee;
+
+    /**
      * Creates and configures the base properties for the Kafka Streams application.
      * <p>
      * This method sets up the essential configuration required by Kafka Streams,
@@ -63,6 +76,10 @@ public class KafkaStreamsConfig {
         //Basic Kafka Stream configuration
         props.put(StreamsConfig.APPLICATION_ID_CONFIG, applicationName);
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+        props.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, commitIntervalMs);
+        props.put(StreamsConfig.NUM_STREAM_THREADS_CONFIG, numStreamThreads);
+        props.put(StreamsConfig.PROCESSING_GUARANTEE_CONFIG, processingGuarantee);
+
 
         return props;
     }

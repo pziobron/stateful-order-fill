@@ -1,39 +1,99 @@
 [versions]
-#production dependencies
-lombok = "1.18.42"
+
+# --------------------------------------------------------------------
+# Build plugins
+# --------------------------------------------------------------------
+
 spring-boot = "3.5.6"
 spring-dep-mgmt = "1.1.7"
-kafka-streams = "3.9.0"
-jackson = "2.22.0"
-annotation-api = "1.3.2"
-awaitality = "4.2.2"
-slf4j = "2.0.17"
+shadow = "9.4.2"
 
-#test dependencies
+# --------------------------------------------------------------------
+# Shared libraries (common module)
+# --------------------------------------------------------------------
+
+lombok = "1.18.42"
+jackson = "2.22.0"
+
+slf4j = "2.0.17"
+logback = "1.5.18"
+
+annotation-api = "1.3.2"
+
+# --------------------------------------------------------------------
+# Kafka Streams module
+# --------------------------------------------------------------------
+
+kafka-streams = "3.9.0"
+
+# --------------------------------------------------------------------
+# Flink module
+# --------------------------------------------------------------------
+
+flink = "2.2.1"
+flink-kafka = "5.0.0-2.2"
+
+# --------------------------------------------------------------------
+# Testing
+# --------------------------------------------------------------------
+
+junit = "5.13.4"
 mockito = "5.20.0"
+awaitality = "4.2.2"
+
 
 [plugins]
+
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
 spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "spring-dep-mgmt" }
+shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 
 [libraries]
-#production dependencies
-lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
-slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
 
-#kafka streams
-kafka-streams = { group = "org.apache.kafka", name = "kafka-streams", version.ref = "kafka-streams" }
+# ====================================================================
+# Shared libraries (common module)
+# ====================================================================
 
-#jackson
+lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
+
 jackson-bom = { module = "com.fasterxml.jackson:jackson-bom", version.ref = "jackson" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind" }
 jackson-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations" }
 jackson-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310" }
 
-#other
-annotation-api = { group = "javax.annotation", name = "javax.annotation-api", version.ref = "annotation-api" }
-awaitality = { group = "org.awaitility", name = "awaitility", version.ref = "awaitality" }
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 
-#test dependencies
-mockito = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
+annotation-api = { module = "javax.annotation:javax.annotation-api", version.ref = "annotation-api" }
 
+# ====================================================================
+# Kafka Streams
+# ====================================================================
+
+kafka-streams = { module = "org.apache.kafka:kafka-streams", version.ref = "kafka-streams" }
+
+# ====================================================================
+# Apache Flink
+# ====================================================================
+
+flink-core = { module = "org.apache.flink:flink-core", version.ref = "flink" }
+
+flink-streaming-java = { module = "org.apache.flink:flink-streaming-java", version.ref = "flink" }
+
+flink-clients = { module = "org.apache.flink:flink-clients", version.ref = "flink" }
+
+flink-connector-base = { module = "org.apache.flink:flink-connector-base", version.ref = "flink" }
+
+flink-connector-kafka = { module = "org.apache.flink:flink-connector-kafka", version.ref = "flink-kafka" }
+
+flink-statebackend-forst = { module = "org.apache.flink:flink-statebackend-forst", version.ref = "flink" }
+
+# ====================================================================
+# Testing
+# ====================================================================
+
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
+
+mockito = { module = "org.mockito:mockito-core", version.ref = "mockito" }
+
+awaitality = { module = "org.awaitility:awaitility", version.ref = "awaitality" }

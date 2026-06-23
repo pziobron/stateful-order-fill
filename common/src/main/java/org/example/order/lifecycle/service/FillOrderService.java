@@ -7,6 +7,7 @@ import org.example.order.lifecycle.model.OrderNode;
 import org.example.order.lifecycle.model.OrderState;
 import org.example.order.lifecycle.model.OrderStatus;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
@@ -60,14 +61,21 @@ public class FillOrderService {
             String orderId, ExecutionReport executionReport, OrderState orderState) {
         log.info("Processing execution report for orderId: {}", orderId);
 
+        Instant now = Instant.now();
+
+        if (orderState.getFirstProcessedAt() == null) {
+            orderState.setFirstProcessedAt(now);
+        }
+
         if (orderState.getOrderId() == null) {
             orderState.setOrderId(orderId); // Ensure orderId  (kafka key) is set
         }
 
         OrderNode targetOrderNode = isChild(executionReport) ?
-                orderState.getChildOrders().computeIfAbsent(executionReport.getOrderId(), _ -> new OrderNode()):
+                orderState.getChildOrders().computeIfAbsent(executionReport.getOrderId(), ignored -> new OrderNode()):
                 orderState;
 
+        boolean wasFullyFilled = orderState.isFullyFilled();
 
         if (isOrder(executionReport)) {
             orderStateUpdater.update(executionReport, targetOrderNode);
@@ -79,6 +87,13 @@ public class FillOrderService {
         }
 
         orderState.setLastActionTimestamp(ZonedDateTime.now());
+
+        if (!wasFullyFilled
+                && orderState.isFullyFilled()
+                && orderState.getCompletedAt() == null) {
+            orderState.setCompletedAt(Instant.now());
+        }
+
         log.info("Updating Lifecycle: {}", toPrettyJson(orderState));
 
         return orderState;

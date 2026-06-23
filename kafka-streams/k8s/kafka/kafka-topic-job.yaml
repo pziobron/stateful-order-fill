@@ -37,7 +37,7 @@ spec:
                 --create \
                 --if-not-exists \
                 --topic org.example.order.executions \
-                --partitions 3 \
+                --partitions 6 \
                 --replication-factor 1
               echo 'Topic org.example.order.executions created successfully'
 
@@ -47,7 +47,7 @@ spec:
                 --create \
                 --if-not-exists \
                 --topic org.example.order.verification \
-                --partitions 3 \
+                --partitions 6 \
                 --replication-factor 1
               echo 'Topic org.example.order.verification created successfully'
   backoffLimit: 10

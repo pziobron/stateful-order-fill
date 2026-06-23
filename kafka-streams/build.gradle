@@ -23,6 +23,10 @@ test {
     systemProperty "kafka.bootstrapServers", System.getProperty("kafka.bootstrapServers")
 
     if (!project.hasProperty('includeIntegrationTests')) {
-        exclude '**/SimpleKafkaIntegrationTest.class'
+        exclude '**/OrderLifecycleKafkaScenarioTest.class'
     }
+}
+
+tasks.named('test') {
+    maxHeapSize = '1g'
 }

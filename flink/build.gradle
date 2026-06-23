@@ -1,3 +1,51 @@
+plugins {
+    id 'java'
+    id 'application'
+    alias(libs.plugins.shadow)
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+application {
+    mainClass = 'org.example.order.lifecycle.flink.job.FillOrderFlinkJob'
+}
+
+shadowJar {
+    archiveClassifier.set('all')
+}
+
 dependencies {
     implementation project(':common')
+
+    implementation libs.flink.core
+    implementation libs.flink.streaming.java
+    implementation libs.flink.clients
+    implementation libs.flink.connector.base
+    implementation libs.flink.connector.kafka
+    implementation libs.flink.statebackend.forst
+
+    implementation libs.jackson.databind
+    implementation libs.jackson.jsr310
+
+    implementation libs.slf4j.api
+    runtimeOnly libs.logback.classic
+
+    testImplementation libs.junit.jupiter
+}
+
+tasks.named('run') {
+    jvmArgs = [
+            '-Dkafka.bootstrap.servers=localhost:9092',
+            '-Dflink.offset.reset=latest',
+            '-Dflink.parallelism=4',
+            '-Dflink.print.lifecycle=true'
+    ]
+}
+
+test {
+    useJUnitPlatform()
 }

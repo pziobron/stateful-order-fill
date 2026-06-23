@@ -43,13 +43,13 @@ public class ExecutionVolumeAnalytics {
         // 1. Tumbling Window - Fixed-size, non-overlapping windows
         // Perfect for end-of-day trading summaries
         KTable<Windowed<String>, ExecutionVolumeMetrics> tumblingWindowMetrics = executionReportStream
-                .filter((_, report) -> isOrder(report)) // Only orders, not fills
-                .groupBy((_, report) -> report.getCurrency(), 
+                .filter((ignored, report) -> isOrder(report)) // Only orders, not fills
+                .groupBy((ignored, report) -> report.getCurrency(),
                         Grouped.with(Serdes.String(), executionReportSerde))
                 .windowedBy(TimeWindows.ofSizeWithNoGrace(Duration.ofMinutes(5)))
                 .aggregate(
                         ExecutionVolumeMetrics::new,
-                        (_, report, metrics) -> {
+                        (ignored, report, metrics) -> {
                             metrics.addQuantity(report.getOrderQuantity());
                             metrics.updateLastTimestamp(report.getTxnTime());
                             return metrics;
@@ -67,14 +67,14 @@ public class ExecutionVolumeAnalytics {
         // 2. Hopping Window - Overlapping windows for real-time monitoring
         // Useful for continuous trading dashboards
         KTable<Windowed<String>, ExecutionVolumeMetrics> hoppingWindowMetrics = executionReportStream
-                .filter((_, report) -> isFill(report)) // Only fills
-                .groupBy((_, report) -> report.getCurrency(),
+                .filter((ignored, report) -> isFill(report)) // Only fills
+                .groupBy((ignored, report) -> report.getCurrency(),
                         Grouped.with(Serdes.String(), executionReportSerde))
                 .windowedBy(TimeWindows.ofSizeWithNoGrace(Duration.ofMinutes(2))
                         .advanceBy(Duration.ofMinutes(1)))
                 .aggregate(
                         ExecutionVolumeMetrics::new,
-                        (_, report, metrics) -> {
+                        (ignored, report, metrics) -> {
                             metrics.addQuantity(report.getLastQty());
                             metrics.updateLastTimestamp(report.getTxnTime());
                             return metrics;
@@ -92,18 +92,18 @@ public class ExecutionVolumeAnalytics {
         // 3. Session Window - For analyzing trading sessions
         // Groups activity by periods of inactivity
         executionReportStream
-                .filter((_, report) -> isFill(report))
-                .groupBy((_, report) -> report.getOrderId(),
+                .filter((ignored, report) -> isFill(report))
+                .groupBy((ignored, report) -> report.getOrderId(),
                         Grouped.with(Serdes.String(), executionReportSerde))
                 .windowedBy(SessionWindows.ofInactivityGapWithNoGrace(Duration.ofMinutes(5)))
                 .aggregate(
                         ExecutionVolumeMetrics::new,
-                        (_, report, metrics) -> {
+                        (ignored, report, metrics) -> {
                             metrics.addQuantity(report.getLastQty());
                             metrics.updateLastTimestamp(report.getTxnTime());
                             return metrics;
                         },
-                        (_, metrics1, metrics2) -> {
+                        (ignored, metrics1, metrics2) -> {
                             // Merge session windows
                             metrics1.merge(metrics2);
                             return metrics1;

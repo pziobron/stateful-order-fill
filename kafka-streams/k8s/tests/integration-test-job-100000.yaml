@@ -31,22 +31,25 @@ spec:
 
           resources:
             requests:
-              cpu: "500m"
+              cpu: "250m"
               memory: "512Mi"
             limits:
-              cpu: "1"
-              memory: "1Gi"
+              cpu: "2"
+              memory: "3Gi"
 
           env:
             - name: TEST_ITERATIONS
               value: "100000"
           command:
             - ./gradlew
-            - test
-            - --tests
-            - org.example.order.lifecycle.processor.integration.SimpleKafkaIntegrationTest.testParentOrderFill
+
+          args:
+            - :kafka-streams:test
             - -PincludeIntegrationTests
-            - --no-daemon
+            - -PtestMaxHeap=1g
             - -Dkafka.bootstrapServers=kafka-broker:29092
+            - --tests
+            - org.example.order.lifecycle.processor.integration.OrderLifecycleKafkaScenarioTest.testParentOrderFill
+            - --no-daemon
             - --info
-  backoffLimit: 1
+  backoffLimit: 0

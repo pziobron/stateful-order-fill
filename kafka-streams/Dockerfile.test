@@ -13,7 +13,12 @@ COPY flink/build.gradle ./flink/
 COPY kafka-streams/build.gradle ./kafka-streams/
 
 # Download dependencies
-RUN ./gradlew dependencies --no-daemon || true
+RUN ./gradlew \
+    :common:compileJava \
+    :flink:compileJava \
+    :kafka-streams:compileJava \
+    :kafka-streams:compileTestJava \
+    --no-daemon
 
 # Copy source code
 COPY common/src/ common/src/
@@ -23,4 +28,4 @@ COPY kafka-streams/src/ kafka-streams/src/
 # Default command runs the integration test from root
 WORKDIR /app
 ENTRYPOINT ["./gradlew"]
-CMD ["test", "--tests", "org.example.order.lifecycle.processor.integration.SimpleKafkaIntegrationTest", "-PincludeIntegrationTests", "--no-daemon", "--info"]
+CMD ["test", "--tests", "org.example.order.lifecycle.processor.integration.OrderLifecycleKafkaScenarioTest", "-PincludeIntegrationTests", "--no-daemon", "--info"]

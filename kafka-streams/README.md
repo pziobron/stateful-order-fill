@@ -83,7 +83,7 @@ The application will start consuming events from Kafka and building order state.
 To execute the integration test from gradle:
 
 ```bash
-./gradlew test -PincludeIntegrationTests -Dkafka.bootstrapServers=localhost:9092 --tests SimpleKafkaIntegrationTest --info --rerun-tasks
+./gradlew test -PincludeIntegrationTests -Dkafka.bootstrapServers=localhost:9092 --tests OrderLifecycleKafkaScenarioTest --info --rerun-tasks
 ```
 
 This requires Kafka to be running (see 1.1). The test connects to real Kafka, produces sample ExecutionReport events, and verifies successful message production.
@@ -283,6 +283,6 @@ This module is part of a larger example described in a series of articles:
 - Part 3: Late events and windowing
 - Part 4: Horizontal scaling and partitions
   - Experimental setup and benchmark results: [part4-horizontal-scaling-experiments.md](docs/part4-horizontal-scaling-experiments.md)
-- Part 5: Kafka Streams vs Apache Flink: Solving the Same Stateful Problem [Not ready yet]
+- Part 5: Kafka Streams vs Apache Flink: Solving the Same Stateful Problem
 - Part 6: Stateful Streaming vs Database-Centric Processing [Planned]
 - Part 7: CQRS and Read Models [Planned]

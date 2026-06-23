@@ -40,6 +40,10 @@ subprojects {
         testAnnotationProcessor libs.lombok
     }
 
+    tasks.withType(JavaExec).configureEach {
+        jvmArgs '--enable-native-access=ALL-UNNAMED'
+    }
+
     test {
         useJUnitPlatform()
         jvmArgs '--enable-native-access=ALL-UNNAMED'

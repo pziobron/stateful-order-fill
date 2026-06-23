@@ -1,0 +1,31 @@
+<configuration>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %-5level %logger{40} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Your application logs -->
+    <logger name="org.example.order.lifecycle" level="INFO"/>
+
+    <!-- Reduce Flink runtime noise -->
+    <logger name="org.apache.flink" level="WARN"/>
+    <logger name="org.apache.flink.runtime" level="WARN"/>
+    <logger name="org.apache.flink.connector.kafka" level="WARN"/>
+    <logger name="org.apache.flink.metrics.MetricGroup" level="ERROR"/>
+    <logger name="org.apache.flink.runtime.security.token" level="ERROR"/>
+    <logger name="org.apache.flink.runtime.webmonitor.WebMonitorUtils" level="ERROR"/>
+
+    <!-- Reduce Kafka client noise -->
+    <logger name="org.apache.kafka" level="WARN"/>
+
+    <!-- Reduce Pekko actor system noise -->
+    <logger name="org.apache.pekko" level="WARN"/>
+
+
+    <root level="WARN">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+</configuration>

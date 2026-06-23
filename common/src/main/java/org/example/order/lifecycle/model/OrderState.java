@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
 import java.time.ZonedDateTime;
 
 
@@ -30,6 +31,20 @@ import java.time.ZonedDateTime;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OrderState extends OrderNode {
+
+    /**
+     * Timestamp when the order was first processed.
+     * This is the time when the order was first seen by the system.
+     * The timestamp is in UTC timezone and includes the full date and time information.
+     */
+    private Instant firstProcessedAt;
+
+    /**
+     * Timestamp when the order was completed.
+     * This is the time when the order was fully processed and no further actions are needed.
+     * The timestamp is in UTC timezone and includes the full date and time information.
+     */
+    private Instant completedAt;
 
     /**
      * Timestamp of the last action performed on this order.

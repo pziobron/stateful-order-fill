@@ -15,7 +15,9 @@ data:
         streams:
           application-id: {{ .Values.kafkaStreams.applicationId }}
           num-stream-threads: {{ .Values.kafkaStreams.numStreamThreads }}
-          processing-guarantee: exactly_once_v2
+          processing-guarantee: {{ .Values.kafkaStreams.processingGuarantee }}
+          properties:
+            commit.interval.ms: {{ .Values.kafkaStreams.commitIntervalMs }}
           consumer:
             auto-offset-reset: earliest
     management:

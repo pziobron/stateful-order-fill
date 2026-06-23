@@ -15,7 +15,9 @@ kafka:
 # Kafka Streams config
 kafkaStreams:
   applicationId: order-state-processor
-  numStreamThreads: 2
+  numStreamThreads: 1
+  commitIntervalMs: 100
+  processingGuarantee: at_least_once
 
 analytics:
   enabled: "false"

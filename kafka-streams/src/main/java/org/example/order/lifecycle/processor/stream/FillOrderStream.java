@@ -7,19 +7,19 @@ import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.common.utils.Bytes;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
+import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.kstream.*;
 import org.apache.kafka.streams.state.KeyValueStore;
 import org.example.order.fix.model.ExecutionReport;
 import org.example.order.fix.model.VerificationRecord;
 import org.example.order.lifecycle.model.OrderState;
-import org.example.order.lifecycle.service.FillOrderService;
 import org.example.order.lifecycle.processor.util.BusinessTimestampExtractor;
+import org.example.order.lifecycle.service.FillOrderService;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.time.Instant;
 import java.util.Properties;
 
 import static org.example.order.lifecycle.util.ExecutionReportUtils.isChild;
@@ -133,7 +133,7 @@ public class FillOrderStream implements DisposableBean {
 
             // Merge orders, child-keyed fills and parent-keyed fills into a single stream
             KStream<String, ExecutionReport> updates = executionReportStream
-                    .selectKey((_, msg) -> isChild(msg) ? msg.getParentId() : msg.getOrderId());
+                    .selectKey((ignored, msg) -> isChild(msg) ? msg.getParentId() : msg.getOrderId());
 
             KTable<String, OrderState> orderStates = updates.groupByKey(Grouped.with(Serdes.String(), executionReportSerde))
                     .aggregate(
@@ -145,17 +145,54 @@ public class FillOrderStream implements DisposableBean {
 
             orderStates.toStream().print(Printed.<String, OrderState>toSysOut().withLabel("LIFECYCLES"));
 
-            // Write verification records to track which POD processed each order key
+            // Emit one verification record for each completed hierarchy.
+            // Processing timestamps are captured in the shared OrderState when processing
+            // starts and when the hierarchy first reaches the fully filled state.
             orderStates.toStream()
-                    .mapValues((key, _) ->
+                    .filter((ignored, state) ->
+                            state != null
+                                    && state.isFullyFilled()
+                                    && state.getCompletedAt() != null
+                    )
+                    .mapValues((key, state) ->
                             new VerificationRecord(
                                     key,
                                     podId,
-                                    Instant.now().toString()
+                                    state.getFirstProcessedAt(),
+                                    state.getCompletedAt()
                             ))
-                    .to(verificationTopic, Produced.with(Serdes.String(), verificationRecordSerde));
+                    .to(
+                            verificationTopic,
+                            Produced.with(
+                                    Serdes.String(),
+                                    verificationRecordSerde
+                            )
+                    );
 
             log.info("Kafka Streams topology started with POD_ID: {}", podId);
+
+            StreamsConfig streamsConfig =
+                    new StreamsConfig(kafkaStreamsProperties);
+
+            log.info(
+                    "Kafka Streams effective config: " +
+                            "num.stream.threads={}, " +
+                            "processing.guarantee={}, " +
+                            "commit.interval.ms={}, " +
+                            "statestore.cache.max.bytes={}",
+                    streamsConfig.getInt(
+                            StreamsConfig.NUM_STREAM_THREADS_CONFIG
+                    ),
+                    streamsConfig.getString(
+                            StreamsConfig.PROCESSING_GUARANTEE_CONFIG
+                    ),
+                    streamsConfig.getLong(
+                            StreamsConfig.COMMIT_INTERVAL_MS_CONFIG
+                    ),
+                    streamsConfig.getLong(
+                            StreamsConfig.STATESTORE_CACHE_MAX_BYTES_CONFIG
+                    )
+            );
 
             var topology = streamsBuilder.build();
             streams = new KafkaStreams(topology, kafkaStreamsProperties);
