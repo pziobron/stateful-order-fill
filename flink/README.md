@@ -231,9 +231,9 @@ docker compose -f ./kafka-streams/docker-compose.yml down
 
 The Docker Compose setup contains:
 
-* one Flink JobManager
-* one Flink TaskManager
-* four TaskManager slots
+* one Flink JobManager 
+* one Flink TaskManager 
+* four TaskManager slots 
 * default job parallelism of four
 * access to the external Kafka Docker network
 * mounted application JAR
@@ -392,14 +392,14 @@ These warnings originate from JVM startup options in the official image and are 
 ## Kafka Streams Comparison
 
 | Kafka Streams              | Flink                                |
-| -------------------------- | ------------------------------------ |
+|----------------------------| ------------------------------------ |
 | `KTable` aggregation       | `KeyedProcessFunction`               |
 | Materialized state store   | `ValueState`                         |
 | `StreamsBuilder`           | `StreamExecutionEnvironment`         |
 | Kafka-native topology      | DataStream job graph                 |
 | Changelog topic recovery   | Checkpoint-based recovery            |
 | Committed source offsets   | Source offsets stored in checkpoints |
-| `exactly_once_v2`          | Checkpoint-coordinated processing    |
+| `at-least-once `           | Checkpoint-coordinated processing    |
 | RocksDB-backed local state | Flink managed state                  |
 
 Both implementations share the same domain model and business logic from the `common` module.

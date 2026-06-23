@@ -189,7 +189,7 @@ helm install order-processor kafka-streams/k8s/helm-chart \
   --set kafka.bootstrapServers=kafka-broker:9092
 ```
 
-Deploy multiple replicas, for example four replicas for partitioning and scaling experiments:
+Deploy multiple replicas, for example six replicas for partitioning and scaling experiments:
 
 ```bash
 helm install order-processor kafka-streams/k8s/helm-chart \
