@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flink-taskmanager
+  labels:
+    app: order-lifecycle-flink
+    component: taskmanager
+spec:
+  # Four TaskManagers with one slot each make the initial topology
+  # comparable to four single-threaded Kafka Streams pods.
+  replicas: 4
+
+  selector:
+    matchLabels:
+      app: order-lifecycle-flink
+      component: taskmanager
+
+  template:
+    metadata:
+      labels:
+        app: order-lifecycle-flink
+        component: taskmanager
+    spec:
+      containers:
+        - name: taskmanager
+          image: order-lifecycle-flink:latest
+          imagePullPolicy: Never
+          args:
+            - taskmanager
+
+          env:
+            - name: FLINK_PROPERTIES
+              valueFrom:
+                configMapKeyRef:
+                  name: order-lifecycle-flink-config
+                  key: flink-properties
+
+            - name: ROOT_LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: order-lifecycle-flink-config
+                  key: ROOT_LOG_LEVEL
+
+            - name: FLINK_LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: order-lifecycle-flink-config
+                  key: FLINK_LOG_LEVEL
+
+            - name: KAFKA_LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: order-lifecycle-flink-config
+                  key: KAFKA_LOG_LEVEL
+
+            - name: PEKKO_LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: order-lifecycle-flink-config
+                  key: PEKKO_LOG_LEVEL
+
+            # This identifies the TaskManager pod itself.
+            # The current application does not yet read this variable
+            # inside the runtime operator.
+            - name: POD_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+            limits:
+              cpu: "1"
+              memory: "1280Mi"
+
+          volumeMounts:
+            - name: flink-log-config
+              mountPath: /opt/flink/conf/log4j-console.properties
+              subPath: log4j-console.properties
+              readOnly: true
+
+      volumes:
+        - name: flink-log-config
+          configMap:
+            name: order-lifecycle-flink-config
+            items:
+              - key: log4j-console.properties
+                path: log4j-console.properties

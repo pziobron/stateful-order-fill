@@ -1,0 +1,91 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: order-lifecycle-flink-config
+  labels:
+    app: order-lifecycle-flink
+data:
+  # Application configuration read by OrderLifecycleFlinkConfig.
+  KAFKA_BOOTSTRAP_SERVERS: "kafka-broker:9092"
+  KAFKA_EXECUTIONS_TOPIC: "org.example.order.executions"
+  KAFKA_VERIFICATION_TOPIC: "org.example.order.verification"
+  FLINK_OFFSET_RESET: "latest"
+  FLINK_GROUP_ID: "order-lifecycle-flink-kubernetes"
+  FLINK_PARALLELISM: "4"
+  FLINK_PRINT_LIFECYCLE: "false"
+  FLINK_CHECKPOINT_INTERVAL_MS: "10000"
+  KAFKA_COMMIT_OFFSETS_ON_CHECKPOINT: "false"
+
+  # Runtime logging.
+  ROOT_LOG_LEVEL: "WARN"
+  FLINK_LOG_LEVEL: "WARN"
+  KAFKA_LOG_LEVEL: "WARN"
+  PEKKO_LOG_LEVEL: "WARN"
+
+  # Shared standalone Flink cluster configuration.
+  flink-properties: |
+    jobmanager.rpc.address: flink-jobmanager
+    jobmanager.rpc.port: 6123
+    jobmanager.bind-host: 0.0.0.0
+
+    blob.server.port: 6124
+
+    rest.address: 0.0.0.0
+    rest.bind-address: 0.0.0.0
+    rest.port: 8081
+
+    taskmanager.bind-host: 0.0.0.0
+    taskmanager.numberOfTaskSlots: 1
+
+    parallelism.default: 4
+
+    jobmanager.memory.process.size: 1024m
+    taskmanager.memory.process.size: 1024m
+
+  # Console-only logging configuration for Kubernetes.
+  log4j-console.properties: |
+    monitorInterval=30
+
+    rootLogger.level = ${env:ROOT_LOG_LEVEL:-WARN}
+    rootLogger.appenderRef.console.ref = ConsoleAppender
+
+    logger.flink.name = org.apache.flink
+    logger.flink.level = ${env:FLINK_LOG_LEVEL:-WARN}
+
+    logger.pekko.name = org.apache.pekko
+    logger.pekko.level = ${env:PEKKO_LOG_LEVEL:-WARN}
+
+    logger.kafka.name = org.apache.kafka
+    logger.kafka.level = ${env:KAFKA_LOG_LEVEL:-WARN}
+
+    logger.hadoop.name = org.apache.hadoop
+    logger.hadoop.level = WARN
+
+    logger.zookeeper.name = org.apache.zookeeper
+    logger.zookeeper.level = WARN
+
+    logger.shadedZookeeper.name = org.apache.flink.shaded.zookeeper3
+    logger.shadedZookeeper.level = WARN
+
+    logger.application.name = org.example.order.lifecycle
+    logger.application.level = INFO
+    logger.application.additivity = true
+
+    logger.metricGroup.name = org.apache.flink.metrics.MetricGroup
+    logger.metricGroup.level = ERROR
+
+    logger.abstractMetricGroup.name = org.apache.flink.runtime.metrics.groups.AbstractMetricGroup
+    logger.abstractMetricGroup.level = ERROR
+
+    logger.kafkaSourceReader.name = org.apache.flink.connector.kafka.source.reader.KafkaSourceReader
+    logger.kafkaSourceReader.level = ERROR
+
+    logger.netty.name = org.jboss.netty.channel.DefaultChannelPipeline
+    logger.netty.level = OFF
+
+    appender.console.name = ConsoleAppender
+    appender.console.type = CONSOLE
+    appender.console.layout.type = PatternLayout
+    appender.console.layout.pattern = %d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %-60c %x - %m%n
+    appender.console.filter.threshold.type = ThresholdFilter
+    appender.console.filter.threshold.level = ALL

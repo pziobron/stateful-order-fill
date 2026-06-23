@@ -1,0 +1,80 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: flink-job-submitter
+  labels:
+    app: order-lifecycle-flink
+    component: job-submitter
+spec:
+  backoffLimit: 3
+
+  template:
+    metadata:
+      labels:
+        app: order-lifecycle-flink
+        component: job-submitter
+    spec:
+      restartPolicy: OnFailure
+
+      containers:
+        - name: job-submitter
+          image: order-lifecycle-flink:latest
+          imagePullPolicy: Never
+
+          command:
+            - /bin/bash
+            - -c
+
+          args:
+            - |
+              set -euo pipefail
+
+              echo "Waiting for the Flink JobManager REST endpoint..."
+
+              until (echo > /dev/tcp/flink-jobmanager/8081) \
+                >/dev/null 2>&1; do
+                sleep 2
+              done
+
+              echo "Submitting Order Lifecycle Processor..."
+
+              /opt/flink/bin/flink run \
+                -d \
+                -m flink-jobmanager:8081 \
+                -c org.example.order.lifecycle.flink.job.FillOrderFlinkJob \
+                /opt/flink/usrlib/order-lifecycle-flink.jar
+
+              echo "Flink job submitted successfully."
+
+          envFrom:
+            - configMapRef:
+                name: order-lifecycle-flink-config
+
+          env:
+            - name: FLINK_PROPERTIES
+              valueFrom:
+                configMapKeyRef:
+                  name: order-lifecycle-flink-config
+                  key: flink-properties
+
+            # Currently captured while building the JobGraph.
+            # It therefore identifies the submitter, not the TaskManager
+            # executing an individual subtask.
+            - name: POD_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+
+          volumeMounts:
+            - name: flink-log-config
+              mountPath: /opt/flink/conf/log4j-console.properties
+              subPath: log4j-console.properties
+              readOnly: true
+
+      volumes:
+        - name: flink-log-config
+          configMap:
+            name: order-lifecycle-flink-config
+            items:
+              - key: log4j-console.properties
+                path: log4j-console.properties
