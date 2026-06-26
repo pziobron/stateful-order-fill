@@ -38,6 +38,16 @@ data:
     taskmanager.numberOfTaskSlots: 1
 
     parallelism.default: 4
+    
+    state.backend.type: hashmap
+    
+    execution.checkpointing.storage: filesystem
+    execution.checkpointing.dir: file:///flink-checkpoints
+    execution.checkpointing.num-retained: 2
+
+    execution.checkpointing.timeout: 120000
+    execution.checkpointing.min-pause: 1000
+    execution.checkpointing.max-concurrent-checkpoints: 1
 
     jobmanager.memory.process.size: 1024m
     taskmanager.memory.process.size: 1024m

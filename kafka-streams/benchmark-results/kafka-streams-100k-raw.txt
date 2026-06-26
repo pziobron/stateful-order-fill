@@ -1,0 +1,44 @@
+Benchmark: Kafka Streams 100K large-state test
+Test date: 2026-06-24
+
+Configuration:
+
+* measured iterations: 100,000
+* measured input messages: 500,000
+* warm-up iterations: 1,000
+* warm-up input messages: 5,000
+* independent measured runs: 3
+* input topic partitions: 6
+* verification topic partitions: 6
+* application pods: 4
+* stream threads per pod: 1
+* total stream threads: 4
+* processing guarantee: at_least_once
+* commit interval: 100 ms
+* state store: local RocksDB
+* recovery log: Kafka changelog topics
+* Kafka Streams version: 3.9.0
+* runtime Java: Eclipse Temurin 25.0.3
+* Kafka broker version: 4.1.1
+* environment: Docker Desktop Kubernetes 1.34.1
+* host: MacBook Pro M4 Pro, 14 cores, 24 GB RAM, arm64
+
+Resource limits:
+
+* Kafka Streams processor: 1 CPU and 1 GiB memory per pod
+* Docker Desktop: 14 CPUs, 7.9 GB memory
+
+Notes:
+
+* Each measured run used fresh Kafka broker storage, fresh input and verification topics, fresh internal topics, and fresh Kafka Streams application state.
+* Each measured run was preceded by exactly one 1,000-iteration warm-up.
+* No additional 10K run was executed on the same processor state before the 100K measurement.
+* Six partition tasks were assigned to four stream threads, producing the expected approximately 2:1 processor distribution.
+* Runs were accepted only when no rebalance, restart, OOM, or uncaught processing error occurred during measurement.
+* Median values are calculated from the three SCENARIO_RESULT lines below.
+
+Raw results:
+
+18:17:20.281 INFO  o.e.o.l.p.i.OrderLifecycleKafkaScenarioTest - SCENARIO_RESULT scenario=parent-order-fill messages=500000 verificationRecords=100000 hierarchyKeys=100000 processors=4 inputSubmissionMs=8276 drainAfterSubmissionMs=14374 endToEndMs=22650 processingWindowMs=22289 endToEndMsgPerSec=22075.06 processingInputMsgPerSec=22432.59 completedHierarchiesPerSec=4486.52 processorDistribution={order-processor-order-processor-c94855f57-49lct=33336, order-processor-order-processor-c94855f57-557gk=16554, order-processor-order-processor-c94855f57-mlrtj=33328, order-processor-order-processor-c94855f57-npgdk=16782}
+18:20:55.571 INFO  o.e.o.l.p.i.OrderLifecycleKafkaScenarioTest - SCENARIO_RESULT scenario=parent-order-fill messages=500000 verificationRecords=100000 hierarchyKeys=100000 processors=4 inputSubmissionMs=7158 drainAfterSubmissionMs=14054 endToEndMs=21212 processingWindowMs=20837 endToEndMsgPerSec=23571.56 processingInputMsgPerSec=23995.78 completedHierarchiesPerSec=4799.16 processorDistribution={order-processor-order-processor-c94855f57-mcgt2=33253, order-processor-order-processor-c94855f57-psppg=16624, order-processor-order-processor-c94855f57-rbqmx=16870, order-processor-order-processor-c94855f57-tkqbd=33253}
+18:24:05.844 INFO  o.e.o.l.p.i.OrderLifecycleKafkaScenarioTest - SCENARIO_RESULT scenario=parent-order-fill messages=500000 verificationRecords=100000 hierarchyKeys=100000 processors=4 inputSubmissionMs=7241 drainAfterSubmissionMs=14109 endToEndMs=21350 processingWindowMs=20931 endToEndMsgPerSec=23419.20 processingInputMsgPerSec=23888.01 completedHierarchiesPerSec=4777.60 processorDistribution={order-processor-order-processor-c94855f57-mvrbn=33239, order-processor-order-processor-c94855f57-s5hgs=16734, order-processor-order-processor-c94855f57-s6hfl=33470, order-processor-order-processor-c94855f57-z5pjt=16557}

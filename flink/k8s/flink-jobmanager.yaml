@@ -43,6 +43,21 @@ spec:
         app: order-lifecycle-flink
         component: jobmanager
     spec:
+      initContainers:
+        - name: prepare-checkpoint-directory
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - |
+              mkdir -p /flink-checkpoints
+              chown -R 9999:9999 /flink-checkpoints
+              chmod -R 0775 /flink-checkpoints
+          securityContext:
+            runAsUser: 0
+          volumeMounts:
+            - name: flink-checkpoints
+              mountPath: /flink-checkpoints
       containers:
         - name: jobmanager
           image: order-lifecycle-flink:latest
@@ -121,6 +136,9 @@ spec:
               subPath: log4j-console.properties
               readOnly: true
 
+            - name: flink-checkpoints
+              mountPath: /flink-checkpoints
+
       volumes:
         - name: flink-log-config
           configMap:
@@ -128,3 +146,8 @@ spec:
             items:
               - key: log4j-console.properties
                 path: log4j-console.properties
+
+        - name: flink-checkpoints
+          hostPath:
+            path: /var/lib/flink-checkpoints
+            type: DirectoryOrCreate
