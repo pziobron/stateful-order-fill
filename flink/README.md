@@ -391,15 +391,25 @@ These warnings originate from JVM startup options in the official image and are 
 
 ## Kafka Streams Comparison
 
-| Kafka Streams              | Flink                                |
-|----------------------------| ------------------------------------ |
-| `KTable` aggregation       | `KeyedProcessFunction`               |
-| Materialized state store   | `ValueState`                         |
-| `StreamsBuilder`           | `StreamExecutionEnvironment`         |
-| Kafka-native topology      | DataStream job graph                 |
-| Changelog topic recovery   | Checkpoint-based recovery            |
-| Committed source offsets   | Source offsets stored in checkpoints |
-| `at-least-once `           | Checkpoint-coordinated processing    |
-| RocksDB-backed local state | Flink managed state                  |
+| Kafka Streams                        | Flink                                                                 |
+|--------------------------------------|-----------------------------------------------------------------------|
+| `KTable` aggregation                 | `KeyedProcessFunction`                                                |
+| Materialized state store             | `ValueState`                                                          |
+| `StreamsBuilder`                     | `StreamExecutionEnvironment`                                          |
+| Kafka-native topology                | DataStream job graph                                                  |
+| Changelog topic recovery             | Checkpoint-based recovery                                             |
+| Committed source offsets             | Source offsets stored in checkpoints                                  |
+| `at_least_once` processing guarantee | `AT_LEAST_ONCE` Kafka sink with checkpointed state and source offsets |
+| RocksDB-backed local state           | Flink managed state                                                   |
 
 Both implementations share the same domain model and business logic from the `common` module.
+
+## Part 5 benchmark
+
+This module implements the Apache Flink variant used in the Part 5 comparison with Kafka Streams.
+
+See:
+
+- [Part 5 benchmark overview](../docs/part5/README.md)
+- [100K benchmark scenario](../docs/part5/part5-100k-large-state-benchmark-scenario.md)
+- [100K comparison results](../docs/part5/part5-100k-large-state-flink-vs-kafka-streams-results.md)

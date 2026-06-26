@@ -62,8 +62,6 @@ A functional implementation of the same order lifecycle processor using:
 
 ➡ Module: `flink`
 
-The implementation can be executed locally through Gradle or submitted to
-a Docker Compose Flink cluster. 
 The implementation can be executed locally, through Docker Compose,
 or on Kubernetes. The repository also contains repeatable 10K and
 100K benchmark scenarios comparing it with Kafka Streams.
@@ -101,6 +99,7 @@ until each article is published.
 ```text
 .
 ├── common/          # Shared domain model and business logic
+├── docs/part5/      # Part 5 benchmark methodology and interpreted results
 ├── kafka-streams/   # Kafka Streams implementation
 ├── flink/           # Apache Flink implementation
 └── README.md
@@ -119,6 +118,27 @@ trade-offs, and implementation details step by step:
 - Part 5: Kafka Streams vs Apache Flink — Solving the Same Stateful Problem 
 - Part 6: Stateful Streaming vs Database-Centric Processing `[Planned]`
 - Part 7: CQRS and Read Models `[Planned]`
+
+---
+
+## Part 5 — Kafka Streams versus Apache Flink
+
+Part 5 adds an Apache Flink implementation of the same stateful order lifecycle processor and compares it with Kafka Streams using repeatable Kubernetes benchmarks.
+
+The benchmark includes:
+
+- shared order hierarchy logic,
+- 10K baseline measurements,
+- a 100K large-state workload,
+- durable Flink filesystem checkpoints,
+- three independent runs with median results,
+- a Kafka Streams Java 17 control experiment.
+
+See the complete benchmark documentation:
+
+- [Part 5 benchmark overview](docs/part5/README.md)
+- [100K benchmark scenario](docs/part5/part5-100k-large-state-benchmark-scenario.md)
+- [100K Flink versus Kafka Streams results](docs/part5/part5-100k-large-state-flink-vs-kafka-streams-results.md)
 
 ---
 

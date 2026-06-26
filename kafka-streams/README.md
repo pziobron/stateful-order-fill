@@ -189,7 +189,7 @@ helm install order-processor kafka-streams/k8s/helm-chart \
   --set kafka.bootstrapServers=kafka-broker:9092
 ```
 
-Deploy multiple replicas, for example six replicas for partitioning and scaling experiments:
+Deploy multiple replicas, for example four replicas for partitioning and scaling experiments:
 
 ```bash
 helm install order-processor kafka-streams/k8s/helm-chart \
@@ -226,14 +226,15 @@ kubectl apply -f kafka-streams/k8s/tests/integration-test-job-10000.yaml
 kubectl logs -f job/integration-test
 ```
 
-The repository provides two predefined workloads:
+The repository provides three predefined workloads:
 
-| File                              | Iterations | Purpose                              |
-|-----------------------------------|-----------:|--------------------------------------|
-| `integration-test-job-1000.yaml`  |      1,000 | Quick verification and smoke testing |
-| `integration-test-job-10000.yaml` |     10,000 | Performance and scaling experiments  |
+| File                               | Iterations | Purpose                          |
+|------------------------------------|-----------:|----------------------------------|
+| `integration-test-job-1000.yaml`   |      1,000 | Quick verification and warm-up   |
+| `integration-test-job-10000.yaml`  |     10,000 | Baseline performance experiments |
+| `integration-test-job-100000.yaml` |    100,000 | Large-state comparison           |
 
-Both jobs execute the same integration test scenario and differ only in the number of generated order hierarchies.
+All three jobs execute the same integration test scenario and differ only in the number of generated order hierarchies.
 
 ### 2.5 Cleanup
 
@@ -451,3 +452,14 @@ This module is part of a larger example described in a series of articles:
 * Part 5: Kafka Streams vs Apache Flink — Solving the Same Stateful Problem
 * Part 6: Stateful Streaming vs Database-Centric Processing `[Planned]`
 * Part 7: CQRS and Read Models `[Planned]`
+
+---
+
+## Part 5 benchmark
+
+The Kafka Streams implementation is compared with an equivalent Apache Flink processor in Part 5.
+
+See:
+
+- [Part 5 benchmark overview](../docs/part5/README.md)
+- [100K comparison results](../docs/part5/part5-100k-large-state-flink-vs-kafka-streams-results.md)

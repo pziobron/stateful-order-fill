@@ -72,15 +72,25 @@ helm uninstall order-processor --ignore-not-found || true
 
 kubectl delete -f kafka-streams/k8s/kafka/ --ignore-not-found=true
 
-kubectl wait   --for=delete   pod/kafka-broker-0   --timeout=120s || true
+kubectl wait \
+  --for=delete \
+  pod/kafka-broker-0 \
+  --timeout=120s || true
 
 kubectl delete pvc kafka-data-kafka-broker-0 --ignore-not-found=true
 
 kubectl apply -f kafka-streams/k8s/kafka/
 
-kubectl wait   --for=condition=Ready   pod/kafka-broker-0   --timeout=180s
+kubectl wait \
+  --for=condition=Ready \
+  pod/kafka-broker-0 \
+  --timeout=180s
 
-kubectl wait   --for=condition=Complete   job/kafka-topic-creator   --timeout=180s
+kubectl wait \
+  --for=condition=Complete \
+  job/kafka-topic-creator \
+  --timeout=180s
+
 ```
 
 Verify both benchmark topics have six partitions and zero offsets before every warm-up.
@@ -173,7 +183,9 @@ Kafka changelog topics
 ### Deploy
 
 ```bash
-helm install order-processor kafka-streams/k8s/helm-chart   --set kafka.bootstrapServers=kafka-broker:29092   --set replicas=4
+helm install order-processor kafka-streams/k8s/helm-chart \
+  --set kafka.bootstrapServers=kafka-broker:29092 \
+  --set replicas=4
 ```
 
 Wait for all four pods to become ready and verify the effective configuration before starting the warm-up.
@@ -223,19 +235,24 @@ The Java 17 control repeats the Kafka Streams 100K procedure with only the compi
 Build:
 
 ```bash
-docker build   --no-cache   -t order-state-processor:jdk17   -f kafka-streams/Dockerfile.jdk17   .
+docker build --no-cache -t order-state-processor:jdk17 -f kafka-streams/Dockerfile.jdk17 .
 ```
 
 Deploy:
 
 ```bash
-helm install order-processor kafka-streams/k8s/helm-chart   --set kafka.bootstrapServers=kafka-broker:29092   --set replicas=4   --set image.repository=order-state-processor   --set image.tag=jdk17   --set image.pullPolicy=Never
+helm install order-processor kafka-streams/k8s/helm-chart \
+  --set kafka.bootstrapServers=kafka-broker:29092 \
+  --set replicas=4 \
+  --set image.repository=order-state-processor \
+  --set image.tag=jdk17 \
+  --set image.pullPolicy=Never
 ```
 
 Confirm Java 17 inside a running pod before the warm-up:
 
 ```bash
-POD=$(kubectl get pods   -l app=order-processor   --field-selector=status.phase=Running   -o jsonpath='{.items[0].metadata.name}')
+POD=$(kubectl get pods -l app=order-processor --field-selector=status.phase=Running -o jsonpath='{.items[0].metadata.name}')
 
 kubectl exec "$POD" -- java -version
 ```

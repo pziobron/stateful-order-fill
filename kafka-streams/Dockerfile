@@ -25,8 +25,8 @@ EOF
 COPY common /app/common
 COPY kafka-streams /app/kafka-streams
 
-# Build the Kafka Streams application.
-# Gradle runs on JDK 25 and downloads JDK 17 for the common module toolchain.
+# Build Kafka Streams with the default Java 25 toolchain.
+# The shared common module remains targeted at Java 17.
 RUN ./gradlew \
     :kafka-streams:bootJar \
     --no-daemon \
