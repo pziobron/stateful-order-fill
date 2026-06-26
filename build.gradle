@@ -18,9 +18,14 @@ allprojects {
         mavenCentral()
     }
 
+    def javaToolchainVersion = providers
+            .gradleProperty("javaToolchainVersion")
+            .map(Integer::parseInt)
+            .orElse(25)
+
     java {
         toolchain {
-            languageVersion = JavaLanguageVersion.of(25)
+            languageVersion = JavaLanguageVersion.of(javaToolchainVersion.get())
         }
     }
 }

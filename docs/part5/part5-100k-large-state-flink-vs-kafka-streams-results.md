@@ -119,6 +119,64 @@ That run was rejected because successful processing without a successful checkpo
 
 After changing only checkpoint storage to filesystem storage, all three Flink 100K runs completed without checkpoint errors.
 
+## Kafka Streams Java 17 control experiment
+
+The main Kafka Streams 100K benchmark used Java 25, while Apache Flink used Java 17. To estimate whether the JVM-version difference materially affected the result, the Kafka Streams 100K benchmark was repeated as a control experiment using Java 17.
+
+The topology, partition count, pod count, CPU and memory limits, commit interval, warm-up procedure, measured workload, and fresh-state procedure remain unchanged. Only the Kafka Streams compilation target and runtime JVM change.
+
+```text
+Main Kafka Streams benchmark: Eclipse Temurin 25.0.3
+Java 17 control benchmark: Eclipse Temurin 17
+```
+
+The Java 17 image is built from:
+
+```text
+kafka-streams/Dockerfile.jdk17
+```
+
+and the raw results are stored in:
+
+```text
+kafka-streams/benchmark-results/kafka-streams-100k-jdk17-raw.txt
+```
+
+### Java 17 control results
+
+|        Run |    Messages | Input submission (ms) | Drain (ms) | End-to-end (ms) | Processing window (ms) | End-to-end msg/s | Processing input msg/s | Completed hierarchies/s |
+|-----------:|------------:|----------------------:|-----------:|----------------:|-----------------------:|-----------------:|-----------------------:|------------------------:|
+|          1 |     500,000 |                 6,906 |     14,641 |          21,547 |                 21,134 |        23,205.09 |              23,658.56 |                4,731.71 |
+|          2 |     500,000 |                 8,282 |     16,365 |          24,648 |                 24,272 |        20,285.62 |              20,599.87 |                4,119.97 |
+|          3 |     500,000 |                 6,983 |     14,926 |          21,910 |                 21,583 |        22,820.63 |              23,166.38 |                4,633.28 |
+| **Median** | **500,000** |             **6,983** | **14,926** |      **21,910** |             **21,583** |    **22,820.63** |          **23,166.38** |            **4,633.28** |
+
+### Java 17 processor distribution
+
+```text
+Run 1: 16906, 33060, 16784, 33250
+Run 2: 33308, 16592, 16966, 33134
+Run 3: 17057, 33071, 16478, 33394
+```
+
+The same approximately 2:1 split remained visible because six partition tasks were assigned to four stream threads.
+
+### Java 25 versus Java 17
+
+| Metric                  | Kafka Streams Java 25 | Kafka Streams Java 17 |          Difference |
+|-------------------------|----------------------:|----------------------:|--------------------:|
+| Input submission (ms)   |                 7,241 |                 6,983 | Java 17 3.6% faster |
+| Drain (ms)              |                14,109 |                14,926 | Java 17 5.8% slower |
+| End-to-end (ms)         |                21,350 |                21,910 | Java 17 2.6% slower |
+| Processing window (ms)  |                20,931 |                21,583 | Java 17 3.1% slower |
+| End-to-end msg/s        |             23,419.20 |             22,820.63 |  Java 17 2.6% lower |
+| Processing input msg/s  |             23,888.01 |             23,166.38 |  Java 17 3.0% lower |
+| Completed hierarchies/s |              4,777.60 |              4,633.28 |  Java 17 3.0% lower |
+
+The Java 17 control produced results close to the original Java 25 benchmark. Java 17 was approximately 3% slower in the main processing metrics, while input submission was slightly faster.
+
+This difference is small compared with the approximately 2.3× performance gap between Apache Flink and Kafka Streams. The JVM-version difference therefore does not materially change the main benchmark conclusion.
+
 ## Interpretation
 
 - Input submission medians differed by only 187 ms, so the producer was not the main source of the performance gap.
@@ -129,6 +187,8 @@ After changing only checkpoint storage to filesystem storage, all three Flink 10
 - Kafka Streams retained the expected 2:1 task imbalance caused by mapping six partition tasks to four stream threads.
 - The comparison is implementation-specific. Flink used heap-backed working state with durable filesystem checkpoints, while Kafka Streams used local RocksDB with Kafka changelog topics.
 - The checkpoint mechanisms are architecturally different. Flink checkpoint intervals and Kafka Streams commit intervals should not be treated as directly equivalent durability controls.
+- The Kafka Streams Java 17 control was approximately 3% slower than the Java 25 baseline in the main processing metrics.
+- This small JVM-related difference does not explain the approximately 2.3× gap between Flink and Kafka Streams.
 
 ## Conclusion
 
@@ -140,6 +200,8 @@ Flink achieved:
 2.28× higher end-to-end throughput
 2.36× higher processing-window throughput
 ```
+
+The Kafka Streams Java 17 control reached a median of 21.910 seconds end-to-end and 21.583 seconds for the processing window. These values were only 2.6% and 3.1% slower than the Java 25 baseline, so the JVM-version difference did not materially change the comparison.
 
 These results do not establish a universal framework ranking. They apply to the tested topology, state model, partition count, resource limits, serializer choices, and durability configurations.
 
@@ -247,8 +309,10 @@ Verification topic partitions: 6
 
 The Kafka broker and test producer were shared infrastructure for both implementations.
 
-### JVM-version caveat
+### JVM-version control
 
-Apache Flink ran on Java 17, while Kafka Streams ran on Java 25. The benchmark therefore compares the tested deployments rather than isolating the frameworks from their JVM runtimes.
+Apache Flink ran on Java 17, while the main Kafka Streams benchmark ran on Java 25. The main comparison therefore represents the tested deployments rather than a framework-only microbenchmark.
 
-Differences in JIT compilation, garbage collection, allocation behavior, and runtime optimizations may have affected absolute performance. The JVM-version difference should be treated as a benchmark limitation, although the newer Java runtime was used by Kafka Streams rather than Flink.
+A separate Kafka Streams Java 17 control experiment was executed with the same topology, partitioning, resource limits, warm-up procedure, and fresh-state procedure. Its median processing throughput was approximately 3% lower than the Java 25 result.
+
+The control confirms that JVM-version differences may affect absolute values slightly, but they do not materially change the benchmark conclusion.

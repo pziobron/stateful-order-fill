@@ -1,0 +1,7 @@
+kafka-streams/.gradle
+**/.gradle
+**/build
+.git
+.idea
+*.iml
+.DS_Store

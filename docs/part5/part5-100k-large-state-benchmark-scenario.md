@@ -216,6 +216,38 @@ With six tasks and four stream threads, the processor distribution is expected t
 17,000
 ```
 
+## Kafka Streams Java 17 control cycle
+
+The Java 17 control repeats the Kafka Streams 100K procedure with only the compilation target and runtime JVM changed.
+
+Build:
+
+```bash
+docker build   --no-cache   -t order-state-processor:jdk17   -f kafka-streams/Dockerfile.jdk17   .
+```
+
+Deploy:
+
+```bash
+helm install order-processor kafka-streams/k8s/helm-chart   --set kafka.bootstrapServers=kafka-broker:29092   --set replicas=4   --set image.repository=order-state-processor   --set image.tag=jdk17   --set image.pullPolicy=Never
+```
+
+Confirm Java 17 inside a running pod before the warm-up:
+
+```bash
+POD=$(kubectl get pods   -l app=order-processor   --field-selector=status.phase=Running   -o jsonpath='{.items[0].metadata.name}')
+
+kubectl exec "$POD" -- java -version
+```
+
+Run three complete fresh cycles and store the raw output in:
+
+```text
+kafka-streams/benchmark-results/kafka-streams-100k-jdk17-raw.txt
+```
+
+This is a control experiment, not a replacement for the main Kafka Streams Java 25 baseline.
+
 ## Shared acceptance checklist
 
 Accept a measured run only when:

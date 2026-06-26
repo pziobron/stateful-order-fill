@@ -1,0 +1,58 @@
+# Build stage
+FROM gradle:jdk17 AS builder
+
+WORKDIR /app
+
+# Copy Gradle wrapper and root build configuration
+COPY build.gradle gradle.properties /app/
+COPY gradle /app/gradle
+COPY gradlew /app/
+
+# Create a minimal settings.gradle containing only the required modules
+# and configure automatic Java toolchain provisioning.
+RUN cat > /app/settings.gradle <<'EOF'
+plugins {
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '1.0.0'
+}
+
+rootProject.name = 'stateful-order-fill'
+
+include 'common'
+include 'kafka-streams'
+EOF
+
+# Copy source code
+COPY common /app/common
+COPY kafka-streams /app/kafka-streams
+
+# Override the normal Java 25 toolchain for this Java 17 control benchmark.
+RUN java -version && \
+    ./gradlew \
+      :kafka-streams:clean \
+      :kafka-streams:bootJar \
+      -PjavaToolchainVersion=17 \
+      --no-daemon \
+      --no-configuration-cache \
+      --no-build-cache \
+      --rerun-tasks \
+      -x test
+
+# Runtime stage
+FROM eclipse-temurin:17-jre-jammy
+
+WORKDIR /app
+
+# RocksDB native libraries require libstdc++.
+RUN apt-get update &&     apt-get install -y --no-install-recommends libstdc++6 &&     rm -rf /var/lib/apt/lists/*
+
+# Run as a non-root user.
+RUN groupadd --system appgroup &&     useradd --system       --gid appgroup       --home-dir /app       --shell /usr/sbin/nologin       appuser
+
+# Copy the Spring Boot executable JAR.
+COPY --from=builder     /app/kafka-streams/build/libs/*.jar     /app/app.jar
+
+RUN chown -R appuser:appgroup /app
+
+USER appuser
+
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
