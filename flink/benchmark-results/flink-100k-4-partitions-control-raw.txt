@@ -1,0 +1,48 @@
+# Apache Flink 100K benchmark — 4 partitions control
+
+Purpose:
+Additional control benchmark for Part 5.
+The goal was to check whether using the same number of Kafka partitions
+and processing units changes the Flink vs Kafka Streams comparison.
+
+Workload:
+- 100,000 order hierarchies
+- 500,000 input messages
+- 100,000 expected verification records
+- 1,000 hierarchy warm-up before each measured run
+- 3 measured runs
+
+Kafka topics:
+- org.example.order.executions: 4 partitions
+- org.example.order.verification: 4 partitions
+- replication factor: 1
+
+Flink setup:
+- Kubernetes
+- 4 TaskManagers
+- 1 slot per TaskManager
+- FLINK_PARALLELISM=4
+- HashMapStateBackend
+- filesystem checkpoint storage
+- checkpoint interval: 10 seconds
+- Kafka sink delivery guarantee: AT_LEAST_ONCE
+
+Acceptance criteria:
+- all 100,000 verification records produced
+- one accepted final completion record per hierarchy
+- successful processing under durable checkpoint configuration
+
+Raw results:
+
+08:45:18.734 INFO  o.e.o.l.p.i.OrderLifecycleKafkaScenarioTest - SCENARIO_RESULT scenario=parent-order-fill messages=500000 verificationRecords=100000 hierarchyKeys=100000 processors=4 inputSubmissionMs=6624 drainAfterSubmissionMs=1982 endToEndMs=8607 processingWindowMs=7045 endToEndMsgPerSec=58092.25 processingInputMsgPerSec=70972.32 completedHierarchiesPerSec=14194.46 processorDistribution={flink-taskmanager-cbc66f55c-cv86z-subtask-3=25060, flink-taskmanager-cbc66f55c-dv2t4-subtask-2=25038, flink-taskmanager-cbc66f55c-n2pcs-subtask-0=25145, flink-taskmanager-cbc66f55c-ww9zv-subtask-1=24757}
+08:49:33.040 INFO  o.e.o.l.p.i.OrderLifecycleKafkaScenarioTest - SCENARIO_RESULT scenario=parent-order-fill messages=500000 verificationRecords=100000 hierarchyKeys=100000 processors=4 inputSubmissionMs=6523 drainAfterSubmissionMs=1914 endToEndMs=8438 processingWindowMs=7442 endToEndMsgPerSec=59255.75 processingInputMsgPerSec=67186.24 completedHierarchiesPerSec=13437.25 processorDistribution={flink-taskmanager-cbc66f55c-m4t9d-subtask-2=24742, flink-taskmanager-cbc66f55c-n6rmv-subtask-0=25272, flink-taskmanager-cbc66f55c-ncmff-subtask-3=24938, flink-taskmanager-cbc66f55c-zszsq-subtask-1=25048}
+08:52:36.410 INFO  o.e.o.l.p.i.OrderLifecycleKafkaScenarioTest - SCENARIO_RESULT scenario=parent-order-fill messages=500000 verificationRecords=100000 hierarchyKeys=100000 processors=4 inputSubmissionMs=6562 drainAfterSubmissionMs=1932 endToEndMs=8495 processingWindowMs=7594 endToEndMsgPerSec=58858.15 processingInputMsgPerSec=65841.45 completedHierarchiesPerSec=13168.29 processorDistribution={flink-taskmanager-cbc66f55c-2z8jp-subtask-0=24911, flink-taskmanager-cbc66f55c-5blqw-subtask-3=24939, flink-taskmanager-cbc66f55c-gk2wv-subtask-1=25164, flink-taskmanager-cbc66f55c-vqfht-subtask-2=24986}
+
+Median summary:
+- inputSubmissionMs: 6562
+- drainAfterSubmissionMs: 1932
+- endToEndMs: 8495
+- processingWindowMs: 7442
+- endToEndMsgPerSec: 58858.15
+- processingInputMsgPerSec: 67186.24
+- completedHierarchiesPerSec: 13437.25

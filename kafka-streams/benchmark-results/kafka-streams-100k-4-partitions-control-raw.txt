@@ -1,0 +1,51 @@
+# Kafka Streams 100K benchmark — 4 partitions control
+
+Purpose:
+Additional control benchmark for Part 5.
+The goal was to check whether the previous 6-partition / 4-pod Kafka Streams
+task distribution was the main reason for the performance difference.
+
+Workload:
+- 100,000 order hierarchies
+- 500,000 input messages
+- 100,000 expected verification records
+- 1,000 hierarchy warm-up before each measured run
+- 3 measured runs
+
+Kafka topics:
+- org.example.order.executions: 4 partitions
+- org.example.order.verification: 4 partitions
+- replication factor: 1
+
+Kafka Streams setup:
+- Kubernetes
+- 4 application pods
+- num.stream.threads=1
+- 4 active Kafka Streams tasks expected
+- processing.guarantee=at_least_once
+- commit.interval.ms=100
+- local RocksDB state store
+- Kafka changelog topics
+
+JVM:
+- Java 25
+
+Acceptance criteria:
+- all 100,000 verification records produced
+- one accepted final completion record per hierarchy
+- processor distribution expected to be close to 25k / 25k / 25k / 25k
+
+Raw results:
+
+08:58:11.681 INFO  o.e.o.l.p.i.OrderLifecycleKafkaScenarioTest - SCENARIO_RESULT scenario=parent-order-fill messages=500000 verificationRecords=100000 hierarchyKeys=100000 processors=4 inputSubmissionMs=6675 drainAfterSubmissionMs=12733 endToEndMs=19408 processingWindowMs=19005 endToEndMsgPerSec=25762.57 processingInputMsgPerSec=26308.87 completedHierarchiesPerSec=5261.77 processorDistribution={order-processor-order-processor-c94855f57-9z2gj=24907, order-processor-order-processor-c94855f57-drxfg=24984, order-processor-order-processor-c94855f57-gqgcn=25229, order-processor-order-processor-c94855f57-q2z7l=24880}
+09:02:50.214 INFO  o.e.o.l.p.i.OrderLifecycleKafkaScenarioTest - SCENARIO_RESULT scenario=parent-order-fill messages=500000 verificationRecords=100000 hierarchyKeys=100000 processors=4 inputSubmissionMs=6984 drainAfterSubmissionMs=12503 endToEndMs=19488 processingWindowMs=19075 endToEndMsgPerSec=25656.81 processingInputMsgPerSec=26212.32 completedHierarchiesPerSec=5242.46 processorDistribution={order-processor-order-processor-c94855f57-9cnlf=24925, order-processor-order-processor-c94855f57-fj5zb=24912, order-processor-order-processor-c94855f57-r6z6z=25154, order-processor-order-processor-c94855f57-z4r8x=25009}
+09:05:36.073 INFO  o.e.o.l.p.i.OrderLifecycleKafkaScenarioTest - SCENARIO_RESULT scenario=parent-order-fill messages=500000 verificationRecords=100000 hierarchyKeys=100000 processors=4 inputSubmissionMs=6721 drainAfterSubmissionMs=13488 endToEndMs=20209 processingWindowMs=19759 endToEndMsgPerSec=24741.45 processingInputMsgPerSec=25304.92 completedHierarchiesPerSec=5060.98 processorDistribution={order-processor-order-processor-c94855f57-4smlw=25143, order-processor-order-processor-c94855f57-dvz6h=25006, order-processor-order-processor-c94855f57-plgpn=25264, order-processor-order-processor-c94855f57-tnjnw=24587}
+
+Median summary:
+- inputSubmissionMs: 6721
+- drainAfterSubmissionMs: 12733
+- endToEndMs: 19488
+- processingWindowMs: 19075
+- endToEndMsgPerSec: 25656.81
+- processingInputMsgPerSec: 26212.32
+- completedHierarchiesPerSec: 5242.46

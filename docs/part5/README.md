@@ -29,3 +29,7 @@ Apache Flink:
 - [10K memory-checkpoint raw results](../../flink/benchmark-results/flink-10k-memory-checkpoint-raw.txt)
 - [10K filesystem-checkpoint raw results](../../flink/benchmark-results/flink-10k-filesystem-checkpoint-raw.txt)
 - [100K filesystem-checkpoint raw results](../../flink/benchmark-results/flink-100k-filesystem-checkpoint-raw.txt)
+
+Additional 4-partition control:
+- [Kafka Streams 100K, 4-partition control results](../../kafka-streams/benchmark-results/kafka-streams-100k-4-partitions-control-raw.txt)
+- [Flink 100K, 4-partition control results](../../flink/benchmark-results/flink-100k-4-partitions-control-raw.txt)
