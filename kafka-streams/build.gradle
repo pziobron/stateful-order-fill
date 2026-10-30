@@ -3,6 +3,9 @@ plugins {
     alias(libs.plugins.spring.dependency.management)
 }
 
+ext['jackson-bom.version'] = libs.versions.jackson.get()
+ext['commons-lang3.version'] = libs.versions.commons.lang3.get()
+
 dependencies {
     implementation project(':common')
     implementation('org.springframework.boot:spring-boot-starter')

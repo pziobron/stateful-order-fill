@@ -9,3 +9,4 @@ include 'common'
 include 'kafka-streams'
 include 'flink'
 
+include 'db-centric'

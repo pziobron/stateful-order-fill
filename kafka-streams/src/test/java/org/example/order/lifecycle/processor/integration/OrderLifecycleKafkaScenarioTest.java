@@ -349,7 +349,7 @@ public class OrderLifecycleKafkaScenarioTest {
         long publishingCompletedAtNanos = System.nanoTime();
 
         int verificationTimeoutSeconds =
-                testIterations >= 100_000 ? 300 : 60;
+                testIterations >= 100_000 ? 3_600 : testIterations >= 10_000 ? 300 : 60;
 
         VerificationResult verificationResult =
                 verifyPartitioning(

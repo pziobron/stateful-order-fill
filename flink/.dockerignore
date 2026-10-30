@@ -4,3 +4,10 @@ build
 .idea
 *.iml
 .DS_Store
+
+# Runtime image uses the locally built shadow JAR.
+!build/
+build/*
+!build/libs/
+build/libs/*
+!build/libs/flink-1.0-SNAPSHOT-all.jar

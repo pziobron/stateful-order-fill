@@ -10,6 +10,7 @@ COPY gradle/ gradle/
 COPY gradlew gradlew.bat gradle.properties settings.gradle build.gradle ./
 COPY common/build.gradle ./common/
 COPY flink/build.gradle ./flink/
+COPY db-centric/build.gradle ./db-centric/
 COPY kafka-streams/build.gradle ./kafka-streams/
 
 # Download dependencies

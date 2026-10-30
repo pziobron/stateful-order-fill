@@ -1,0 +1,66 @@
+# POC credentials only. Replace before using outside the local benchmark cluster.
+apiVersion: v1
+kind: Secret
+metadata:
+  name: db-centric-postgres
+stringData:
+  POSTGRES_DB: order_lifecycle
+  POSTGRES_USER: orders
+  POSTGRES_PASSWORD: orders-local
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-centric-postgres
+spec:
+  selector:
+    app: db-centric-postgres
+  ports:
+    - port: 5432
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: db-centric-postgres
+spec:
+  serviceName: db-centric-postgres
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db-centric-postgres
+  template:
+    metadata:
+      labels:
+        app: db-centric-postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:18.6
+          envFrom:
+            - secretRef:
+                name: db-centric-postgres
+          ports:
+            - containerPort: 5432
+          resources:
+            requests:
+              cpu: "1"
+              memory: 2Gi
+            limits:
+              cpu: "2"
+              memory: 2Gi
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql
+          readinessProbe:
+            exec:
+              command: ["sh", "-c", "pg_isready -U orders -d order_lifecycle"]
+            initialDelaySeconds: 5
+            periodSeconds: 5
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: [ReadWriteOnce]
+        resources:
+          requests:
+            storage: 10Gi

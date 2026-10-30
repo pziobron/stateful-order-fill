@@ -1,0 +1,49 @@
+plugins {
+    alias(libs.plugins.spring.boot)
+    alias(libs.plugins.spring.dependency.management)
+}
+
+java {
+    toolchain { languageVersion = JavaLanguageVersion.of(17) }
+}
+
+ext['jackson-bom.version'] = libs.versions.jackson.get()
+ext['commons-lang3.version'] = libs.versions.commons.lang3.get()
+ext['logback.version'] = libs.versions.logback.get()
+ext['testcontainers.version'] = libs.versions.testcontainers.get()
+
+configurations.configureEach {
+    resolutionStrategy.dependencySubstitution {
+        substitute(module('org.lz4:lz4-java'))
+                .using(module("at.yawk.lz4:lz4-java:${libs.versions.lz4.get()}"))
+                .because('Use the maintained LZ4 implementation with patched native loading and input bounds')
+    }
+}
+
+dependencies {
+    implementation project(':common')
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.springframework.kafka:spring-kafka'
+    implementation 'org.flywaydb:flyway-core'
+    runtimeOnly 'org.flywaydb:flyway-database-postgresql'
+    runtimeOnly libs.postgresql
+    implementation libs.jackson.databind
+    implementation libs.jackson.jsr310
+
+    constraints {
+        implementation(libs.snappy.java) {
+            because 'Use the patched Snappy buffer validation already selected for the Flink baseline'
+        }
+    }
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation testFixtures(project(':common'))
+    testImplementation libs.testcontainers.kafka
+    testImplementation enforcedPlatform(libs.testcontainers.bom)
+    testImplementation libs.testcontainers.postgresql
+    testImplementation libs.testcontainers.junit
+    testImplementation libs.awaitality
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('bootJar') { archiveFileName = 'db-centric.jar' }

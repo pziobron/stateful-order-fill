@@ -5,3 +5,10 @@ kafka-streams/.gradle
 .idea
 *.iml
 .DS_Store
+
+# db-centric runtime image copies the locally built boot JAR.
+!db-centric/build/
+db-centric/build/*
+!db-centric/build/libs/
+db-centric/build/libs/*
+!db-centric/build/libs/db-centric.jar

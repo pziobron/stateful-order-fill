@@ -2,7 +2,7 @@
 
 Kafka Streams application responsible for **stateful order lifecycle processing**.
 
-This module consumes execution reports such as orders, fills, and cancellations from Kafka and builds a stateful `OrderState` aggregate for each order hierarchy using Kafka Streams.
+This module consumes execution reports for order definitions (`O`) and fills (`F`) from Kafka and builds a stateful `OrderState` aggregate for each order hierarchy using Kafka Streams.
 
 The implementation is intentionally simple and educational. It focuses on:
 
@@ -266,6 +266,25 @@ kubectl get all
 
 ## Configuration
 
+The application constructs its own Kafka Streams client. `KafkaStreamsConfig`
+explicitly forwards the following Spring properties to that client's configuration:
+
+| Spring property | Kafka Streams property | Default when absent |
+|---|---|---|
+| `spring.application.name` | `application.id` | Required |
+| `spring.kafka.bootstrap-servers` | `bootstrap.servers` | Required |
+| `spring.kafka.streams.num-stream-threads` | `num.stream.threads` | `1` |
+| `spring.kafka.streams.processing-guarantee` | `processing.guarantee` | `at_least_once` |
+| `spring.kafka.streams.properties.commit.interval.ms` | `commit.interval.ms` | `30000` |
+
+The packaged application configuration and Helm chart set the commit interval to
+100 ms. The chart's `kafkaStreams.numStreamThreads` and
+`kafkaStreams.processingGuarantee` values supply the corresponding properties
+above. Other Spring Kafka Streams settings are not automatically copied into the
+manually constructed client. Verify the `Kafka Streams effective config` startup
+log before each experiment; the configuration tests check the property mapping
+without starting Kafka clients.
+
 Local configuration is provided through:
 
 ```text
@@ -378,6 +397,14 @@ This validates the Kafka partitioning guarantee and ensures that parent and chil
 
 ## Notes on State Design
 
+Completion publication uses a separate persistent, changelog-backed
+`completion-emitted-store`, keyed by hierarchy. After the first eligible KTable
+update is forwarded as a verification record, subsequent updates still change
+the lifecycle state but do not produce another logical completion. The existing
+KTable cache and processing guarantee are unchanged; at-least-once recovery may
+still duplicate output. See [lifecycle semantics](../docs/domain/lifecycle-semantics.md#scope-and-completion-signals)
+for timing, correction, and migration limitations.
+
 For clarity and educational purposes, `OrderState` keeps a collection of all `Fill` objects associated with an order hierarchy.
 
 In a production system:
@@ -450,7 +477,7 @@ This module is part of a larger example described in a series of articles:
 * Part 4: Horizontal Scaling and Kafka Partitions
   - [Experimental setup and benchmark results](docs/part4-horizontal-scaling-experiments.md)
 * Part 5: Kafka Streams vs Apache Flink — Solving the Same Stateful Problem
-* Part 6: Stateful Streaming vs Database-Centric Processing `[Planned]`
+* [Part 6: Stateful Streaming vs Database-Centric Processing](../docs/part6/README.md)
 * Part 7: CQRS and Read Models `[Planned]`
 
 ---
@@ -463,3 +490,11 @@ See:
 
 - [Part 5 benchmark overview](../docs/part5/README.md)
 - [100K comparison results](../docs/part5/part5-100k-large-state-flink-vs-kafka-streams-results.md)
+
+## Lifecycle diagnostics
+
+Lifecycle stdout printing is disabled by default. Enable it for local inspection
+with `KAFKA_STREAMS_PRINT_LIFECYCLE=true` (Spring property
+`kafka.streams.print.lifecycle`). Keep it disabled during benchmarks. Shared
+service lifecycle JSON is formatted only when its INFO logging is enabled;
+set `LOGGING_LEVEL_ORG_EXAMPLE_ORDER_LIFECYCLE_SERVICE=WARN` for measurements.

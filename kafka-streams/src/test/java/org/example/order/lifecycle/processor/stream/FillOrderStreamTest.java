@@ -70,10 +70,10 @@ public class FillOrderStreamTest {
         fillOrderStream.executionReportsTopic = "test-topic";
         fillOrderStream.verificationTopic = "test-verification-topic";
 
-        fillOrderStream.startKafkaStream();
+        fillOrderStream.podId = "test-processor";
 
-        //Create test driver
-        testDriver = new TopologyTestDriver(streamsBuilder.build(), kafkaStreamProperties);
+        // Build the production topology without connecting to a live Kafka broker.
+        testDriver = new TopologyTestDriver(fillOrderStream.buildTopology(), kafkaStreamProperties);
 
         //Create input topic
         JsonSerializer<ExecutionReport> serializer = new JsonSerializer<>(
@@ -292,90 +292,132 @@ public class FillOrderStreamTest {
     }
 
     @Test
-    public void testLateFillAfterCancel() throws IOException {
-        // Arrange
-        String prefix = "test-late-fill";
-        String orderId = prefix + "-order1";
-        String inputDir = "jsonData/fillOrder/lateFill/";
-
-        ExecutionReport order = generateExecutionReportMessage(prefix, inputDir + "order.json");
-        ExecutionReport cancel = generateExecutionReportMessage(prefix, inputDir + "cancel.json");
-        ExecutionReport lateFill = generateExecutionReportMessage(prefix, inputDir + "late_fill_after_cancel.json");
-
-        // Act - Process order, cancel, then late fill
+    void rejectsUnsupportedReportWithoutChangingStoredState() throws IOException {
+        String inputDir = "jsonData/fillOrder/fullyFilled/2_fills/";
+        ExecutionReport order = generateExecutionReportMessage("unsupported", inputDir + "order.json");
         pipeInput(order);
-        pipeInput(cancel);
-        pipeInput(lateFill);
-
-        // Assert
-        verify(streamsBuilder, times(1)).stream(
-                eq(fillOrderStream.executionReportsTopic), any());
-        KeyValueStore<String, OrderState> store = testDriver.getKeyValueStore(ORDER_STATE_STORE);
-
-        OrderState orderState = store.get(orderId);
-        assertNotNull(orderState, "OrderState should not be null");
-
-        // Check if order state is correct
-        verifyOrderNodeCancelled(orderState, order, cancel);
-
-        // Check that the late fill was ignored (no fills should be recorded)
-        assertEquals(0, orderState.getFills().size());
-        assertEquals(0, orderState.getFilledQuantityMap().size());
-        assertEquals(0, orderState.getAllFills().size());
-
-        // Check if last action timestamp is not null
-        assertNotNull(orderState.getLastActionTimestamp());
+        var store = testDriver.<String, OrderState>getKeyValueStore(ORDER_STATE_STORE);
+        var before = store.get(order.getOrderId());
+        ExecutionReport unsupported = new ExecutionReport();
+        unsupported.setOrderId(order.getOrderId());
+        unsupported.setType('C');
+        assertThrows(org.apache.kafka.streams.errors.StreamsException.class, () -> pipeInput(unsupported));
+        assertEquals(before, store.get(order.getOrderId()));
+        assertNull(testDriver.<String, Boolean>getKeyValueStore(
+                CompletionVerificationProcessor.COMPLETION_EMITTED_STORE).get(order.getOrderId()));
     }
 
     @Test
-    public void testValidFillBeforeCancel() throws IOException {
-        // Arrange
-        String prefix = "test-valid-fill";
-        String orderId = prefix + "-order1";
-        String inputDir = "jsonData/fillOrder/lateFill/";
+    void emitsOnlyOnceAfterDuplicatesFollowingFullExecution() throws IOException {
+        try (var keySerde = Serdes.String();
+             var valueSerde = createJsonSerde(VerificationRecord.class)) {
+            String inputDir = "jsonData/fillOrder/fullyFilled/2_fills/";
+            ExecutionReport order = generateExecutionReportMessage("emit-once", inputDir + "order.json");
+            ExecutionReport fill1 = generateExecutionReportMessage("emit-once", inputDir + "fill01.json");
+            ExecutionReport fill2 = generateExecutionReportMessage("emit-once", inputDir + "fill02.json");
+            var output = testDriver.createOutputTopic(fillOrderStream.verificationTopic,
+                    keySerde.deserializer(), valueSerde.deserializer());
 
-        ExecutionReport order = generateExecutionReportMessage(prefix, inputDir + "order.json");
-        ExecutionReport cancel = generateExecutionReportMessage(prefix, inputDir + "cancel.json");
-        ExecutionReport validFill = generateExecutionReportMessage(prefix, inputDir + "valid_fill_before_cancel.json");
+            pipeInput(order);
+            pipeInput(fill1);
+            assertTrue(output.isEmpty());
+            pipeInput(fill2);
+            var completion = output.readKeyValue();
+            assertEquals(order.getOrderId(), completion.key);
+            assertEquals(order.getOrderId(), completion.value.hierarchyKey());
+            assertEquals("test-processor", completion.value.podId());
+            assertNotNull(completion.value.firstProcessedAt());
+            assertNotNull(completion.value.completedAt());
 
-        // Act - Process order, cancel first, then fill (fill arrives after cancel in processing time 
-        // but happened before cancel in event time: fill at 13:20:30, cancel at 13:20:53)
-        pipeInput(order);
-        pipeInput(cancel);
-        pipeInput(validFill); // This fill should be processed despite arriving after cancel
+            pipeInput(fill2);
+            pipeInput(order);
+            assertTrue(output.isEmpty());
+            OrderState state = testDriver.<String, OrderState>getKeyValueStore(ORDER_STATE_STORE)
+                    .get(order.getOrderId());
+            assertEquals(OrderStatus.FILLED, state.getStatus());
+            assertEquals(2, state.getFills().size());
+            KeyValueStore<String, Boolean> emissions = testDriver.getKeyValueStore(
+                    CompletionVerificationProcessor.COMPLETION_EMITTED_STORE);
+            assertTrue(emissions.persistent());
+            assertEquals(Boolean.TRUE, emissions.get(order.getOrderId()));
 
-        // Assert
-        verify(streamsBuilder, times(1)).stream(
-                eq(fillOrderStream.executionReportsTopic), any());
-        KeyValueStore<String, OrderState> store = testDriver.getKeyValueStore(ORDER_STATE_STORE);
-
-        OrderState orderState = store.get(orderId);
-        assertNotNull(orderState, "OrderState should not be null");
-
-        // Check if order state is correct
-        verifyOrderNodeCancelled(orderState, order, cancel);
-
-        // Check that the valid fill was recorded (even though it arrived after cancel)
-        assertEquals(1, orderState.getFills().size());
-        assertEquals(validFill.getExecId(), orderState.getFills().getFirst().getFillId());
-        assertEquals(1, orderState.getFilledQuantityMap().size());
-        assertNotNull(orderState.getFilledQuantityMap().get(validFill.getExecId()));
-        assertEquals(validFill.getLastQty(), orderState.getFilledQuantityMap().get(validFill.getExecId()));
-        assertEquals(1, orderState.getAllFills().size());
-
-        // Check if last action timestamp is not null
-        assertNotNull(orderState.getLastActionTimestamp());
+            // A different hierarchy must still produce its own completion.
+            pipeInput(generateExecutionReportMessage("another", inputDir + "order.json"));
+            pipeInput(generateExecutionReportMessage("another", inputDir + "fill01.json"));
+            pipeInput(generateExecutionReportMessage("another", inputDir + "fill02.json"));
+            assertEquals("another-order1", output.readKeyValue().key);
+            assertTrue(output.isEmpty());
+        }
     }
 
-    private void verifyOrderNodeCancelled(OrderNode orderNode, ExecutionReport order, ExecutionReport cancel) {
-        assertEquals(order.getOrderId(), orderNode.getOrderId());
-        assertEquals(order.getExecId(), orderNode.getMsgId());
-        assertEquals(order.getTradeDate(), orderNode.getTradeDate());
-        assertEquals(order.getTxnTime(), orderNode.getTransactionTime());
-        assertEquals(order.getCurrency(), orderNode.getCurrency());
-        assertEquals(order.getOrderQuantity(), orderNode.getExpectedQuantity());
-        assertEquals(OrderStatus.CANCELLED, orderNode.getStatus());
-        assertEquals(cancel.getTxnTime(), orderNode.getCancelTime());
+    @Test
+    void suppressesCompletionWhenEmissionStoreAlreadyContainsTheHierarchy() throws IOException {
+        try (var keySerde = Serdes.String();
+             var valueSerde = createJsonSerde(VerificationRecord.class)) {
+            String inputDir = "jsonData/fillOrder/fullyFilled/2_fills/";
+            ExecutionReport order = generateExecutionReportMessage("restored", inputDir + "order.json");
+            // Seed the store as it would look after changelog restoration.
+            testDriver.<String, Boolean>getKeyValueStore(
+                    CompletionVerificationProcessor.COMPLETION_EMITTED_STORE).put(order.getOrderId(), true);
+            var output = testDriver.createOutputTopic(fillOrderStream.verificationTopic,
+                    keySerde.deserializer(), valueSerde.deserializer());
+
+            pipeInput(order);
+            pipeInput(generateExecutionReportMessage("restored", inputDir + "fill01.json"));
+            pipeInput(generateExecutionReportMessage("restored", inputDir + "fill02.json"));
+
+            assertTrue(output.isEmpty());
+            assertTrue(testDriver.<String, OrderState>getKeyValueStore(ORDER_STATE_STORE)
+                    .get(order.getOrderId()).isFullyFilled());
+        }
+    }
+
+    @Test
+    void lateChildDefinitionsDoNotEmitAnotherCompletion() throws IOException {
+        try (var keySerde = Serdes.String();
+             var valueSerde = createJsonSerde(VerificationRecord.class)) {
+            String inputDir = "jsonData/fillOrder/fullyFilled/parent_order/";
+            var output = testDriver.createOutputTopic(fillOrderStream.verificationTopic,
+                    keySerde.deserializer(), valueSerde.deserializer());
+            pipeInput(generateExecutionReportMessage("late-child", inputDir + "parent_order.json"));
+            pipeInput(generateExecutionReportMessage("late-child", inputDir + "fill01_child_order1.json"));
+            pipeInput(generateExecutionReportMessage("late-child", inputDir + "fill02_child_order2.json"));
+            assertEquals("late-child-parent-order1", output.readKeyValue().key);
+
+            pipeInput(generateExecutionReportMessage("late-child", inputDir + "child_order1.json"));
+            pipeInput(generateExecutionReportMessage("late-child", inputDir + "child_order2.json"));
+            assertTrue(output.isEmpty());
+            OrderState state = testDriver.<String, OrderState>getKeyValueStore(ORDER_STATE_STORE)
+                    .get("late-child-parent-order1");
+            assertEquals(OrderStatus.FILLED, state.getChildOrders().get("late-child-child-order1").getStatus());
+            assertEquals(OrderStatus.FILLED, state.getChildOrders().get("late-child-child-order2").getStatus());
+        }
+    }
+
+    @Test
+    void doesNotReemitWhenAdditionalFillArrivesAfterCompletion() throws IOException {
+        try (var keySerde = Serdes.String();
+             var valueSerde = createJsonSerde(VerificationRecord.class)) {
+            String inputDir = "jsonData/fillOrder/fullyFilled/2_fills/";
+            ExecutionReport order = generateExecutionReportMessage("corrected", inputDir + "order.json");
+            ExecutionReport fill = generateExecutionReportMessage("corrected", inputDir + "fill01.json");
+            fill.setLastQty(100);
+            var output = testDriver.createOutputTopic(fillOrderStream.verificationTopic,
+                    keySerde.deserializer(), valueSerde.deserializer());
+            pipeInput(order);
+            pipeInput(fill);
+            var firstCompletion = output.readKeyValue().value;
+
+            ExecutionReport earlierFill = generateExecutionReportMessage("corrected", inputDir + "fill02.json");
+            earlierFill.setLastQty(100);
+            earlierFill.setTxnTime(fill.getTxnTime().minusSeconds(1));
+            pipeInput(earlierFill);
+            OrderState state = testDriver.<String, OrderState>getKeyValueStore(ORDER_STATE_STORE)
+                    .get(order.getOrderId());
+            assertTrue(state.isFullyFilled());
+            assertEquals(firstCompletion.completedAt(), state.getCompletedAt());
+            assertTrue(output.isEmpty());
+        }
     }
 
     private void pipeInput(ExecutionReport message) {

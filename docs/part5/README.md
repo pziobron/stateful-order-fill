@@ -17,6 +17,24 @@ This directory contains the benchmark methodology, results, and supporting notes
 
 ## Raw results
 
+### Historical thread-count configuration caveat
+
+During Part 6 preparation, a configuration wiring gap was found: the manually
+constructed Kafka Streams properties did not forward the Helm thread count or
+processing guarantee. The code therefore used Kafka Streams defaults of one
+stream thread and at-least-once processing, matching the main baseline settings.
+Part 6 now forwards both settings and tests their mapping.
+
+The archived 10K two-thread experiment declares two threads per pod but does not
+include effective-configuration startup logs. Its measured timings are retained,
+but interpreting them as evidence of a thread-count change requires runtime logs
+from that experiment or a new measurement with the corrected configuration.
+`processors=4` counts pod identities, not stream threads. The archived input
+configuration alone cannot establish what was running in the deployed image.
+
+For future measurements, preserve the effective thread count, processing
+guarantee, and commit interval from each pod's startup log alongside the results.
+
 Kafka Streams:
 
 - [10K raw results](../../kafka-streams/benchmark-results/kafka-streams-10k-raw.txt)
