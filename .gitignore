@@ -56,6 +56,7 @@ Thumbs.db
 # Logs and databases
 *.log
 *.sql
+!db-centric/src/main/resources/db/migration/*.sql
 *.sqlite
 *.db
 

@@ -13,7 +13,7 @@ spec:
       restartPolicy: OnFailure
       initContainers:
         - name: wait-for-kafka
-          image: apache/kafka:latest
+          image: apache/kafka:4.1.2
           command:
             - /bin/sh
             - -c
@@ -26,7 +26,7 @@ spec:
               echo 'Kafka is ready!'
       containers:
         - name: topic-creator
-          image: apache/kafka:latest
+          image: apache/kafka:4.1.2
           command:
             - /bin/sh
             - -c

@@ -18,6 +18,16 @@ Each hierarchy contains five input records:
 4. fill for the first child order
 5. fill for the second child order
 
+The parent has expected quantity 2; each child has expected quantity 1 and
+receives one fill of quantity 1. There are no direct parent fills, overfills,
+cancellations, or intentionally generated duplicate events. Thus the parent's
+expected quantity equals the sum of the children's expected quantities, and
+reaching that quantity implies that both children have received their full
+quantity. These are workload assumptions, not input validations performed by
+the processor. Order definitions may still arrive after fills during processing.
+See [hierarchy quantity assumptions](../domain/lifecycle-semantics.md#hierarchy-quantity-assumptions)
+for the distinction between quantity completeness and receipt of all definitions.
+
 Each measured run therefore contains:
 
 ```text

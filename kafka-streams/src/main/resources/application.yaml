@@ -3,5 +3,7 @@ spring:
     name: order-state-processor
   kafka:
     streams:
+      num-stream-threads: 1
+      processing-guarantee: at_least_once
       properties:
         commit.interval.ms: 100

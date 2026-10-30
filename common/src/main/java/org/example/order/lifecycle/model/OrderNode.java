@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.order.fix.model.ExecutionReport;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -55,11 +54,6 @@ public class OrderNode implements Serializable {
     private Date tradeDate;
 
     /**
-     * The timestamp when the order was cancelled.
-     */
-    private LocalDateTime cancelTime;
-
-    /**
      * The timestamp when the order was last updated.
      */
     private LocalDateTime transactionTime;
@@ -101,20 +95,33 @@ public class OrderNode implements Serializable {
      * @return the total quantity that has been filled for this order
      */
     public long getFilledQuantity() {
-        long filledQuantityForOrder =  filledQuantityMap.values().stream().mapToLong(Long::longValue).sum();
-        long filledQuantityForChildOrders = childOrders.values().stream().mapToLong(OrderNode::getFilledQuantity).sum();
-        return (filledQuantityForOrder + filledQuantityForChildOrders);
+        return fills.stream().mapToLong(Fill::getQuantity).sum()
+                + childOrders.values().stream().mapToLong(OrderNode::getFilledQuantity).sum();
     }
 
     /**
-     * Adds a new fill to this order and updates the filled quantity.
-     *
-     * @param fill the fill to be added to this order
-     * @throws IllegalArgumentException if the fill is null
+     * Retains each received fill once.
+     * Conflicting payloads for the same fill ID are rejected.
      */
     public void addFill(Fill fill) {
+        Objects.requireNonNull(fill, "fill");
+        Objects.requireNonNull(fill.getFillId(), "fillId");
+        Objects.requireNonNull(fill.getTransactionTime(), "transactionTime");
+        for (Fill existing : fills) {
+            if (existing.getFillId().equals(fill.getFillId())) {
+                if (!existing.equals(fill)) {
+                    throw new IllegalArgumentException("Conflicting fill: " + fill.getFillId());
+                }
+                return;
+            }
+        }
         fills.add(fill);
-        this.filledQuantityMap.put(fill.getFillId(), fill.getQuantity());
+        filledQuantityMap.put(fill.getFillId(), fill.getQuantity());
+    }
+
+    /** Recomputes business status from the currently known facts. */
+    public void refreshStatus() {
+        status = isFullyFilled() ? OrderStatus.FILLED : OrderStatus.NOT_FILLED;
     }
 
     /**
@@ -152,16 +159,6 @@ public class OrderNode implements Serializable {
         List<Fill> allFills = new ArrayList<>(getFills());
         allFills.addAll(getChildFills());
         return allFills;
-    }
-
-    /**
-     * Marks the order as cancelled and records the cancellation time.
-     *
-     * @param report the execution report containing the cancellation details
-     */
-    public void markCancelled(ExecutionReport report) {
-        this.status = OrderStatus.CANCELLED;
-        this.cancelTime = report.getTxnTime();
     }
 
 }

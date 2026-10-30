@@ -18,7 +18,7 @@ The examples are based on a simplified but realistic order lifecycle:
 - Orders are created and updated via execution reports
 - Orders can receive multiple partial fills
 - Orders may form hierarchies (parent / child)
-- Events can arrive out of order (late fills, late cancels)
+- Events can arrive out of order (early fills, late order definitions)
 - The system must derive consistent state (e.g. fully filled orders)
 
 This domain is intentionally chosen because it highlights challenges where
@@ -70,17 +70,18 @@ or on Kubernetes. The repository also contains repeatable 10K and
 
 ### 3. DB-centric approach
 
-A reference, database-oriented design based on:
+A relational PostgreSQL implementation using:
 
-- Event ingestion into a relational database
-- SQL-based aggregation and joins
-- Polling, triggers, or transactional updates
-- External state coordination
+- JDBC transactions and Flyway migrations
+- Relational orders and fills with SQL quantity/status calculation
+- Per-hierarchy row locking and Kafka delivery deduplication
+- Transactional outbox publication to the existing verification topic
 
-➡ Module: `db-centric` *(planned)*
+➡ Module: [db-centric](db-centric/README.md)
 
-This implementation exists to contrast traditional designs with stream-based approaches
-and to make architectural trade-offs explicit.
+The automated tests compare SQL results with the shared Java domain contract and
+exercise PostgreSQL concurrency, rollback, outbox retry, and Kafka offsets.
+See the [Part 6 benchmark methodology and scenarios](docs/part6/README.md).
 
 ---
 
@@ -102,6 +103,7 @@ until each article is published.
 ├── docs/part5/      # Part 5 benchmark methodology and interpreted results
 ├── kafka-streams/   # Kafka Streams implementation
 ├── flink/           # Apache Flink implementation
+├── db-centric/      # PostgreSQL lifecycle processor and transactional outbox
 └── README.md
 ```
 
@@ -116,7 +118,7 @@ trade-offs, and implementation details step by step:
 - Part 3: Time, Event Ordering, and the Limits of Windows 
 - Part 4: Horizontal Scaling and Kafka Partitions 
 - Part 5: Kafka Streams vs Apache Flink — Solving the Same Stateful Problem 
-- Part 6: Stateful Streaming vs Database-Centric Processing `[Planned]`
+- [Part 6: Stateful Streaming vs Database-Centric Processing](docs/part6/README.md)
 - Part 7: CQRS and Read Models `[Planned]`
 
 ---

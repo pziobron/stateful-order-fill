@@ -1,0 +1,53 @@
+spring:
+  application:
+    name: order-lifecycle-db-centric
+  main:
+    web-application-type: none
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/order_lifecycle}
+    username: ${DB_USER:orders}
+    password: ${DB_PASSWORD:orders-local}
+    hikari:
+      maximum-pool-size: ${DB_POOL_SIZE:4}
+      connection-timeout: 10000
+      connection-init-sql: >-
+        SET TIME ZONE 'UTC';
+        SET lock_timeout = '10s';
+        SET statement_timeout = '15s'
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: ${KAFKA_GROUP_ID:order-lifecycle-db-centric}
+      enable-auto-commit: false
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      max-poll-records: 100
+      properties:
+        max.poll.interval.ms: 300000
+        allow.auto.create.topics: false
+    listener:
+      ack-mode: batch
+      concurrency: ${DB_CONSUMERS:1}
+      missing-topics-fatal: true
+      auto-startup: ${DB_CONSUMER_ENABLED:true}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: all
+      properties:
+        enable.idempotence: true
+        delivery.timeout.ms: 10000
+        request.timeout.ms: 5000
+        max.block.ms: 10000
+app:
+  source-id: ${SOURCE_ID:local-executions-v1}
+  executions-topic: ${KAFKA_EXECUTIONS_TOPIC:org.example.order.executions}
+  verification-topic: ${KAFKA_VERIFICATION_TOPIC:org.example.order.verification}
+  processor-id: ${POD_ID:local-db-centric}
+  outbox-enabled: ${OUTBOX_ENABLED:true}
+  outbox-delay-ms: ${OUTBOX_DELAY_MS:100}
+logging:
+  level:
+    root: WARN
+    org.example.order.lifecycle.db: INFO

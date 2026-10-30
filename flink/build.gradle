@@ -31,10 +31,27 @@ dependencies {
     implementation libs.jackson.databind
     implementation libs.jackson.jsr310
 
+    constraints {
+        implementation(libs.snappy.java) {
+            because 'Use patched Snappy buffer validation without changing Flink or Kafka versions'
+        }
+        implementation(libs.lz4.java) {
+            because 'Use patched LZ4 native loading and stream bounds validation'
+        }
+    }
+
     implementation libs.slf4j.api
     runtimeOnly libs.logback.classic
 
     testImplementation libs.junit.jupiter
+    // The keyed harness lives in Flink's test JARs. Avoid the broad
+    // flink-test-utils dependency, which also brings embedded cluster services.
+    testImplementation(variantOf(libs.flink.runtime) { classifier('tests') }) { transitive = false }
+    testImplementation(variantOf(libs.flink.core) { classifier('tests') }) { transitive = false }
+    testImplementation(libs.flink.test.utils.junit) { transitive = false }
+    testImplementation libs.assertj.core
+    testImplementation libs.mockito
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher"
 }
 
 tasks.named('run', JavaExec) {

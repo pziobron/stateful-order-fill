@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'java-test-fixtures'
 }
 
 java {
@@ -9,9 +10,14 @@ java {
 }
 
 dependencies {
+    testFixturesImplementation platform(libs.jackson.bom)
+    testFixturesImplementation libs.jackson.annotations
+
     // Jackson for JSON processing
     implementation libs.jackson.databind
     implementation libs.jackson.annotations
     implementation libs.jackson.jsr310  // For Java 8 date/time support
+    testImplementation libs.junit.jupiter
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher"
     implementation libs.slf4j.api
 }

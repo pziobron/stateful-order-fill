@@ -8,8 +8,10 @@ import org.apache.kafka.common.utils.Bytes;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
+import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.*;
 import org.apache.kafka.streams.state.KeyValueStore;
+import org.apache.kafka.streams.state.Stores;
 import org.example.order.fix.model.ExecutionReport;
 import org.example.order.fix.model.VerificationRecord;
 import org.example.order.lifecycle.model.OrderState;
@@ -101,6 +103,9 @@ public class FillOrderStream implements DisposableBean {
     @Value("${analytics.enabled:true}")
     protected boolean analyticsEnabled;
 
+    @Value("${kafka.streams.print.lifecycle:false}")
+    protected boolean printLifecycle;
+
     /**
      * The Kafka Streams instance.
      */
@@ -118,57 +123,6 @@ public class FillOrderStream implements DisposableBean {
     @PostConstruct
     public void startKafkaStream() {
         try {
-            // Create a stream from the execution reports topic with business timestamp extractor
-            log.info("Creating stream from topic: {}", executionReportsTopic);
-            
-            KStream<String, ExecutionReport> executionReportStream =
-                    streamsBuilder.stream(executionReportsTopic,
-                                    Consumed.with(Serdes.String(), executionReportSerde)
-                                            .withTimestampExtractor(new BusinessTimestampExtractor()));
-
-            if (analyticsEnabled) {
-                // Add windowed analytics to the stream
-                executionVolumeAnalytics.addWindowedAnalytics(executionReportStream);
-            }
-
-            // Merge orders, child-keyed fills and parent-keyed fills into a single stream
-            KStream<String, ExecutionReport> updates = executionReportStream
-                    .selectKey((ignored, msg) -> isChild(msg) ? msg.getParentId() : msg.getOrderId());
-
-            KTable<String, OrderState> orderStates = updates.groupByKey(Grouped.with(Serdes.String(), executionReportSerde))
-                    .aggregate(
-                            OrderState::new, //initialize the state
-                            fillOrderService::processExecutionReport,
-                            Materialized.<String, OrderState, KeyValueStore<Bytes, byte[]>>as(ORDER_STATE_STORE)
-                                    .withKeySerde(Serdes.String())
-                                    .withValueSerde(orderStateSerde));
-
-            orderStates.toStream().print(Printed.<String, OrderState>toSysOut().withLabel("LIFECYCLES"));
-
-            // Emit one verification record for each completed hierarchy.
-            // Processing timestamps are captured in the shared OrderState when processing
-            // starts and when the hierarchy first reaches the fully filled state.
-            orderStates.toStream()
-                    .filter((ignored, state) ->
-                            state != null
-                                    && state.isFullyFilled()
-                                    && state.getCompletedAt() != null
-                    )
-                    .mapValues((key, state) ->
-                            new VerificationRecord(
-                                    key,
-                                    podId,
-                                    state.getFirstProcessedAt(),
-                                    state.getCompletedAt()
-                            ))
-                    .to(
-                            verificationTopic,
-                            Produced.with(
-                                    Serdes.String(),
-                                    verificationRecordSerde
-                            )
-                    );
-
             log.info("Kafka Streams topology started with POD_ID: {}", podId);
 
             StreamsConfig streamsConfig =
@@ -194,7 +148,7 @@ public class FillOrderStream implements DisposableBean {
                     )
             );
 
-            var topology = streamsBuilder.build();
+            var topology = buildTopology();
             streams = new KafkaStreams(topology, kafkaStreamsProperties);
 
             // Add shutdown hook
@@ -211,6 +165,53 @@ public class FillOrderStream implements DisposableBean {
             log.error("Error in Kafka Streams application", e);
             throw new RuntimeException("Failed to start Kafka Streams", e);
         }
+    }
+
+    /** Builds the processing topology without starting Kafka clients. */
+    Topology buildTopology() {
+        // Create a stream from the execution reports topic with business timestamp extractor
+        log.info("Creating stream from topic: {}", executionReportsTopic);
+
+        KStream<String, ExecutionReport> executionReportStream =
+                streamsBuilder.stream(executionReportsTopic,
+                                Consumed.with(Serdes.String(), executionReportSerde)
+                                        .withTimestampExtractor(new BusinessTimestampExtractor()));
+
+        if (analyticsEnabled) {
+            // Add windowed analytics to the stream
+            executionVolumeAnalytics.addWindowedAnalytics(executionReportStream);
+        }
+
+        // Merge orders, child-keyed fills and parent-keyed fills into a single stream
+        KStream<String, ExecutionReport> updates = executionReportStream
+                .selectKey((ignored, msg) -> isChild(msg) ? msg.getParentId() : msg.getOrderId());
+
+        KTable<String, OrderState> orderStates = updates.groupByKey(Grouped.with(Serdes.String(), executionReportSerde))
+                .aggregate(
+                        OrderState::new, //initialize the state
+                        fillOrderService::processExecutionReport,
+                        Materialized.<String, OrderState, KeyValueStore<Bytes, byte[]>>as(ORDER_STATE_STORE)
+                                .withKeySerde(Serdes.String())
+                                .withValueSerde(orderStateSerde));
+
+        if (printLifecycle) {
+            orderStates.toStream().print(Printed.<String, OrderState>toSysOut().withLabel("LIFECYCLES"));
+        }
+
+        // Remember the first completion forwarded by the KTable for each hierarchy.
+        // The persistent store is changelog-backed; at-least-once recovery can still replay output.
+        streamsBuilder.addStateStore(Stores.keyValueStoreBuilder(
+                Stores.persistentKeyValueStore(CompletionVerificationProcessor.COMPLETION_EMITTED_STORE),
+                Serdes.String(), Serdes.Boolean()));
+
+        orderStates.toStream()
+                .process(
+                        () -> new CompletionVerificationProcessor(podId),
+                        Named.as("emit-first-completion"),
+                        CompletionVerificationProcessor.COMPLETION_EMITTED_STORE)
+                .to(verificationTopic, Produced.with(Serdes.String(), verificationRecordSerde));
+
+        return streamsBuilder.build();
     }
 
     /**

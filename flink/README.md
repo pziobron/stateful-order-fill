@@ -389,6 +389,39 @@ WARNING: Unknown module: jdk.compiler specified to --add-exports
 
 These warnings originate from JVM startup options in the official image and are unrelated to the application job.
 
+## Operator Tests
+
+Run the operator tests without Kafka, Docker, or Kubernetes:
+
+```bash
+./gradlew :flink:test
+```
+
+`OrderStateProcessFunctionTest` uses Flink's keyed operator test harness with
+managed state and explicit generic output serialization, matching the job's
+output type. It verifies:
+
+- no output before completeness and one logical completion per hierarchy;
+- continued state updates after completion, including duplicates and additional fills;
+- isolation of hierarchy state and emission flags across keys;
+- snapshot restoration of a partial hierarchy followed by completion;
+- snapshot restoration of a completed hierarchy without another logical emission.
+
+These tests exercise the operator and state snapshots, not Kafka source offsets,
+sink delivery, or full-cluster recovery. At-least-once sink duplicates remain
+possible. Detailed business-rule permutations are tested separately in `common`.
+The test harness is an internal Flink API; its test dependency follows the same
+Flink version as the application.
+
+The build uses only the runtime/core test JARs and the JUnit utility classes
+needed by the harness, with explicit AssertJ and Mockito dependencies. It does
+not include the broad `flink-test-utils` bundle or its embedded Curator/ZooKeeper
+services. `KafkaCompressionCompatibilityTest` additionally checks Snappy and LZ4
+record batch round trips through the Kafka client, without a broker.
+
+See [dependency maintenance notes](../docs/dependencies/flink-security-maintenance.md)
+for the patched library versions, validation, and remaining runtime boundaries.
+
 ## Kafka Streams Comparison
 
 | Kafka Streams                        | Flink                                                                 |
