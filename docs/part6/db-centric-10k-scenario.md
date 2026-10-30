@@ -13,7 +13,7 @@ kubectl rollout status statefulset/db-centric-postgres --timeout=180s
 kubectl apply -f db-centric/k8s/processor.yaml
 kubectl set env deployment/db-centric \
   LOGGING_LEVEL_ORG_EXAMPLE_ORDER_LIFECYCLE_DB_SERVICE=WARN \
-  LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_KAFKA_LISTENER_KAFKAMESSAGELISTENERCONTAINER=INFO
+  LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_KAFKA_LISTENER=INFO
 kubectl rollout status deployment/db-centric --timeout=180s
 kubectl logs -l app=db-centric --prefix --tail=-1
 kubectl exec kafka-broker-0 -- /opt/kafka/bin/kafka-consumer-groups.sh --bootstrap-server localhost:29092 --describe --group order-lifecycle-db-centric --members
@@ -21,7 +21,7 @@ kubectl exec kafka-broker-0 -- /opt/kafka/bin/kafka-consumer-groups.sh --bootstr
 
 Require four active consumers with assignments and no listener errors. Flyway
 must have migrated the database; the startup config should show the expected
-topics, group, source, pool size 4, BATCH acknowledgement and one consumer per
+topics, group, pool size 4, BATCH acknowledgement and one consumer per
 pod. Each event still uses its own DB transaction; only Kafka offsets are
 committed per poll. Service WARN disables
 per-input and per-publication logs while retaining StartupConfig INFO. Listener

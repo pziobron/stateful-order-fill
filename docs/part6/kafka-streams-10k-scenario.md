@@ -16,7 +16,7 @@ helm install order-processor kafka-streams/k8s/helm-chart \
   --set kafkaStreams.processingGuarantee=at_least_once
 kubectl set env deployment/order-processor-order-processor \
   LOGGING_LEVEL_ORG_EXAMPLE_ORDER_LIFECYCLE_SERVICE=WARN \
-  LOGGING_LEVEL_ORG_APACHE_KAFKA_STREAMS_PROCESSOR_INTERNALS_STREAMTHREAD=INFO
+  LOGGING_LEVEL_ORG_APACHE_KAFKA_STREAMS_PROCESSOR_INTERNALS=INFO
 kubectl rollout status deployment/order-processor-order-processor --timeout=180s
 kubectl logs -l app=order-processor --prefix --tail=-1
 ```

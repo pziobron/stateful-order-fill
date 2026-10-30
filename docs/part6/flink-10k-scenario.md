@@ -74,8 +74,11 @@ curl -fsS "localhost:8081/jobs/$BENCH_FLINK_JOB_ID" | tee "$BENCH_DIR/flink-job-
 Require exactly one RUNNING job, four registered TaskManagers/four slots, and all
 job subtasks RUNNING at parallelism four. Check the submitter log's effective
 configuration (broker, topics, parallelism, checkpoint interval, offset commits).
-Wait for the Kafka source partition assignments and a successful initial
-checkpoint before publishing warm-up input. Flink source uses explicit split
+Wait for the Kafka source partition assignments and two successful initial
+checkpoints before publishing warm-up input. Archive the checkpoint counters at
+that readiness boundary; any increase in the failed-checkpoint count afterward
+rejects the cycle. Preserve nonzero pre-workload counters separately rather than
+confusing them with workload failures. Flink source uses explicit split
 assignment; the number of Kafka consumer-group members is not a readiness test.
 
 ## Warm-up, measurement, acceptance
@@ -97,9 +100,9 @@ kubectl get pods -l app=order-lifecycle-flink
 ```
 
 Use stage-specific filenames to retain checkpoint evidence from both stages.
-Require zero lag after checkpoint offset commits, successful post-workload
-checkpoint, no failed checkpoints, no task recovery/restarts and no OOM or
-uncaught exceptions. Check `.counts.failed`, `.latest.completed`, the job state
+Require zero lag after checkpoint offset commits, a successful post-workload
+checkpoint, no increase in failed checkpoints since readiness, no task
+recovery/restarts and no OOM or uncaught exceptions. Check `.counts.failed`, `.latest.completed`, the job state
 and exception history. Output receipt alone is insufficient for acceptance.
 If the checkpoint path differs, inspect `/flink-checkpoints` and associate files
 with this Job ID; old files from another job do not count.

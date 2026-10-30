@@ -26,7 +26,8 @@ explains how to prepare a separate 100K cycle and its timeout limitation.
 
 See [shared processing contract](processing-contract.md)
 for continuous fact storage, delivery/recovery guarantees and durability
-differences. Replacement 10K and 100K results on Kafka 4.1.2 are pending.
+differences. See [10K and 100K results on Kafka 4.1.2](results/README.md)
+for three-run 10K medians, exploratory 100K timings and raw logs.
 
 ## Workload and verifier
 

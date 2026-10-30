@@ -1,0 +1,879 @@
+
+===== flink-10k-cycle-1 measurement-10k =====
+Initialized native services in: /home/gradle/.gradle/native
+Initialized jansi services in: /home/gradle/.gradle/native
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.2.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Starting process 'Gradle build daemon'. Working directory: /home/gradle/.gradle/daemon/9.2.1 Command: /opt/java/openjdk/bin/java --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.invoke=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.prefs/java.util.prefs=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.prefs/java.util.prefs=ALL-UNNAMED --add-opens=java.base/java.nio.charset=ALL-UNNAMED --add-opens=java.base/java.net=ALL-UNNAMED --add-opens=java.base/java.util.concurrent=ALL-UNNAMED --add-opens=java.base/java.util.concurrent.atomic=ALL-UNNAMED --add-opens=java.xml/javax.xml.namespace=ALL-UNNAMED --add-opens=java.base/java.time=ALL-UNNAMED --enable-native-access=ALL-UNNAMED -XX:MaxMetaspaceSize=384m -XX:+HeapDumpOnOutOfMemoryError -Xms256m -Xmx512m -Dfile.encoding=UTF-8 -Duser.country=US -Duser.language=en -Duser.variant -cp /root/.gradle/wrapper/dists/gradle-9.2.1-bin/2t0n5ozlw9xmuyvbp7dnzaxug/gradle-9.2.1/lib/gradle-daemon-main-9.2.1.jar -javaagent:/root/.gradle/wrapper/dists/gradle-9.2.1-bin/2t0n5ozlw9xmuyvbp7dnzaxug/gradle-9.2.1/lib/agents/gradle-instrumentation-agent-9.2.1.jar org.gradle.launcher.daemon.bootstrap.GradleDaemon 9.2.1
+Successfully started process 'Gradle build daemon'
+An attempt to start the daemon took 0.442 secs.
+The client will now receive all logging from the daemon (pid: 38). The daemon log file: /home/gradle/.gradle/daemon/9.2.1/daemon-38.out.log
+Daemon will be stopped at the end of the build 
+Using 2 worker leases.
+Operational build model parameters: {requiresToolingModels=false, parallelProjectExecution=false, configureOnDemand=false, configurationCache=true, configurationCacheParallelStore=false, configurationCacheParallelLoad=true, isolatedProjects=false, parallelProjectConfiguration=false, intermediateModelCache=false, parallelToolingApiActions=false, invalidateCoupledProjects=false, modelAsProjectDependency=false, resilientModelBuilding=false}
+Received JVM installation metadata from '/opt/java/openjdk': {JAVA_HOME=/opt/java/openjdk, JAVA_VERSION=25.0.3, JAVA_VENDOR=Eclipse Adoptium, RUNTIME_NAME=OpenJDK Runtime Environment, RUNTIME_VERSION=25.0.3+9-LTS, VM_NAME=OpenJDK 64-Bit Server VM, VM_VERSION=25.0.3+9-LTS, VM_VENDOR=Eclipse Adoptium, OS_ARCH=aarch64}
+Encryption key source: default Gradle keystore (pkcs12)
+Calculating task graph as no cached configuration is available for tasks: :kafka-streams:test --tests org.example.order.lifecycle.processor.integration.OrderLifecycleKafkaScenarioTest.testParentOrderFill
+Watching the file system is configured to be enabled if available
+Not watching /app since the file system is not supported
+File system watching is active
+Starting Build
+Resource missing. [HTTP HEAD: https://plugins.gradle.org/m2/org/gradle/toolchains/foojay-resolver-convention/org.gradle.toolchains.foojay-resolver-convention.gradle.plugin/1.0.0/org.gradle.toolchains.foojay-resolver-convention.gradle.plugin-1.0.0.jar]
+Resolved plugin [id: 'org.gradle.toolchains.foojay-resolver-convention', version: '1.0.0']
+Settings evaluated using settings file '/app/settings.gradle'.
+Projects loaded. Root project using build file '/app/build.gradle'.
+Included projects: [root project 'stateful-order-fill', project ':common', project ':db-centric', project ':flink', project ':kafka-streams']
+
+> Configure project :
+Evaluating root project 'stateful-order-fill' using build file '/app/build.gradle'.
+Resolved plugin [id: 'java']
+Resolved plugin [id: 'idea']
+
+> Configure project :common
+Evaluating project ':common' using build file '/app/common/build.gradle'.
+Resolved plugin [id: 'java']
+Resolved plugin [id: 'java-test-fixtures']
+
+> Configure project :db-centric
+Evaluating project ':db-centric' using build file '/app/db-centric/build.gradle'.
+Resource missing. [HTTP HEAD: https://plugins.gradle.org/m2/org/springframework/boot/org.springframework.boot.gradle.plugin/3.5.6/org.springframework.boot.gradle.plugin-3.5.6.jar]
+Resolved plugin [id: 'org.springframework.boot', version: '3.5.6']
+Resource missing. [HTTP HEAD: https://plugins.gradle.org/m2/io/spring/dependency-management/io.spring.dependency-management.gradle.plugin/1.1.7/io.spring.dependency-management.gradle.plugin-1.1.7.jar]
+Resolved plugin [id: 'io.spring.dependency-management', version: '1.1.7']
+Applying dependency management to configuration 'annotationProcessor' in project 'db-centric'
+Applying dependency management to configuration 'apiElements' in project 'db-centric'
+Applying dependency management to configuration 'archives' in project 'db-centric'
+Applying dependency management to configuration 'bootArchives' in project 'db-centric'
+Applying dependency management to configuration 'compileClasspath' in project 'db-centric'
+Applying dependency management to configuration 'compileOnly' in project 'db-centric'
+Applying dependency management to configuration 'default' in project 'db-centric'
+Applying dependency management to configuration 'developmentOnly' in project 'db-centric'
+Applying dependency management to configuration 'implementation' in project 'db-centric'
+Applying dependency management to configuration 'mainSourceElements' in project 'db-centric'
+Applying dependency management to configuration 'productionRuntimeClasspath' in project 'db-centric'
+Applying dependency management to configuration 'runtimeClasspath' in project 'db-centric'
+Applying dependency management to configuration 'runtimeElements' in project 'db-centric'
+Applying dependency management to configuration 'runtimeOnly' in project 'db-centric'
+Applying dependency management to configuration 'testAndDevelopmentOnly' in project 'db-centric'
+Applying dependency management to configuration 'testAnnotationProcessor' in project 'db-centric'
+Applying dependency management to configuration 'testCompileClasspath' in project 'db-centric'
+Applying dependency management to configuration 'testCompileOnly' in project 'db-centric'
+Applying dependency management to configuration 'testImplementation' in project 'db-centric'
+Applying dependency management to configuration 'testResultsElementsForTest' in project 'db-centric'
+Applying dependency management to configuration 'testRuntimeClasspath' in project 'db-centric'
+Applying dependency management to configuration 'testRuntimeOnly' in project 'db-centric'
+
+> Configure project :flink
+Evaluating project ':flink' using build file '/app/flink/build.gradle'.
+Resolved plugin [id: 'java']
+Resolved plugin [id: 'application']
+Resource missing. [HTTP HEAD: https://plugins.gradle.org/m2/com/gradleup/shadow/com.gradleup.shadow.gradle.plugin/9.4.2/com.gradleup.shadow.gradle.plugin-9.4.2.jar]
+Resolved plugin [id: 'com.gradleup.shadow', version: '9.4.2']
+Skipping Develocity integration for Shadow plugin.
+Setting org.gradle.jvm.version attribute for shadowRuntimeElements configuration.
+Starting process 'command '/home/gradle/.gradle/jdks/eclipse_adoptium-17-aarch64-linux.2/bin/java''. Working directory: /home/gradle/.gradle/.tmp/tmp-jvm7647977168109514812probe Command: /home/gradle/.gradle/jdks/eclipse_adoptium-17-aarch64-linux.2/bin/java -Xmx32m -Xms32m -cp . JavaProbe
+Successfully started process 'command '/home/gradle/.gradle/jdks/eclipse_adoptium-17-aarch64-linux.2/bin/java''
+Received JVM installation metadata from '/home/gradle/.gradle/jdks/eclipse_adoptium-17-aarch64-linux.2': {JAVA_HOME=/home/gradle/.gradle/jdks/eclipse_adoptium-17-aarch64-linux.2, JAVA_VERSION=17.0.21, JAVA_VENDOR=Eclipse Adoptium, RUNTIME_NAME=OpenJDK Runtime Environment, RUNTIME_VERSION=17.0.21+9, VM_NAME=OpenJDK 64-Bit Server VM, VM_VERSION=17.0.21+9, VM_VENDOR=Eclipse Adoptium, OS_ARCH=aarch64}
+Setting target JVM version to 17 for shadowRuntimeElements configuration.
+Adding shadowRuntimeElements variant to Java component.
+
+> Configure project :kafka-streams
+Evaluating project ':kafka-streams' using build file '/app/kafka-streams/build.gradle'.
+Resolved plugin [id: 'org.springframework.boot', version: '3.5.6']
+Resolved plugin [id: 'io.spring.dependency-management', version: '1.1.7']
+Applying dependency management to configuration 'annotationProcessor' in project 'kafka-streams'
+Applying dependency management to configuration 'apiElements' in project 'kafka-streams'
+Applying dependency management to configuration 'archives' in project 'kafka-streams'
+Applying dependency management to configuration 'bootArchives' in project 'kafka-streams'
+Applying dependency management to configuration 'compileClasspath' in project 'kafka-streams'
+Applying dependency management to configuration 'compileOnly' in project 'kafka-streams'
+Applying dependency management to configuration 'default' in project 'kafka-streams'
+Applying dependency management to configuration 'developmentOnly' in project 'kafka-streams'
+Applying dependency management to configuration 'implementation' in project 'kafka-streams'
+Applying dependency management to configuration 'mainSourceElements' in project 'kafka-streams'
+Applying dependency management to configuration 'productionRuntimeClasspath' in project 'kafka-streams'
+Applying dependency management to configuration 'runtimeClasspath' in project 'kafka-streams'
+Applying dependency management to configuration 'runtimeElements' in project 'kafka-streams'
+Applying dependency management to configuration 'runtimeOnly' in project 'kafka-streams'
+Applying dependency management to configuration 'testAndDevelopmentOnly' in project 'kafka-streams'
+Applying dependency management to configuration 'testAnnotationProcessor' in project 'kafka-streams'
+Applying dependency management to configuration 'testCompileClasspath' in project 'kafka-streams'
+Applying dependency management to configuration 'testCompileOnly' in project 'kafka-streams'
+Applying dependency management to configuration 'testImplementation' in project 'kafka-streams'
+Applying dependency management to configuration 'testResultsElementsForTest' in project 'kafka-streams'
+Applying dependency management to configuration 'testRuntimeClasspath' in project 'kafka-streams'
+Applying dependency management to configuration 'testRuntimeOnly' in project 'kafka-streams'
+All projects evaluated.
+Task path ':kafka-streams:test' matched project ':kafka-streams'
+Task name matched 'test'
+Selected primary task 'test' from project :kafka-streams
+Resolving global dependency management for project 'kafka-streams'
+Excluding []
+Excluding []
+Excluding []
+Excluding []
+Excluding []
+Excluding []
+Tasks to be executed: [task ':common:compileJava', task ':common:processResources', task ':common:classes', task ':common:jar', task ':kafka-streams:compileJava', task ':kafka-streams:processResources', task ':kafka-streams:classes', task ':kafka-streams:compileTestJava', task ':kafka-streams:processTestResources', task ':kafka-streams:testClasses', task ':kafka-streams:test']
+Tasks that were excluded: []
+Downloading https://repo.maven.apache.org/maven2/org/apache/kafka/kafka-group-coordinator/3.9.1/kafka-group-coordinator-3.9.1.jar to /home/gradle/.gradle/.tmp/gradle_download15573861595049940815bin
+Downloading https://repo.maven.apache.org/maven2/org/apache/kafka/kafka-storage/3.9.1/kafka-storage-3.9.1.jar to /home/gradle/.gradle/.tmp/gradle_download14192962051463793349bin
+Downloading https://repo.maven.apache.org/maven2/org/apache/kafka/kafka-raft/3.9.1/kafka-raft-3.9.1.jar to /home/gradle/.gradle/.tmp/gradle_download12153485606085521947bin
+Downloading https://repo.maven.apache.org/maven2/org/apache/kafka/kafka-storage-api/3.9.1/kafka-storage-api-3.9.1.jar to /home/gradle/.gradle/.tmp/gradle_download15446016469174251633bin
+Downloading https://repo.maven.apache.org/maven2/com/fasterxml/jackson/module/jackson-module-scala_2.13/2.22.4/jackson-module-scala_2.13-2.22.4.jar to /home/gradle/.gradle/.tmp/gradle_download17461974589652460915bin
+Downloading https://repo.maven.apache.org/maven2/org/apache/kafka/kafka-transaction-coordinator/3.9.1/kafka-transaction-coordinator-3.9.1.jar to /home/gradle/.gradle/.tmp/gradle_download13254973391125932157bin
+Downloading https://repo.maven.apache.org/maven2/com/fasterxml/jackson/dataformat/jackson-dataformat-csv/2.22.4/jackson-dataformat-csv-2.22.4.jar to /home/gradle/.gradle/.tmp/gradle_download16163326079574203818bin
+Downloading https://repo.maven.apache.org/maven2/org/apache/kafka/kafka-group-coordinator-api/3.9.1/kafka-group-coordinator-api-3.9.1.jar to /home/gradle/.gradle/.tmp/gradle_download12898476460025940400bin
+Downloading https://repo.maven.apache.org/maven2/com/yammer/metrics/metrics-core/2.2.0/metrics-core-2.2.0.jar to /home/gradle/.gradle/.tmp/gradle_download3045112628599849209bin
+Downloading https://repo.maven.apache.org/maven2/org/apache/kafka/kafka-tools-api/3.9.1/kafka-tools-api-3.9.1.jar to /home/gradle/.gradle/.tmp/gradle_download13051443677444442867bin
+Downloading https://repo.maven.apache.org/maven2/org/bitbucket/b_c/jose4j/0.9.4/jose4j-0.9.4.jar to /home/gradle/.gradle/.tmp/gradle_download18075960506790872216bin
+Downloading https://repo.maven.apache.org/maven2/com/typesafe/scala-logging/scala-logging_2.13/3.9.5/scala-logging_2.13-3.9.5.jar to /home/gradle/.gradle/.tmp/gradle_download9217907586743211794bin
+Downloading https://repo.maven.apache.org/maven2/io/dropwizard/metrics/metrics-core/4.1.12.1/metrics-core-4.1.12.1.jar to /home/gradle/.gradle/.tmp/gradle_download7624565850126479861bin
+Downloading https://repo.maven.apache.org/maven2/org/junit/jupiter/junit-jupiter-engine/5.12.2/junit-jupiter-engine-5.12.2.jar to /home/gradle/.gradle/.tmp/gradle_download8002529790528685639bin
+Downloading https://repo.maven.apache.org/maven2/org/objenesis/objenesis/3.3/objenesis-3.3.jar to /home/gradle/.gradle/.tmp/gradle_download13575344935502909167bin
+Downloading https://repo.maven.apache.org/maven2/com/github/luben/zstd-jni/1.5.6-4/zstd-jni-1.5.6-4.jar to /home/gradle/.gradle/.tmp/gradle_download74781503665696404bin
+Downloading https://repo.maven.apache.org/maven2/org/lz4/lz4-java/1.8.0/lz4-java-1.8.0.jar to /home/gradle/.gradle/.tmp/gradle_download11478882562485653962bin
+Downloading https://repo.maven.apache.org/maven2/org/xerial/snappy/snappy-java/1.1.10.5/snappy-java-1.1.10.5.jar to /home/gradle/.gradle/.tmp/gradle_download11101578900128651551bin
+Downloading https://repo.maven.apache.org/maven2/commons-io/commons-io/2.14.0/commons-io-2.14.0.jar to /home/gradle/.gradle/.tmp/gradle_download5781856605682510055bin
+Downloading https://repo.maven.apache.org/maven2/org/pcollections/pcollections/4.0.1/pcollections-4.0.1.jar to /home/gradle/.gradle/.tmp/gradle_download10751447904136952247bin
+Downloading https://repo.maven.apache.org/maven2/net/sf/jopt-simple/jopt-simple/5.0.4/jopt-simple-5.0.4.jar to /home/gradle/.gradle/.tmp/gradle_download8132098827858440243bin
+Downloading https://repo.maven.apache.org/maven2/net/sourceforge/argparse4j/argparse4j/0.7.0/argparse4j-0.7.0.jar to /home/gradle/.gradle/.tmp/gradle_download7970394650402470381bin
+Downloading https://repo.maven.apache.org/maven2/commons-validator/commons-validator/1.7/commons-validator-1.7.jar to /home/gradle/.gradle/.tmp/gradle_download14470050258490694896bin
+Downloading https://repo.maven.apache.org/maven2/org/scala-lang/modules/scala-collection-compat_2.13/2.10.0/scala-collection-compat_2.13-2.10.0.jar to /home/gradle/.gradle/.tmp/gradle_download10932027779943607025bin
+Downloading https://repo.maven.apache.org/maven2/org/scala-lang/modules/scala-java8-compat_2.13/1.0.2/scala-java8-compat_2.13-1.0.2.jar to /home/gradle/.gradle/.tmp/gradle_download1302910245343021759bin
+Downloading https://repo.maven.apache.org/maven2/org/scala-lang/scala-reflect/2.13.15/scala-reflect-2.13.15.jar to /home/gradle/.gradle/.tmp/gradle_download16124872349400668784bin
+Downloading https://repo.maven.apache.org/maven2/commons-cli/commons-cli/1.4/commons-cli-1.4.jar to /home/gradle/.gradle/.tmp/gradle_download12500986559611941859bin
+Downloading https://repo.maven.apache.org/maven2/org/scala-lang/scala-library/2.13.18/scala-library-2.13.18.jar to /home/gradle/.gradle/.tmp/gradle_download17714288151599473513bin
+Downloading https://repo.maven.apache.org/maven2/com/github/ben-manes/caffeine/caffeine/3.2.2/caffeine-3.2.2.jar to /home/gradle/.gradle/.tmp/gradle_download15836050983431024543bin
+Downloading https://repo.maven.apache.org/maven2/commons-beanutils/commons-beanutils/1.9.4/commons-beanutils-1.9.4.jar to /home/gradle/.gradle/.tmp/gradle_download10145748659298209854bin
+Downloading https://repo.maven.apache.org/maven2/commons-digester/commons-digester/2.1/commons-digester-2.1.jar to /home/gradle/.gradle/.tmp/gradle_download13260267917664189575bin
+Downloading https://repo.maven.apache.org/maven2/com/thoughtworks/paranamer/paranamer/2.8.3/paranamer-2.8.3.jar to /home/gradle/.gradle/.tmp/gradle_download12815824319234663418bin
+Downloading https://repo.maven.apache.org/maven2/org/jspecify/jspecify/1.0.0/jspecify-1.0.0.jar to /home/gradle/.gradle/.tmp/gradle_download4117382443460621462bin
+Downloading https://repo.maven.apache.org/maven2/com/google/errorprone/error_prone_annotations/2.40.0/error_prone_annotations-2.40.0.jar to /home/gradle/.gradle/.tmp/gradle_download17021693137689643261bin
+Ignoring listeners of task graph ready event, as this build (:) has already executed work.
+Resolve mutations for :common:compileJava (Thread[#80,included builds,5,main]) started.
+Resolve mutations for :common:processResources (Thread[#81,Execution worker,5,main]) started.
+:common:compileJava (Thread[#80,included builds,5,main]) started.
+:common:processResources (Thread[#81,Execution worker,5,main]) started.
+
+> Task :common:processResources NO-SOURCE
+Skipping task ':common:processResources' as it has no source files and no previous output files.
+Resolve mutations for :kafka-streams:processResources (Thread[#81,Execution worker,5,main]) started.
+:kafka-streams:processResources (Thread[#81,Execution worker,5,main]) started.
+
+> Task :kafka-streams:processResources
+Caching disabled for task ':kafka-streams:processResources' because:
+  Build cache is disabled
+  Not worth caching
+Task ':kafka-streams:processResources' is not up-to-date because:
+  No history is available.
+Resolve mutations for :kafka-streams:processTestResources (Thread[#81,Execution worker,5,main]) started.
+:kafka-streams:processTestResources (Thread[#81,Execution worker,5,main]) started.
+
+> Task :kafka-streams:processTestResources
+Caching disabled for task ':kafka-streams:processTestResources' because:
+  Build cache is disabled
+  Not worth caching
+Task ':kafka-streams:processTestResources' is not up-to-date because:
+  No history is available.
+This JVM does not support getting OS memory, so no OS memory status updates will be broadcast
+
+> Task :common:compileJava
+Caching disabled for task ':common:compileJava' because:
+  Build cache is disabled
+Task ':common:compileJava' is not up-to-date because:
+  No history is available.
+The input changes require a full rebuild for incremental task ':common:compileJava'.
+Compilation mode: default, forking compiler
+Full recompilation is required because no incremental change information is available. This is usually caused by clean builds or changing compiler arguments.
+Compiling with toolchain '/home/gradle/.gradle/jdks/eclipse_adoptium-17-aarch64-linux.2'.
+Starting process 'Gradle Worker Daemon 1'. Working directory: /home/gradle/.gradle/workers Command: /home/gradle/.gradle/jdks/eclipse_adoptium-17-aarch64-linux.2/bin/java --add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED @/home/gradle/.gradle/.tmp/gradle-worker-classpath5693447356855220216txt -Xmx512m -Dfile.encoding=UTF-8 -Duser.country=US -Duser.language=en -Duser.variant worker.org.gradle.process.internal.worker.GradleWorkerMain 'Gradle Worker Daemon 1'
+Successfully started process 'Gradle Worker Daemon 1'
+Started Gradle worker daemon (0.179 secs) with fork options DaemonForkOptions{executable=/home/gradle/.gradle/jdks/eclipse_adoptium-17-aarch64-linux.2/bin/java, minHeapSize=null, maxHeapSize=null, jvmArgs=[--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED, --add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED], keepAliveMode=DAEMON}.
+Compiling with JDK Java compiler API.
+Class dependency analysis for incremental compilation took 0.009 secs.
+Created classpath snapshot for incremental compilation in 0.339 secs.
+Resolve mutations for :common:classes (Thread[#80,included builds,5,main]) started.
+:common:classes (Thread[#80,included builds,5,main]) started.
+
+> Task :common:classes
+Skipping task ':common:classes' as it has no actions.
+Resolve mutations for :common:jar (Thread[#80,included builds,5,main]) started.
+:common:jar (Thread[#80,included builds,5,main]) started.
+
+> Task :common:jar
+Caching disabled for task ':common:jar' because:
+  Build cache is disabled
+  Not worth caching
+Task ':common:jar' is not up-to-date because:
+  Input property 'rootSpec$1' file /app/common/build/classes/java/main/org has been added.
+  Input property 'rootSpec$1' file /app/common/build/classes/java/main/org/example has been added.
+  Input property 'rootSpec$1' file /app/common/build/classes/java/main/org/example/order has been added.
+  and more...
+file or directory '/app/common/build/resources/main', not found
+work action resolve common-1.0-SNAPSHOT.jar (project :common) (Thread[#80,included builds,5,main]) started.
+Resolve mutations for :kafka-streams:compileJava (Thread[#80,included builds,5,main]) started.
+:kafka-streams:compileJava (Thread[#80,included builds,5,main]) started.
+
+> Task :kafka-streams:compileJava
+Caching disabled for task ':kafka-streams:compileJava' because:
+  Build cache is disabled
+Task ':kafka-streams:compileJava' is not up-to-date because:
+  No history is available.
+The input changes require a full rebuild for incremental task ':kafka-streams:compileJava'.
+Compilation mode: in-process compilation
+Full recompilation is required because no incremental change information is available. This is usually caused by clean builds or changing compiler arguments.
+Compiling with toolchain '/opt/java/openjdk'.
+Compiling with JDK Java compiler API.
+Class dependency analysis for incremental compilation took 0.002 secs.
+Created classpath snapshot for incremental compilation in 1.814 secs.
+Resolve mutations for :kafka-streams:classes (Thread[#80,included builds,5,main]) started.
+:kafka-streams:classes (Thread[#80,included builds,5,main]) started.
+
+> Task :kafka-streams:classes
+Skipping task ':kafka-streams:classes' as it has no actions.
+Resolve mutations for :kafka-streams:compileTestJava (Thread[#80,included builds,5,main]) started.
+:kafka-streams:compileTestJava (Thread[#81,Execution worker,5,main]) started.
+
+> Task :kafka-streams:compileTestJava
+Caching disabled for task ':kafka-streams:compileTestJava' because:
+  Build cache is disabled
+Task ':kafka-streams:compileTestJava' is not up-to-date because:
+  No history is available.
+The input changes require a full rebuild for incremental task ':kafka-streams:compileTestJava'.
+Compilation mode: in-process compilation
+Full recompilation is required because no incremental change information is available. This is usually caused by clean builds or changing compiler arguments.
+Compiling with toolchain '/opt/java/openjdk'.
+Compiling with JDK Java compiler API.
+Class dependency analysis for incremental compilation took 0.001 secs.
+Created classpath snapshot for incremental compilation in 1.919 secs.
+Resolve mutations for :kafka-streams:testClasses (Thread[#81,Execution worker,5,main]) started.
+:kafka-streams:testClasses (Thread[#81,Execution worker,5,main]) started.
+
+> Task :kafka-streams:testClasses
+Skipping task ':kafka-streams:testClasses' as it has no actions.
+Resolve mutations for :kafka-streams:test (Thread[#81,Execution worker,5,main]) started.
+:kafka-streams:test (Thread[#81,Execution worker,5,main]) started.
+Gradle Test Executor 2 started executing tests.
+
+> Task :kafka-streams:test
+Caching disabled for task ':kafka-streams:test' because:
+  Build cache is disabled
+Task ':kafka-streams:test' is not up-to-date because:
+  No history is available.
+Starting process 'Gradle Test Executor 2'. Working directory: /app/kafka-streams Command: /opt/java/openjdk/bin/java -Dkafka.bootstrapServers=kafka-broker:29092 -Dorg.gradle.internal.worker.tmpdir=/app/kafka-streams/build/tmp/test/work --enable-native-access=ALL-UNNAMED @/home/gradle/.gradle/.tmp/gradle-worker-classpath17092874950209341112txt -Xmx1g -Dfile.encoding=UTF-8 -Duser.country=US -Duser.language=en -Duser.variant -ea worker.org.gradle.process.internal.worker.GradleWorkerMain 'Gradle Test Executor 2'
+Successfully started process 'Gradle Test Executor 2'
+
+OrderLifecycleKafkaScenarioTest > testParentOrderFill() STANDARD_OUT
+    20:12:01.147 INFO  o.e.o.l.p.i.OrderLifecycleKafkaScenarioTest - Loaded configuration - Bootstrap servers: kafka-broker:29092, Topic: org.example.order.executions, Verification Topic: org.example.order.verification
+    20:12:01.444 INFO  o.e.o.l.p.i.OrderLifecycleKafkaScenarioTest - Verification consumer positioned at the end of partitions: [org.example.order.verification-0, org.example.order.verification-1, org.example.order.verification-2, org.example.order.verification-3, org.example.order.verification-4, org.example.order.verification-5]
+    20:12:01.445 INFO  o.e.o.l.p.i.OrderLifecycleKafkaScenarioTest - Running testParentOrderFill 10000 iteration(s)
+    20:12:03.630 INFO  o.e.o.l.p.i.OrderLifecycleKafkaScenarioTest - SCENARIO_RESULT scenario=parent-order-fill messages=50000 verificationRecords=10000 hierarchyKeys=10000 processors=4 inputSubmissionMs=1857 drainAfterSubmissionMs=326 endToEndMs=2184 processingWindowMs=1884 endToEndMsgPerSec=22893.77 processingInputMsgPerSec=26539.28 completedHierarchiesPerSec=5307.86 processorDistribution={flink-taskmanager-cbc66f55c-hlx8s-subtask-2=2425, flink-taskmanager-cbc66f55c-l9hmz-subtask-1=2533, flink-taskmanager-cbc66f55c-rwpcx-subtask-0=2445, flink-taskmanager-cbc66f55c-wg7fq-subtask-3=2597}
+
+Gradle Test Executor 2 finished executing tests.
+
+> Task :kafka-streams:test
+Finished generating test XML results (0.003 secs) into: /app/kafka-streams/build/test-results/test
+Generating HTML test report...
+Finished generating test html results (0.01 secs) into: /app/kafka-streams/build/reports/tests/test
+
+See the complete report at file:///app/build/reports/configuration-cache/67jgqi3hfqy0qcffs987vilqr/cmaboqeasmos3zc2yiowisx9o/configuration-cache-report.html
+
+BUILD SUCCESSFUL in 18s
+7 actionable tasks: 7 executed
+Some of the file system contents retained in the virtual file system are on file systems that Gradle doesn't support watching. The relevant state was discarded to ensure changes to these locations are properly detected. You can override this by explicitly enabling file system watching.
+Configuration cache entry stored.
+Configuration Cache (/app/.gradle/configuration-cache) removing files not accessed on or after Fri Oct 23 20:12:04 UTC 2026.
+Configuration Cache (/app/.gradle/configuration-cache) cleanup deleted 0 files/directories.
+Configuration Cache (/app/.gradle/configuration-cache) cleaned up in 0.002 secs.
+VCS Checkout Cache (/app/.gradle/vcs-1) removing files not accessed on or after Fri Oct 23 20:12:04 UTC 2026.
+VCS Checkout Cache (/app/.gradle/vcs-1) cleanup deleted 0 files/directories.
+VCS Checkout Cache (/app/.gradle/vcs-1) cleaned up in 0.001 secs.
+dependencies-accessors (/home/gradle/.gradle/caches/9.2.1/dependencies-accessors) removing files not accessed on or after Fri Oct 23 20:12:04 UTC 2026.
+dependencies-accessors (/home/gradle/.gradle/caches/9.2.1/dependencies-accessors) cleanup deleted 0 files/directories.
+dependencies-accessors (/home/gradle/.gradle/caches/9.2.1/dependencies-accessors) cleaned up in 0.0 secs.
+
+===== flink-10k-cycle-2 measurement-10k =====
+Initialized native services in: /home/gradle/.gradle/native
+Initialized jansi services in: /home/gradle/.gradle/native
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.2.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Starting process 'Gradle build daemon'. Working directory: /home/gradle/.gradle/daemon/9.2.1 Command: /opt/java/openjdk/bin/java --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.invoke=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.prefs/java.util.prefs=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.prefs/java.util.prefs=ALL-UNNAMED --add-opens=java.base/java.nio.charset=ALL-UNNAMED --add-opens=java.base/java.net=ALL-UNNAMED --add-opens=java.base/java.util.concurrent=ALL-UNNAMED --add-opens=java.base/java.util.concurrent.atomic=ALL-UNNAMED --add-opens=java.xml/javax.xml.namespace=ALL-UNNAMED --add-opens=java.base/java.time=ALL-UNNAMED --enable-native-access=ALL-UNNAMED -XX:MaxMetaspaceSize=384m -XX:+HeapDumpOnOutOfMemoryError -Xms256m -Xmx512m -Dfile.encoding=UTF-8 -Duser.country=US -Duser.language=en -Duser.variant -cp /root/.gradle/wrapper/dists/gradle-9.2.1-bin/2t0n5ozlw9xmuyvbp7dnzaxug/gradle-9.2.1/lib/gradle-daemon-main-9.2.1.jar -javaagent:/root/.gradle/wrapper/dists/gradle-9.2.1-bin/2t0n5ozlw9xmuyvbp7dnzaxug/gradle-9.2.1/lib/agents/gradle-instrumentation-agent-9.2.1.jar org.gradle.launcher.daemon.bootstrap.GradleDaemon 9.2.1
+Successfully started process 'Gradle build daemon'
+An attempt to start the daemon took 0.472 secs.
+The client will now receive all logging from the daemon (pid: 38). The daemon log file: /home/gradle/.gradle/daemon/9.2.1/daemon-38.out.log
+Daemon will be stopped at the end of the build 
+Using 2 worker leases.
+Operational build model parameters: {requiresToolingModels=false, parallelProjectExecution=false, configureOnDemand=false, configurationCache=true, configurationCacheParallelStore=false, configurationCacheParallelLoad=true, isolatedProjects=false, parallelProjectConfiguration=false, intermediateModelCache=false, parallelToolingApiActions=false, invalidateCoupledProjects=false, modelAsProjectDependency=false, resilientModelBuilding=false}
+Received JVM installation metadata from '/opt/java/openjdk': {JAVA_HOME=/opt/java/openjdk, JAVA_VERSION=25.0.3, JAVA_VENDOR=Eclipse Adoptium, RUNTIME_NAME=OpenJDK Runtime Environment, RUNTIME_VERSION=25.0.3+9-LTS, VM_NAME=OpenJDK 64-Bit Server VM, VM_VERSION=25.0.3+9-LTS, VM_VENDOR=Eclipse Adoptium, OS_ARCH=aarch64}
+Encryption key source: default Gradle keystore (pkcs12)
+Calculating task graph as no cached configuration is available for tasks: :kafka-streams:test --tests org.example.order.lifecycle.processor.integration.OrderLifecycleKafkaScenarioTest.testParentOrderFill
+Watching the file system is configured to be enabled if available
+Not watching /app since the file system is not supported
+File system watching is active
+Starting Build
+Resource missing. [HTTP HEAD: https://plugins.gradle.org/m2/org/gradle/toolchains/foojay-resolver-convention/org.gradle.toolchains.foojay-resolver-convention.gradle.plugin/1.0.0/org.gradle.toolchains.foojay-resolver-convention.gradle.plugin-1.0.0.jar]
+Resolved plugin [id: 'org.gradle.toolchains.foojay-resolver-convention', version: '1.0.0']
+Settings evaluated using settings file '/app/settings.gradle'.
+Projects loaded. Root project using build file '/app/build.gradle'.
+Included projects: [root project 'stateful-order-fill', project ':common', project ':db-centric', project ':flink', project ':kafka-streams']
+
+> Configure project :
+Evaluating root project 'stateful-order-fill' using build file '/app/build.gradle'.
+Resolved plugin [id: 'java']
+Resolved plugin [id: 'idea']
+
+> Configure project :common
+Evaluating project ':common' using build file '/app/common/build.gradle'.
+Resolved plugin [id: 'java']
+Resolved plugin [id: 'java-test-fixtures']
+
+> Configure project :db-centric
+Evaluating project ':db-centric' using build file '/app/db-centric/build.gradle'.
+Resource missing. [HTTP HEAD: https://plugins.gradle.org/m2/org/springframework/boot/org.springframework.boot.gradle.plugin/3.5.6/org.springframework.boot.gradle.plugin-3.5.6.jar]
+Resolved plugin [id: 'org.springframework.boot', version: '3.5.6']
+Resource missing. [HTTP HEAD: https://plugins.gradle.org/m2/io/spring/dependency-management/io.spring.dependency-management.gradle.plugin/1.1.7/io.spring.dependency-management.gradle.plugin-1.1.7.jar]
+Resolved plugin [id: 'io.spring.dependency-management', version: '1.1.7']
+Applying dependency management to configuration 'annotationProcessor' in project 'db-centric'
+Applying dependency management to configuration 'apiElements' in project 'db-centric'
+Applying dependency management to configuration 'archives' in project 'db-centric'
+Applying dependency management to configuration 'bootArchives' in project 'db-centric'
+Applying dependency management to configuration 'compileClasspath' in project 'db-centric'
+Applying dependency management to configuration 'compileOnly' in project 'db-centric'
+Applying dependency management to configuration 'default' in project 'db-centric'
+Applying dependency management to configuration 'developmentOnly' in project 'db-centric'
+Applying dependency management to configuration 'implementation' in project 'db-centric'
+Applying dependency management to configuration 'mainSourceElements' in project 'db-centric'
+Applying dependency management to configuration 'productionRuntimeClasspath' in project 'db-centric'
+Applying dependency management to configuration 'runtimeClasspath' in project 'db-centric'
+Applying dependency management to configuration 'runtimeElements' in project 'db-centric'
+Applying dependency management to configuration 'runtimeOnly' in project 'db-centric'
+Applying dependency management to configuration 'testAndDevelopmentOnly' in project 'db-centric'
+Applying dependency management to configuration 'testAnnotationProcessor' in project 'db-centric'
+Applying dependency management to configuration 'testCompileClasspath' in project 'db-centric'
+Applying dependency management to configuration 'testCompileOnly' in project 'db-centric'
+Applying dependency management to configuration 'testImplementation' in project 'db-centric'
+Applying dependency management to configuration 'testResultsElementsForTest' in project 'db-centric'
+Applying dependency management to configuration 'testRuntimeClasspath' in project 'db-centric'
+Applying dependency management to configuration 'testRuntimeOnly' in project 'db-centric'
+Starting process 'command '/home/gradle/.gradle/jdks/eclipse_adoptium-17-aarch64-linux.2/bin/java''. Working directory: /home/gradle/.gradle/.tmp/tmp-jvm5520718393233340394probe Command: /home/gradle/.gradle/jdks/eclipse_adoptium-17-aarch64-linux.2/bin/java -Xmx32m -Xms32m -cp . JavaProbe
+Successfully started process 'command '/home/gradle/.gradle/jdks/eclipse_adoptium-17-aarch64-linux.2/bin/java''
+Received JVM installation metadata from '/home/gradle/.gradle/jdks/eclipse_adoptium-17-aarch64-linux.2': {JAVA_HOME=/home/gradle/.gradle/jdks/eclipse_adoptium-17-aarch64-linux.2, JAVA_VERSION=17.0.21, JAVA_VENDOR=Eclipse Adoptium, RUNTIME_NAME=OpenJDK Runtime Environment, RUNTIME_VERSION=17.0.21+9, VM_NAME=OpenJDK 64-Bit Server VM, VM_VERSION=17.0.21+9, VM_VENDOR=Eclipse Adoptium, OS_ARCH=aarch64}
+
+> Configure project :flink
+Evaluating project ':flink' using build file '/app/flink/build.gradle'.
+Resolved plugin [id: 'java']
+Resolved plugin [id: 'application']
+Resource missing. [HTTP HEAD: https://plugins.gradle.org/m2/com/gradleup/shadow/com.gradleup.shadow.gradle.plugin/9.4.2/com.gradleup.shadow.gradle.plugin-9.4.2.jar]
+Resolved plugin [id: 'com.gradleup.shadow', version: '9.4.2']
+Skipping Develocity integration for Shadow plugin.
+Setting org.gradle.jvm.version attribute for shadowRuntimeElements configuration.
+Setting target JVM version to 17 for shadowRuntimeElements configuration.
+Adding shadowRuntimeElements variant to Java component.
+
+> Configure project :kafka-streams
+Evaluating project ':kafka-streams' using build file '/app/kafka-streams/build.gradle'.
+Resolved plugin [id: 'org.springframework.boot', version: '3.5.6']
+Resolved plugin [id: 'io.spring.dependency-management', version: '1.1.7']
+Applying dependency management to configuration 'annotationProcessor' in project 'kafka-streams'
+Applying dependency management to configuration 'apiElements' in project 'kafka-streams'
+Applying dependency management to configuration 'archives' in project 'kafka-streams'
+Applying dependency management to configuration 'bootArchives' in project 'kafka-streams'
+Applying dependency management to configuration 'compileClasspath' in project 'kafka-streams'
+Applying dependency management to configuration 'compileOnly' in project 'kafka-streams'
+Applying dependency management to configuration 'default' in project 'kafka-streams'
+Applying dependency management to configuration 'developmentOnly' in project 'kafka-streams'
+Applying dependency management to configuration 'implementation' in project 'kafka-streams'
+Applying dependency management to configuration 'mainSourceElements' in project 'kafka-streams'
+Applying dependency management to configuration 'productionRuntimeClasspath' in project 'kafka-streams'
+Applying dependency management to configuration 'runtimeClasspath' in project 'kafka-streams'
+Applying dependency management to configuration 'runtimeElements' in project 'kafka-streams'
+Applying dependency management to configuration 'runtimeOnly' in project 'kafka-streams'
+Applying dependency management to configuration 'testAndDevelopmentOnly' in project 'kafka-streams'
+Applying dependency management to configuration 'testAnnotationProcessor' in project 'kafka-streams'
+Applying dependency management to configuration 'testCompileClasspath' in project 'kafka-streams'
+Applying dependency management to configuration 'testCompileOnly' in project 'kafka-streams'
+Applying dependency management to configuration 'testImplementation' in project 'kafka-streams'
+Applying dependency management to configuration 'testResultsElementsForTest' in project 'kafka-streams'
+Applying dependency management to configuration 'testRuntimeClasspath' in project 'kafka-streams'
+Applying dependency management to configuration 'testRuntimeOnly' in project 'kafka-streams'
+All projects evaluated.
+Task path ':kafka-streams:test' matched project ':kafka-streams'
+Task name matched 'test'
+Selected primary task 'test' from project :kafka-streams
+Resolving global dependency management for project 'kafka-streams'
+Excluding []
+Excluding []
+Excluding []
+Excluding []
+Excluding []
+Excluding []
+Tasks to be executed: [task ':common:compileJava', task ':common:processResources', task ':common:classes', task ':common:jar', task ':kafka-streams:compileJava', task ':kafka-streams:processResources', task ':kafka-streams:classes', task ':kafka-streams:compileTestJava', task ':kafka-streams:processTestResources', task ':kafka-streams:testClasses', task ':kafka-streams:test']
+Tasks that were excluded: []
+Downloading https://repo.maven.apache.org/maven2/org/apache/kafka/kafka-storage/3.9.1/kafka-storage-3.9.1.jar to /home/gradle/.gradle/.tmp/gradle_download4791387000477001480bin
+Downloading https://repo.maven.apache.org/maven2/org/apache/kafka/kafka-group-coordinator/3.9.1/kafka-group-coordinator-3.9.1.jar to /home/gradle/.gradle/.tmp/gradle_download17922275148694674445bin
+Downloading https://repo.maven.apache.org/maven2/org/apache/kafka/kafka-storage-api/3.9.1/kafka-storage-api-3.9.1.jar to /home/gradle/.gradle/.tmp/gradle_download10597893402670346680bin
+Downloading https://repo.maven.apache.org/maven2/org/apache/kafka/kafka-raft/3.9.1/kafka-raft-3.9.1.jar to /home/gradle/.gradle/.tmp/gradle_download3571773425262329105bin
+Downloading https://repo.maven.apache.org/maven2/org/apache/kafka/kafka-transaction-coordinator/3.9.1/kafka-transaction-coordinator-3.9.1.jar to /home/gradle/.gradle/.tmp/gradle_download8717039550598455607bin
+Downloading https://repo.maven.apache.org/maven2/com/fasterxml/jackson/module/jackson-module-scala_2.13/2.22.4/jackson-module-scala_2.13-2.22.4.jar to /home/gradle/.gradle/.tmp/gradle_download16909599927692083479bin
+Downloading https://repo.maven.apache.org/maven2/com/fasterxml/jackson/dataformat/jackson-dataformat-csv/2.22.4/jackson-dataformat-csv-2.22.4.jar to /home/gradle/.gradle/.tmp/gradle_download13079223925355325791bin
+Downloading https://repo.maven.apache.org/maven2/org/apache/kafka/kafka-group-coordinator-api/3.9.1/kafka-group-coordinator-api-3.9.1.jar to /home/gradle/.gradle/.tmp/gradle_download7347490338934175564bin
+Downloading https://repo.maven.apache.org/maven2/org/apache/kafka/kafka-tools-api/3.9.1/kafka-tools-api-3.9.1.jar to /home/gradle/.gradle/.tmp/gradle_download16099412461297768405bin
+Downloading https://repo.maven.apache.org/maven2/com/yammer/metrics/metrics-core/2.2.0/metrics-core-2.2.0.jar to /home/gradle/.gradle/.tmp/gradle_download6628681692935409221bin
+Downloading https://repo.maven.apache.org/maven2/org/bitbucket/b_c/jose4j/0.9.4/jose4j-0.9.4.jar to /home/gradle/.gradle/.tmp/gradle_download7992876947236854492bin
+Downloading https://repo.maven.apache.org/maven2/com/typesafe/scala-logging/scala-logging_2.13/3.9.5/scala-logging_2.13-3.9.5.jar to /home/gradle/.gradle/.tmp/gradle_download15011135461951637469bin
+Downloading https://repo.maven.apache.org/maven2/io/dropwizard/metrics/metrics-core/4.1.12.1/metrics-core-4.1.12.1.jar to /home/gradle/.gradle/.tmp/gradle_download1520489619313545639bin
+Downloading https://repo.maven.apache.org/maven2/org/junit/jupiter/junit-jupiter-engine/5.12.2/junit-jupiter-engine-5.12.2.jar to /home/gradle/.gradle/.tmp/gradle_download14920517964396566504bin
+Downloading https://repo.maven.apache.org/maven2/org/objenesis/objenesis/3.3/objenesis-3.3.jar to /home/gradle/.gradle/.tmp/gradle_download12949890539552444207bin
+Downloading https://repo.maven.apache.org/maven2/com/github/luben/zstd-jni/1.5.6-4/zstd-jni-1.5.6-4.jar to /home/gradle/.gradle/.tmp/gradle_download5722034071180311517bin
+Downloading https://repo.maven.apache.org/maven2/org/lz4/lz4-java/1.8.0/lz4-java-1.8.0.jar to /home/gradle/.gradle/.tmp/gradle_download9561091790038788470bin
+Downloading https://repo.maven.apache.org/maven2/org/xerial/snappy/snappy-java/1.1.10.5/snappy-java-1.1.10.5.jar to /home/gradle/.gradle/.tmp/gradle_download17222618338256272137bin
+Downloading https://repo.maven.apache.org/maven2/commons-io/commons-io/2.14.0/commons-io-2.14.0.jar to /home/gradle/.gradle/.tmp/gradle_download17357639122059333868bin
+Downloading https://repo.maven.apache.org/maven2/net/sf/jopt-simple/jopt-simple/5.0.4/jopt-simple-5.0.4.jar to /home/gradle/.gradle/.tmp/gradle_download51599414681172472bin
+Downloading https://repo.maven.apache.org/maven2/org/pcollections/pcollections/4.0.1/pcollections-4.0.1.jar to /home/gradle/.gradle/.tmp/gradle_download10702760564590163602bin
+Downloading https://repo.maven.apache.org/maven2/net/sourceforge/argparse4j/argparse4j/0.7.0/argparse4j-0.7.0.jar to /home/gradle/.gradle/.tmp/gradle_download3074965849809215874bin
+Downloading https://repo.maven.apache.org/maven2/commons-validator/commons-validator/1.7/commons-validator-1.7.jar to /home/gradle/.gradle/.tmp/gradle_download1694425067141956865bin
+Downloading https://repo.maven.apache.org/maven2/org/scala-lang/modules/scala-collection-compat_2.13/2.10.0/scala-collection-compat_2.13-2.10.0.jar to /home/gradle/.gradle/.tmp/gradle_download4286766758431943806bin
+Downloading https://repo.maven.apache.org/maven2/org/scala-lang/modules/scala-java8-compat_2.13/1.0.2/scala-java8-compat_2.13-1.0.2.jar to /home/gradle/.gradle/.tmp/gradle_download1661170482402810240bin
+Downloading https://repo.maven.apache.org/maven2/org/scala-lang/scala-reflect/2.13.15/scala-reflect-2.13.15.jar to /home/gradle/.gradle/.tmp/gradle_download9159109653718579138bin
+Downloading https://repo.maven.apache.org/maven2/commons-cli/commons-cli/1.4/commons-cli-1.4.jar to /home/gradle/.gradle/.tmp/gradle_download16643718516000269368bin
+Downloading https://repo.maven.apache.org/maven2/org/scala-lang/scala-library/2.13.18/scala-library-2.13.18.jar to /home/gradle/.gradle/.tmp/gradle_download17795017693795490179bin
+Downloading https://repo.maven.apache.org/maven2/com/github/ben-manes/caffeine/caffeine/3.2.2/caffeine-3.2.2.jar to /home/gradle/.gradle/.tmp/gradle_download9840112695030404830bin
+Downloading https://repo.maven.apache.org/maven2/commons-beanutils/commons-beanutils/1.9.4/commons-beanutils-1.9.4.jar to /home/gradle/.gradle/.tmp/gradle_download18015708611011355726bin
+Downloading https://repo.maven.apache.org/maven2/commons-digester/commons-digester/2.1/commons-digester-2.1.jar to /home/gradle/.gradle/.tmp/gradle_download15040984803851312741bin
+Downloading https://repo.maven.apache.org/maven2/org/jspecify/jspecify/1.0.0/jspecify-1.0.0.jar to /home/gradle/.gradle/.tmp/gradle_download16881519432360511710bin
+Downloading https://repo.maven.apache.org/maven2/com/thoughtworks/paranamer/paranamer/2.8.3/paranamer-2.8.3.jar to /home/gradle/.gradle/.tmp/gradle_download3269208960426108162bin
+Downloading https://repo.maven.apache.org/maven2/com/google/errorprone/error_prone_annotations/2.40.0/error_prone_annotations-2.40.0.jar to /home/gradle/.gradle/.tmp/gradle_download3276079096598378034bin
+Ignoring listeners of task graph ready event, as this build (:) has already executed work.
+Resolve mutations for :common:compileJava (Thread[#81,included builds,5,main]) started.
+Resolve mutations for :common:processResources (Thread[#82,Execution worker,5,main]) started.
+:common:processResources (Thread[#82,Execution worker,5,main]) started.
+:common:compileJava (Thread[#81,included builds,5,main]) started.
+
+> Task :common:processResources NO-SOURCE
+Skipping task ':common:processResources' as it has no source files and no previous output files.
+Resolve mutations for :kafka-streams:processResources (Thread[#82,Execution worker,5,main]) started.
+:kafka-streams:processResources (Thread[#82,Execution worker,5,main]) started.
+
+> Task :kafka-streams:processResources
+Caching disabled for task ':kafka-streams:processResources' because:
+  Build cache is disabled
+  Not worth caching
+Task ':kafka-streams:processResources' is not up-to-date because:
+  No history is available.
+Resolve mutations for :kafka-streams:processTestResources (Thread[#82,Execution worker,5,main]) started.
+:kafka-streams:processTestResources (Thread[#82,Execution worker,5,main]) started.
+
+> Task :kafka-streams:processTestResources
+Caching disabled for task ':kafka-streams:processTestResources' because:
+  Build cache is disabled
+  Not worth caching
+Task ':kafka-streams:processTestResources' is not up-to-date because:
+  No history is available.
+This JVM does not support getting OS memory, so no OS memory status updates will be broadcast
+
+> Task :common:compileJava
+Caching disabled for task ':common:compileJava' because:
+  Build cache is disabled
+Task ':common:compileJava' is not up-to-date because:
+  No history is available.
+The input changes require a full rebuild for incremental task ':common:compileJava'.
+Compilation mode: default, forking compiler
+Full recompilation is required because no incremental change information is available. This is usually caused by clean builds or changing compiler arguments.
+Compiling with toolchain '/home/gradle/.gradle/jdks/eclipse_adoptium-17-aarch64-linux.2'.
+Starting process 'Gradle Worker Daemon 1'. Working directory: /home/gradle/.gradle/workers Command: /home/gradle/.gradle/jdks/eclipse_adoptium-17-aarch64-linux.2/bin/java --add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED @/home/gradle/.gradle/.tmp/gradle-worker-classpath10913882254724166191txt -Xmx512m -Dfile.encoding=UTF-8 -Duser.country=US -Duser.language=en -Duser.variant worker.org.gradle.process.internal.worker.GradleWorkerMain 'Gradle Worker Daemon 1'
+Successfully started process 'Gradle Worker Daemon 1'
+Started Gradle worker daemon (0.189 secs) with fork options DaemonForkOptions{executable=/home/gradle/.gradle/jdks/eclipse_adoptium-17-aarch64-linux.2/bin/java, minHeapSize=null, maxHeapSize=null, jvmArgs=[--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED, --add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED], keepAliveMode=DAEMON}.
+Compiling with JDK Java compiler API.
+Class dependency analysis for incremental compilation took 0.01 secs.
+Created classpath snapshot for incremental compilation in 0.401 secs.
+Resolve mutations for :common:classes (Thread[#81,included builds,5,main]) started.
+:common:classes (Thread[#81,included builds,5,main]) started.
+
+> Task :common:classes
+Skipping task ':common:classes' as it has no actions.
+Resolve mutations for :common:jar (Thread[#81,included builds,5,main]) started.
+:common:jar (Thread[#81,included builds,5,main]) started.
+
+> Task :common:jar
+Caching disabled for task ':common:jar' because:
+  Build cache is disabled
+  Not worth caching
+Task ':common:jar' is not up-to-date because:
+  Input property 'rootSpec$1' file /app/common/build/classes/java/main/org has been added.
+  Input property 'rootSpec$1' file /app/common/build/classes/java/main/org/example has been added.
+  Input property 'rootSpec$1' file /app/common/build/classes/java/main/org/example/order has been added.
+  and more...
+file or directory '/app/common/build/resources/main', not found
+work action resolve common-1.0-SNAPSHOT.jar (project :common) (Thread[#81,included builds,5,main]) started.
+Resolve mutations for :kafka-streams:compileJava (Thread[#81,included builds,5,main]) started.
+:kafka-streams:compileJava (Thread[#81,included builds,5,main]) started.
+
+> Task :kafka-streams:compileJava
+Caching disabled for task ':kafka-streams:compileJava' because:
+  Build cache is disabled
+Task ':kafka-streams:compileJava' is not up-to-date because:
+  No history is available.
+The input changes require a full rebuild for incremental task ':kafka-streams:compileJava'.
+Compilation mode: in-process compilation
+Full recompilation is required because no incremental change information is available. This is usually caused by clean builds or changing compiler arguments.
+Compiling with toolchain '/opt/java/openjdk'.
+Compiling with JDK Java compiler API.
+Class dependency analysis for incremental compilation took 0.002 secs.
+Created classpath snapshot for incremental compilation in 1.803 secs.
+Resolve mutations for :kafka-streams:classes (Thread[#81,included builds,5,main]) started.
+:kafka-streams:classes (Thread[#81,included builds,5,main]) started.
+
+> Task :kafka-streams:classes
+Skipping task ':kafka-streams:classes' as it has no actions.
+Resolve mutations for :kafka-streams:compileTestJava (Thread[#81,included builds,5,main]) started.
+:kafka-streams:compileTestJava (Thread[#81,included builds,5,main]) started.
+
+> Task :kafka-streams:compileTestJava
+Caching disabled for task ':kafka-streams:compileTestJava' because:
+  Build cache is disabled
+Task ':kafka-streams:compileTestJava' is not up-to-date because:
+  No history is available.
+The input changes require a full rebuild for incremental task ':kafka-streams:compileTestJava'.
+Compilation mode: in-process compilation
+Full recompilation is required because no incremental change information is available. This is usually caused by clean builds or changing compiler arguments.
+Compiling with toolchain '/opt/java/openjdk'.
+Compiling with JDK Java compiler API.
+Class dependency analysis for incremental compilation took 0.002 secs.
+Created classpath snapshot for incremental compilation in 1.917 secs.
+Resolve mutations for :kafka-streams:testClasses (Thread[#81,included builds,5,main]) started.
+:kafka-streams:testClasses (Thread[#81,included builds,5,main]) started.
+
+> Task :kafka-streams:testClasses
+Skipping task ':kafka-streams:testClasses' as it has no actions.
+Resolve mutations for :kafka-streams:test (Thread[#81,included builds,5,main]) started.
+:kafka-streams:test (Thread[#81,included builds,5,main]) started.
+Gradle Test Executor 2 started executing tests.
+
+> Task :kafka-streams:test
+Caching disabled for task ':kafka-streams:test' because:
+  Build cache is disabled
+Task ':kafka-streams:test' is not up-to-date because:
+  No history is available.
+Starting process 'Gradle Test Executor 2'. Working directory: /app/kafka-streams Command: /opt/java/openjdk/bin/java -Dkafka.bootstrapServers=kafka-broker:29092 -Dorg.gradle.internal.worker.tmpdir=/app/kafka-streams/build/tmp/test/work --enable-native-access=ALL-UNNAMED @/home/gradle/.gradle/.tmp/gradle-worker-classpath7343409042809152926txt -Xmx1g -Dfile.encoding=UTF-8 -Duser.country=US -Duser.language=en -Duser.variant -ea worker.org.gradle.process.internal.worker.GradleWorkerMain 'Gradle Test Executor 2'
+Successfully started process 'Gradle Test Executor 2'
+
+OrderLifecycleKafkaScenarioTest > testParentOrderFill() STANDARD_OUT
+    20:17:33.479 INFO  o.e.o.l.p.i.OrderLifecycleKafkaScenarioTest - Loaded configuration - Bootstrap servers: kafka-broker:29092, Topic: org.example.order.executions, Verification Topic: org.example.order.verification
+    20:17:33.795 INFO  o.e.o.l.p.i.OrderLifecycleKafkaScenarioTest - Verification consumer positioned at the end of partitions: [org.example.order.verification-0, org.example.order.verification-1, org.example.order.verification-2, org.example.order.verification-3, org.example.order.verification-4, org.example.order.verification-5]
+    20:17:33.796 INFO  o.e.o.l.p.i.OrderLifecycleKafkaScenarioTest - Running testParentOrderFill 10000 iteration(s)
+    20:17:35.811 INFO  o.e.o.l.p.i.OrderLifecycleKafkaScenarioTest - SCENARIO_RESULT scenario=parent-order-fill messages=50000 verificationRecords=10000 hierarchyKeys=10000 processors=4 inputSubmissionMs=1697 drainAfterSubmissionMs=316 endToEndMs=2013 processingWindowMs=1767 endToEndMsgPerSec=24838.55 processingInputMsgPerSec=28296.55 completedHierarchiesPerSec=5659.31 processorDistribution={flink-taskmanager-cbc66f55c-4vdtc-subtask-1=2503, flink-taskmanager-cbc66f55c-9bh8t-subtask-2=2485, flink-taskmanager-cbc66f55c-pqhkm-subtask-0=2541, flink-taskmanager-cbc66f55c-vcbnw-subtask-3=2471}
+
+Gradle Test Executor 2 finished executing tests.
+
+> Task :kafka-streams:test
+Finished generating test XML results (0.004 secs) into: /app/kafka-streams/build/test-results/test
+Generating HTML test report...
+Finished generating test html results (0.009 secs) into: /app/kafka-streams/build/reports/tests/test
+
+See the complete report at file:///app/build/reports/configuration-cache/67jgqi3hfqy0qcffs987vilqr/cmaboqeasmos3zc2yiowisx9o/configuration-cache-report.html
+
+BUILD SUCCESSFUL in 18s
+7 actionable tasks: 7 executed
+Some of the file system contents retained in the virtual file system are on file systems that Gradle doesn't support watching. The relevant state was discarded to ensure changes to these locations are properly detected. You can override this by explicitly enabling file system watching.
+Configuration cache entry stored.
+Configuration Cache (/app/.gradle/configuration-cache) removing files not accessed on or after Fri Oct 23 20:17:36 UTC 2026.
+Configuration Cache (/app/.gradle/configuration-cache) cleanup deleted 0 files/directories.
+Configuration Cache (/app/.gradle/configuration-cache) cleaned up in 0.002 secs.
+VCS Checkout Cache (/app/.gradle/vcs-1) removing files not accessed on or after Fri Oct 23 20:17:36 UTC 2026.
+VCS Checkout Cache (/app/.gradle/vcs-1) cleanup deleted 0 files/directories.
+VCS Checkout Cache (/app/.gradle/vcs-1) cleaned up in 0.001 secs.
+dependencies-accessors (/home/gradle/.gradle/caches/9.2.1/dependencies-accessors) removing files not accessed on or after Fri Oct 23 20:17:36 UTC 2026.
+dependencies-accessors (/home/gradle/.gradle/caches/9.2.1/dependencies-accessors) cleanup deleted 0 files/directories.
+dependencies-accessors (/home/gradle/.gradle/caches/9.2.1/dependencies-accessors) cleaned up in 0.0 secs.
+
+===== flink-10k-cycle-3 measurement-10k =====
+Initialized native services in: /home/gradle/.gradle/native
+Initialized jansi services in: /home/gradle/.gradle/native
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.2.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Starting process 'Gradle build daemon'. Working directory: /home/gradle/.gradle/daemon/9.2.1 Command: /opt/java/openjdk/bin/java --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.invoke=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.prefs/java.util.prefs=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.prefs/java.util.prefs=ALL-UNNAMED --add-opens=java.base/java.nio.charset=ALL-UNNAMED --add-opens=java.base/java.net=ALL-UNNAMED --add-opens=java.base/java.util.concurrent=ALL-UNNAMED --add-opens=java.base/java.util.concurrent.atomic=ALL-UNNAMED --add-opens=java.xml/javax.xml.namespace=ALL-UNNAMED --add-opens=java.base/java.time=ALL-UNNAMED --enable-native-access=ALL-UNNAMED -XX:MaxMetaspaceSize=384m -XX:+HeapDumpOnOutOfMemoryError -Xms256m -Xmx512m -Dfile.encoding=UTF-8 -Duser.country=US -Duser.language=en -Duser.variant -cp /root/.gradle/wrapper/dists/gradle-9.2.1-bin/2t0n5ozlw9xmuyvbp7dnzaxug/gradle-9.2.1/lib/gradle-daemon-main-9.2.1.jar -javaagent:/root/.gradle/wrapper/dists/gradle-9.2.1-bin/2t0n5ozlw9xmuyvbp7dnzaxug/gradle-9.2.1/lib/agents/gradle-instrumentation-agent-9.2.1.jar org.gradle.launcher.daemon.bootstrap.GradleDaemon 9.2.1
+Successfully started process 'Gradle build daemon'
+An attempt to start the daemon took 0.459 secs.
+The client will now receive all logging from the daemon (pid: 38). The daemon log file: /home/gradle/.gradle/daemon/9.2.1/daemon-38.out.log
+Daemon will be stopped at the end of the build 
+Using 2 worker leases.
+Operational build model parameters: {requiresToolingModels=false, parallelProjectExecution=false, configureOnDemand=false, configurationCache=true, configurationCacheParallelStore=false, configurationCacheParallelLoad=true, isolatedProjects=false, parallelProjectConfiguration=false, intermediateModelCache=false, parallelToolingApiActions=false, invalidateCoupledProjects=false, modelAsProjectDependency=false, resilientModelBuilding=false}
+Received JVM installation metadata from '/opt/java/openjdk': {JAVA_HOME=/opt/java/openjdk, JAVA_VERSION=25.0.3, JAVA_VENDOR=Eclipse Adoptium, RUNTIME_NAME=OpenJDK Runtime Environment, RUNTIME_VERSION=25.0.3+9-LTS, VM_NAME=OpenJDK 64-Bit Server VM, VM_VERSION=25.0.3+9-LTS, VM_VENDOR=Eclipse Adoptium, OS_ARCH=aarch64}
+Encryption key source: default Gradle keystore (pkcs12)
+Calculating task graph as no cached configuration is available for tasks: :kafka-streams:test --tests org.example.order.lifecycle.processor.integration.OrderLifecycleKafkaScenarioTest.testParentOrderFill
+Watching the file system is configured to be enabled if available
+Not watching /app since the file system is not supported
+File system watching is active
+Starting Build
+Resource missing. [HTTP HEAD: https://plugins.gradle.org/m2/org/gradle/toolchains/foojay-resolver-convention/org.gradle.toolchains.foojay-resolver-convention.gradle.plugin/1.0.0/org.gradle.toolchains.foojay-resolver-convention.gradle.plugin-1.0.0.jar]
+Resolved plugin [id: 'org.gradle.toolchains.foojay-resolver-convention', version: '1.0.0']
+Settings evaluated using settings file '/app/settings.gradle'.
+Projects loaded. Root project using build file '/app/build.gradle'.
+Included projects: [root project 'stateful-order-fill', project ':common', project ':db-centric', project ':flink', project ':kafka-streams']
+
+> Configure project :
+Evaluating root project 'stateful-order-fill' using build file '/app/build.gradle'.
+Resolved plugin [id: 'java']
+Resolved plugin [id: 'idea']
+
+> Configure project :common
+Evaluating project ':common' using build file '/app/common/build.gradle'.
+Resolved plugin [id: 'java']
+Resolved plugin [id: 'java-test-fixtures']
+
+> Configure project :db-centric
+Evaluating project ':db-centric' using build file '/app/db-centric/build.gradle'.
+Resource missing. [HTTP HEAD: https://plugins.gradle.org/m2/org/springframework/boot/org.springframework.boot.gradle.plugin/3.5.6/org.springframework.boot.gradle.plugin-3.5.6.jar]
+Resolved plugin [id: 'org.springframework.boot', version: '3.5.6']
+Resource missing. [HTTP HEAD: https://plugins.gradle.org/m2/io/spring/dependency-management/io.spring.dependency-management.gradle.plugin/1.1.7/io.spring.dependency-management.gradle.plugin-1.1.7.jar]
+Resolved plugin [id: 'io.spring.dependency-management', version: '1.1.7']
+Applying dependency management to configuration 'annotationProcessor' in project 'db-centric'
+Applying dependency management to configuration 'apiElements' in project 'db-centric'
+Applying dependency management to configuration 'archives' in project 'db-centric'
+Applying dependency management to configuration 'bootArchives' in project 'db-centric'
+Applying dependency management to configuration 'compileClasspath' in project 'db-centric'
+Applying dependency management to configuration 'compileOnly' in project 'db-centric'
+Applying dependency management to configuration 'default' in project 'db-centric'
+Applying dependency management to configuration 'developmentOnly' in project 'db-centric'
+Applying dependency management to configuration 'implementation' in project 'db-centric'
+Applying dependency management to configuration 'mainSourceElements' in project 'db-centric'
+Applying dependency management to configuration 'productionRuntimeClasspath' in project 'db-centric'
+Applying dependency management to configuration 'runtimeClasspath' in project 'db-centric'
+Applying dependency management to configuration 'runtimeElements' in project 'db-centric'
+Applying dependency management to configuration 'runtimeOnly' in project 'db-centric'
+Applying dependency management to configuration 'testAndDevelopmentOnly' in project 'db-centric'
+Applying dependency management to configuration 'testAnnotationProcessor' in project 'db-centric'
+Applying dependency management to configuration 'testCompileClasspath' in project 'db-centric'
+Applying dependency management to configuration 'testCompileOnly' in project 'db-centric'
+Applying dependency management to configuration 'testImplementation' in project 'db-centric'
+Applying dependency management to configuration 'testResultsElementsForTest' in project 'db-centric'
+Applying dependency management to configuration 'testRuntimeClasspath' in project 'db-centric'
+Applying dependency management to configuration 'testRuntimeOnly' in project 'db-centric'
+
+> Configure project :flink
+Evaluating project ':flink' using build file '/app/flink/build.gradle'.
+Resolved plugin [id: 'java']
+Resolved plugin [id: 'application']
+Resource missing. [HTTP HEAD: https://plugins.gradle.org/m2/com/gradleup/shadow/com.gradleup.shadow.gradle.plugin/9.4.2/com.gradleup.shadow.gradle.plugin-9.4.2.jar]
+Resolved plugin [id: 'com.gradleup.shadow', version: '9.4.2']
+Skipping Develocity integration for Shadow plugin.
+Setting org.gradle.jvm.version attribute for shadowRuntimeElements configuration.
+Starting process 'command '/home/gradle/.gradle/jdks/eclipse_adoptium-17-aarch64-linux.2/bin/java''. Working directory: /home/gradle/.gradle/.tmp/tmp-jvm1136638826865039486probe Command: /home/gradle/.gradle/jdks/eclipse_adoptium-17-aarch64-linux.2/bin/java -Xmx32m -Xms32m -cp . JavaProbe
+Successfully started process 'command '/home/gradle/.gradle/jdks/eclipse_adoptium-17-aarch64-linux.2/bin/java''
+Received JVM installation metadata from '/home/gradle/.gradle/jdks/eclipse_adoptium-17-aarch64-linux.2': {JAVA_HOME=/home/gradle/.gradle/jdks/eclipse_adoptium-17-aarch64-linux.2, JAVA_VERSION=17.0.21, JAVA_VENDOR=Eclipse Adoptium, RUNTIME_NAME=OpenJDK Runtime Environment, RUNTIME_VERSION=17.0.21+9, VM_NAME=OpenJDK 64-Bit Server VM, VM_VERSION=17.0.21+9, VM_VENDOR=Eclipse Adoptium, OS_ARCH=aarch64}
+Setting target JVM version to 17 for shadowRuntimeElements configuration.
+Adding shadowRuntimeElements variant to Java component.
+
+> Configure project :kafka-streams
+Evaluating project ':kafka-streams' using build file '/app/kafka-streams/build.gradle'.
+Resolved plugin [id: 'org.springframework.boot', version: '3.5.6']
+Resolved plugin [id: 'io.spring.dependency-management', version: '1.1.7']
+Applying dependency management to configuration 'annotationProcessor' in project 'kafka-streams'
+Applying dependency management to configuration 'apiElements' in project 'kafka-streams'
+Applying dependency management to configuration 'archives' in project 'kafka-streams'
+Applying dependency management to configuration 'bootArchives' in project 'kafka-streams'
+Applying dependency management to configuration 'compileClasspath' in project 'kafka-streams'
+Applying dependency management to configuration 'compileOnly' in project 'kafka-streams'
+Applying dependency management to configuration 'default' in project 'kafka-streams'
+Applying dependency management to configuration 'developmentOnly' in project 'kafka-streams'
+Applying dependency management to configuration 'implementation' in project 'kafka-streams'
+Applying dependency management to configuration 'mainSourceElements' in project 'kafka-streams'
+Applying dependency management to configuration 'productionRuntimeClasspath' in project 'kafka-streams'
+Applying dependency management to configuration 'runtimeClasspath' in project 'kafka-streams'
+Applying dependency management to configuration 'runtimeElements' in project 'kafka-streams'
+Applying dependency management to configuration 'runtimeOnly' in project 'kafka-streams'
+Applying dependency management to configuration 'testAndDevelopmentOnly' in project 'kafka-streams'
+Applying dependency management to configuration 'testAnnotationProcessor' in project 'kafka-streams'
+Applying dependency management to configuration 'testCompileClasspath' in project 'kafka-streams'
+Applying dependency management to configuration 'testCompileOnly' in project 'kafka-streams'
+Applying dependency management to configuration 'testImplementation' in project 'kafka-streams'
+Applying dependency management to configuration 'testResultsElementsForTest' in project 'kafka-streams'
+Applying dependency management to configuration 'testRuntimeClasspath' in project 'kafka-streams'
+Applying dependency management to configuration 'testRuntimeOnly' in project 'kafka-streams'
+All projects evaluated.
+Task path ':kafka-streams:test' matched project ':kafka-streams'
+Task name matched 'test'
+Selected primary task 'test' from project :kafka-streams
+Resolving global dependency management for project 'kafka-streams'
+Excluding []
+Excluding []
+Excluding []
+Excluding []
+Excluding []
+Excluding []
+Tasks to be executed: [task ':common:compileJava', task ':common:processResources', task ':common:classes', task ':common:jar', task ':kafka-streams:compileJava', task ':kafka-streams:processResources', task ':kafka-streams:classes', task ':kafka-streams:compileTestJava', task ':kafka-streams:processTestResources', task ':kafka-streams:testClasses', task ':kafka-streams:test']
+Tasks that were excluded: []
+Downloading https://repo.maven.apache.org/maven2/org/apache/kafka/kafka-storage/3.9.1/kafka-storage-3.9.1.jar to /home/gradle/.gradle/.tmp/gradle_download3966778061074034108bin
+Downloading https://repo.maven.apache.org/maven2/org/apache/kafka/kafka-group-coordinator/3.9.1/kafka-group-coordinator-3.9.1.jar to /home/gradle/.gradle/.tmp/gradle_download3922119970803161771bin
+Downloading https://repo.maven.apache.org/maven2/org/apache/kafka/kafka-raft/3.9.1/kafka-raft-3.9.1.jar to /home/gradle/.gradle/.tmp/gradle_download178124439218735518bin
+Downloading https://repo.maven.apache.org/maven2/org/apache/kafka/kafka-storage-api/3.9.1/kafka-storage-api-3.9.1.jar to /home/gradle/.gradle/.tmp/gradle_download12473276013413650656bin
+Downloading https://repo.maven.apache.org/maven2/org/apache/kafka/kafka-transaction-coordinator/3.9.1/kafka-transaction-coordinator-3.9.1.jar to /home/gradle/.gradle/.tmp/gradle_download522976797223411441bin
+Downloading https://repo.maven.apache.org/maven2/com/fasterxml/jackson/module/jackson-module-scala_2.13/2.22.4/jackson-module-scala_2.13-2.22.4.jar to /home/gradle/.gradle/.tmp/gradle_download12589679389239460165bin
+Downloading https://repo.maven.apache.org/maven2/com/fasterxml/jackson/dataformat/jackson-dataformat-csv/2.22.4/jackson-dataformat-csv-2.22.4.jar to /home/gradle/.gradle/.tmp/gradle_download16419276197186898720bin
+Downloading https://repo.maven.apache.org/maven2/org/apache/kafka/kafka-group-coordinator-api/3.9.1/kafka-group-coordinator-api-3.9.1.jar to /home/gradle/.gradle/.tmp/gradle_download8765927684595454801bin
+Downloading https://repo.maven.apache.org/maven2/org/apache/kafka/kafka-tools-api/3.9.1/kafka-tools-api-3.9.1.jar to /home/gradle/.gradle/.tmp/gradle_download10618152145818564775bin
+Downloading https://repo.maven.apache.org/maven2/com/yammer/metrics/metrics-core/2.2.0/metrics-core-2.2.0.jar to /home/gradle/.gradle/.tmp/gradle_download15706657943877200603bin
+Downloading https://repo.maven.apache.org/maven2/org/bitbucket/b_c/jose4j/0.9.4/jose4j-0.9.4.jar to /home/gradle/.gradle/.tmp/gradle_download1373221698510941635bin
+Downloading https://repo.maven.apache.org/maven2/com/typesafe/scala-logging/scala-logging_2.13/3.9.5/scala-logging_2.13-3.9.5.jar to /home/gradle/.gradle/.tmp/gradle_download1471434191560016049bin
+Downloading https://repo.maven.apache.org/maven2/io/dropwizard/metrics/metrics-core/4.1.12.1/metrics-core-4.1.12.1.jar to /home/gradle/.gradle/.tmp/gradle_download4171928862575097906bin
+Downloading https://repo.maven.apache.org/maven2/org/junit/jupiter/junit-jupiter-engine/5.12.2/junit-jupiter-engine-5.12.2.jar to /home/gradle/.gradle/.tmp/gradle_download3539264444101384857bin
+Downloading https://repo.maven.apache.org/maven2/org/objenesis/objenesis/3.3/objenesis-3.3.jar to /home/gradle/.gradle/.tmp/gradle_download3414209223742661962bin
+Downloading https://repo.maven.apache.org/maven2/com/github/luben/zstd-jni/1.5.6-4/zstd-jni-1.5.6-4.jar to /home/gradle/.gradle/.tmp/gradle_download12848310543660493109bin
+Downloading https://repo.maven.apache.org/maven2/org/lz4/lz4-java/1.8.0/lz4-java-1.8.0.jar to /home/gradle/.gradle/.tmp/gradle_download753796887322384758bin
+Downloading https://repo.maven.apache.org/maven2/org/xerial/snappy/snappy-java/1.1.10.5/snappy-java-1.1.10.5.jar to /home/gradle/.gradle/.tmp/gradle_download1385270384139237437bin
+Downloading https://repo.maven.apache.org/maven2/commons-io/commons-io/2.14.0/commons-io-2.14.0.jar to /home/gradle/.gradle/.tmp/gradle_download17856441423804687852bin
+Downloading https://repo.maven.apache.org/maven2/net/sf/jopt-simple/jopt-simple/5.0.4/jopt-simple-5.0.4.jar to /home/gradle/.gradle/.tmp/gradle_download1491350688109547980bin
+Downloading https://repo.maven.apache.org/maven2/org/pcollections/pcollections/4.0.1/pcollections-4.0.1.jar to /home/gradle/.gradle/.tmp/gradle_download16504162881017591734bin
+Downloading https://repo.maven.apache.org/maven2/net/sourceforge/argparse4j/argparse4j/0.7.0/argparse4j-0.7.0.jar to /home/gradle/.gradle/.tmp/gradle_download14761537234114732355bin
+Downloading https://repo.maven.apache.org/maven2/commons-validator/commons-validator/1.7/commons-validator-1.7.jar to /home/gradle/.gradle/.tmp/gradle_download17914767146594277728bin
+Downloading https://repo.maven.apache.org/maven2/org/scala-lang/modules/scala-collection-compat_2.13/2.10.0/scala-collection-compat_2.13-2.10.0.jar to /home/gradle/.gradle/.tmp/gradle_download2348201114322475161bin
+Downloading https://repo.maven.apache.org/maven2/org/scala-lang/scala-reflect/2.13.15/scala-reflect-2.13.15.jar to /home/gradle/.gradle/.tmp/gradle_download17095965717877885705bin
+Downloading https://repo.maven.apache.org/maven2/org/scala-lang/modules/scala-java8-compat_2.13/1.0.2/scala-java8-compat_2.13-1.0.2.jar to /home/gradle/.gradle/.tmp/gradle_download2212836077281396927bin
+Downloading https://repo.maven.apache.org/maven2/commons-cli/commons-cli/1.4/commons-cli-1.4.jar to /home/gradle/.gradle/.tmp/gradle_download18245859042977497726bin
+Downloading https://repo.maven.apache.org/maven2/org/scala-lang/scala-library/2.13.18/scala-library-2.13.18.jar to /home/gradle/.gradle/.tmp/gradle_download2430573622167163902bin
+Downloading https://repo.maven.apache.org/maven2/com/github/ben-manes/caffeine/caffeine/3.2.2/caffeine-3.2.2.jar to /home/gradle/.gradle/.tmp/gradle_download7339148786197088672bin
+Downloading https://repo.maven.apache.org/maven2/commons-beanutils/commons-beanutils/1.9.4/commons-beanutils-1.9.4.jar to /home/gradle/.gradle/.tmp/gradle_download11406419863421769155bin
+Downloading https://repo.maven.apache.org/maven2/commons-digester/commons-digester/2.1/commons-digester-2.1.jar to /home/gradle/.gradle/.tmp/gradle_download17650689212763632762bin
+Downloading https://repo.maven.apache.org/maven2/com/thoughtworks/paranamer/paranamer/2.8.3/paranamer-2.8.3.jar to /home/gradle/.gradle/.tmp/gradle_download18040340853594866832bin
+Downloading https://repo.maven.apache.org/maven2/org/jspecify/jspecify/1.0.0/jspecify-1.0.0.jar to /home/gradle/.gradle/.tmp/gradle_download16467504454167921937bin
+Downloading https://repo.maven.apache.org/maven2/com/google/errorprone/error_prone_annotations/2.40.0/error_prone_annotations-2.40.0.jar to /home/gradle/.gradle/.tmp/gradle_download10295228801774283355bin
+Ignoring listeners of task graph ready event, as this build (:) has already executed work.
+Resolve mutations for :common:compileJava (Thread[#80,included builds,5,main]) started.
+Resolve mutations for :common:processResources (Thread[#81,Execution worker,5,main]) started.
+:common:processResources (Thread[#81,Execution worker,5,main]) started.
+:common:compileJava (Thread[#80,included builds,5,main]) started.
+
+> Task :common:processResources NO-SOURCE
+Skipping task ':common:processResources' as it has no source files and no previous output files.
+Resolve mutations for :kafka-streams:processResources (Thread[#81,Execution worker,5,main]) started.
+:kafka-streams:processResources (Thread[#81,Execution worker,5,main]) started.
+
+> Task :kafka-streams:processResources
+Caching disabled for task ':kafka-streams:processResources' because:
+  Build cache is disabled
+  Not worth caching
+Task ':kafka-streams:processResources' is not up-to-date because:
+  No history is available.
+Resolve mutations for :kafka-streams:processTestResources (Thread[#81,Execution worker,5,main]) started.
+:kafka-streams:processTestResources (Thread[#81,Execution worker,5,main]) started.
+
+> Task :kafka-streams:processTestResources
+Caching disabled for task ':kafka-streams:processTestResources' because:
+  Build cache is disabled
+  Not worth caching
+Task ':kafka-streams:processTestResources' is not up-to-date because:
+  No history is available.
+This JVM does not support getting OS memory, so no OS memory status updates will be broadcast
+
+> Task :common:compileJava
+Caching disabled for task ':common:compileJava' because:
+  Build cache is disabled
+Task ':common:compileJava' is not up-to-date because:
+  No history is available.
+The input changes require a full rebuild for incremental task ':common:compileJava'.
+Compilation mode: default, forking compiler
+Full recompilation is required because no incremental change information is available. This is usually caused by clean builds or changing compiler arguments.
+Compiling with toolchain '/home/gradle/.gradle/jdks/eclipse_adoptium-17-aarch64-linux.2'.
+Starting process 'Gradle Worker Daemon 1'. Working directory: /home/gradle/.gradle/workers Command: /home/gradle/.gradle/jdks/eclipse_adoptium-17-aarch64-linux.2/bin/java --add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED @/home/gradle/.gradle/.tmp/gradle-worker-classpath1770864350203849990txt -Xmx512m -Dfile.encoding=UTF-8 -Duser.country=US -Duser.language=en -Duser.variant worker.org.gradle.process.internal.worker.GradleWorkerMain 'Gradle Worker Daemon 1'
+Successfully started process 'Gradle Worker Daemon 1'
+Started Gradle worker daemon (0.219 secs) with fork options DaemonForkOptions{executable=/home/gradle/.gradle/jdks/eclipse_adoptium-17-aarch64-linux.2/bin/java, minHeapSize=null, maxHeapSize=null, jvmArgs=[--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED, --add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED], keepAliveMode=DAEMON}.
+Compiling with JDK Java compiler API.
+Class dependency analysis for incremental compilation took 0.009 secs.
+Created classpath snapshot for incremental compilation in 0.329 secs.
+Resolve mutations for :common:classes (Thread[#80,included builds,5,main]) started.
+:common:classes (Thread[#80,included builds,5,main]) started.
+
+> Task :common:classes
+Skipping task ':common:classes' as it has no actions.
+Resolve mutations for :common:jar (Thread[#80,included builds,5,main]) started.
+:common:jar (Thread[#80,included builds,5,main]) started.
+
+> Task :common:jar
+Caching disabled for task ':common:jar' because:
+  Build cache is disabled
+  Not worth caching
+Task ':common:jar' is not up-to-date because:
+  Input property 'rootSpec$1' file /app/common/build/classes/java/main/org has been added.
+  Input property 'rootSpec$1' file /app/common/build/classes/java/main/org/example has been added.
+  Input property 'rootSpec$1' file /app/common/build/classes/java/main/org/example/order has been added.
+  and more...
+file or directory '/app/common/build/resources/main', not found
+work action resolve common-1.0-SNAPSHOT.jar (project :common) (Thread[#80,included builds,5,main]) started.
+Resolve mutations for :kafka-streams:compileJava (Thread[#80,included builds,5,main]) started.
+:kafka-streams:compileJava (Thread[#80,included builds,5,main]) started.
+
+> Task :kafka-streams:compileJava
+Caching disabled for task ':kafka-streams:compileJava' because:
+  Build cache is disabled
+Task ':kafka-streams:compileJava' is not up-to-date because:
+  No history is available.
+The input changes require a full rebuild for incremental task ':kafka-streams:compileJava'.
+Compilation mode: in-process compilation
+Full recompilation is required because no incremental change information is available. This is usually caused by clean builds or changing compiler arguments.
+Compiling with toolchain '/opt/java/openjdk'.
+Compiling with JDK Java compiler API.
+Class dependency analysis for incremental compilation took 0.002 secs.
+Created classpath snapshot for incremental compilation in 1.596 secs.
+Resolve mutations for :kafka-streams:classes (Thread[#80,included builds,5,main]) started.
+:kafka-streams:classes (Thread[#80,included builds,5,main]) started.
+
+> Task :kafka-streams:classes
+Skipping task ':kafka-streams:classes' as it has no actions.
+Resolve mutations for :kafka-streams:compileTestJava (Thread[#80,included builds,5,main]) started.
+:kafka-streams:compileTestJava (Thread[#80,included builds,5,main]) started.
+
+> Task :kafka-streams:compileTestJava
+Caching disabled for task ':kafka-streams:compileTestJava' because:
+  Build cache is disabled
+Task ':kafka-streams:compileTestJava' is not up-to-date because:
+  No history is available.
+The input changes require a full rebuild for incremental task ':kafka-streams:compileTestJava'.
+Compilation mode: in-process compilation
+Full recompilation is required because no incremental change information is available. This is usually caused by clean builds or changing compiler arguments.
+Compiling with toolchain '/opt/java/openjdk'.
+Compiling with JDK Java compiler API.
+Class dependency analysis for incremental compilation took 0.003 secs.
+Created classpath snapshot for incremental compilation in 2.044 secs.
+Resolve mutations for :kafka-streams:testClasses (Thread[#80,included builds,5,main]) started.
+:kafka-streams:testClasses (Thread[#80,included builds,5,main]) started.
+
+> Task :kafka-streams:testClasses
+Skipping task ':kafka-streams:testClasses' as it has no actions.
+Resolve mutations for :kafka-streams:test (Thread[#80,included builds,5,main]) started.
+:kafka-streams:test (Thread[#80,included builds,5,main]) started.
+Gradle Test Executor 2 started executing tests.
+
+> Task :kafka-streams:test
+Caching disabled for task ':kafka-streams:test' because:
+  Build cache is disabled
+Task ':kafka-streams:test' is not up-to-date because:
+  No history is available.
+Starting process 'Gradle Test Executor 2'. Working directory: /app/kafka-streams Command: /opt/java/openjdk/bin/java -Dkafka.bootstrapServers=kafka-broker:29092 -Dorg.gradle.internal.worker.tmpdir=/app/kafka-streams/build/tmp/test/work --enable-native-access=ALL-UNNAMED @/home/gradle/.gradle/.tmp/gradle-worker-classpath105337024563363282txt -Xmx1g -Dfile.encoding=UTF-8 -Duser.country=US -Duser.language=en -Duser.variant -ea worker.org.gradle.process.internal.worker.GradleWorkerMain 'Gradle Test Executor 2'
+Successfully started process 'Gradle Test Executor 2'
+
+OrderLifecycleKafkaScenarioTest > testParentOrderFill() STANDARD_OUT
+    20:30:49.387 INFO  o.e.o.l.p.i.OrderLifecycleKafkaScenarioTest - Loaded configuration - Bootstrap servers: kafka-broker:29092, Topic: org.example.order.executions, Verification Topic: org.example.order.verification
+    20:30:50.192 INFO  o.e.o.l.p.i.OrderLifecycleKafkaScenarioTest - Verification consumer positioned at the end of partitions: [org.example.order.verification-0, org.example.order.verification-1, org.example.order.verification-2, org.example.order.verification-3, org.example.order.verification-4, org.example.order.verification-5]
+    20:30:50.193 INFO  o.e.o.l.p.i.OrderLifecycleKafkaScenarioTest - Running testParentOrderFill 10000 iteration(s)
+    20:30:52.088 INFO  o.e.o.l.p.i.OrderLifecycleKafkaScenarioTest - SCENARIO_RESULT scenario=parent-order-fill messages=50000 verificationRecords=10000 hierarchyKeys=10000 processors=4 inputSubmissionMs=1673 drainAfterSubmissionMs=220 endToEndMs=1894 processingWindowMs=1705 endToEndMsgPerSec=26399.16 processingInputMsgPerSec=29325.51 completedHierarchiesPerSec=5865.10 processorDistribution={flink-taskmanager-cbc66f55c-7lv9v-subtask-0=2543, flink-taskmanager-cbc66f55c-kjjs8-subtask-1=2517, flink-taskmanager-cbc66f55c-vp79j-subtask-3=2483, flink-taskmanager-cbc66f55c-znthz-subtask-2=2457}
+
+Gradle Test Executor 2 finished executing tests.
+
+> Task :kafka-streams:test
+Finished generating test XML results (0.005 secs) into: /app/kafka-streams/build/test-results/test
+Generating HTML test report...
+Finished generating test html results (0.008 secs) into: /app/kafka-streams/build/reports/tests/test
+
+See the complete report at file:///app/build/reports/configuration-cache/67jgqi3hfqy0qcffs987vilqr/cmaboqeasmos3zc2yiowisx9o/configuration-cache-report.html
+
+BUILD SUCCESSFUL in 19s
+7 actionable tasks: 7 executed
+Some of the file system contents retained in the virtual file system are on file systems that Gradle doesn't support watching. The relevant state was discarded to ensure changes to these locations are properly detected. You can override this by explicitly enabling file system watching.
+Configuration cache entry stored.
+Configuration Cache (/app/.gradle/configuration-cache) removing files not accessed on or after Fri Oct 23 20:30:52 UTC 2026.
+Configuration Cache (/app/.gradle/configuration-cache) cleanup deleted 0 files/directories.
+Configuration Cache (/app/.gradle/configuration-cache) cleaned up in 0.002 secs.
+VCS Checkout Cache (/app/.gradle/vcs-1) removing files not accessed on or after Fri Oct 23 20:30:52 UTC 2026.
+VCS Checkout Cache (/app/.gradle/vcs-1) cleanup deleted 0 files/directories.
+VCS Checkout Cache (/app/.gradle/vcs-1) cleaned up in 0.001 secs.
+dependencies-accessors (/home/gradle/.gradle/caches/9.2.1/dependencies-accessors) removing files not accessed on or after Fri Oct 23 20:30:52 UTC 2026.
+dependencies-accessors (/home/gradle/.gradle/caches/9.2.1/dependencies-accessors) cleanup deleted 0 files/directories.
+dependencies-accessors (/home/gradle/.gradle/caches/9.2.1/dependencies-accessors) cleaned up in 0.0 secs.
