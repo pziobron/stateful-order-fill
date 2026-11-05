@@ -20,6 +20,7 @@ services:
       context: ..
       dockerfile: db-centric/Dockerfile
     environment:
+      STATE_STORAGE: ${STATE_STORAGE:-relational}
       DB_URL: jdbc:postgresql://postgres:5432/order_lifecycle
       DB_USER: orders
       DB_PASSWORD: orders-local

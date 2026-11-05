@@ -6,7 +6,6 @@ import org.example.order.lifecycle.util.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -16,16 +15,16 @@ import org.springframework.transaction.support.TransactionTemplate;
 @Component
 public class CompletionPublisher {
     private static final Logger log = LoggerFactory.getLogger(CompletionPublisher.class);
-    private final JdbcTemplate jdbc;
+    private final CompletionStore store;
     private final TransactionTemplate transaction;
     private final CompletionSender sender;
     private final String topic;
     private final boolean enabled;
 
-    public CompletionPublisher(JdbcTemplate jdbc, PlatformTransactionManager manager, CompletionSender sender,
+    public CompletionPublisher(CompletionStore store, PlatformTransactionManager manager, CompletionSender sender,
                                @Value("${app.verification-topic}") String topic,
                                @Value("${app.publication-enabled:true}") boolean enabled) {
-        this.jdbc = jdbc;
+        this.store = store;
         this.transaction = new TransactionTemplate(manager);
         transaction.setTimeout(20);
         this.sender = sender;
@@ -48,19 +47,11 @@ public class CompletionPublisher {
 
     public boolean publishOne() {
         String publishedKey = transaction.execute(ignored -> {
-            var rows = jdbc.query("""
-                    SELECT hierarchy_key, completed_by, first_processed_at, completed_at
-                    FROM hierarchies
-                    WHERE completed_at IS NOT NULL AND published_at IS NULL
-                    ORDER BY completed_at, hierarchy_key
-                    LIMIT 1 FOR UPDATE SKIP LOCKED
-                    """, (rs, row) -> new VerificationRecord(rs.getString(1), rs.getString(2),
-                    rs.getTimestamp(3).toInstant(), rs.getTimestamp(4).toInstant()));
-            if (rows.isEmpty()) return null;
-            VerificationRecord record = rows.get(0);
+            var pending = store.lockNextCompletion();
+            if (pending.isEmpty()) return null;
+            VerificationRecord record = pending.get();
             sender.send(topic, record.hierarchyKey(), serialize(record));
-            jdbc.update("UPDATE hierarchies SET published_at=clock_timestamp() WHERE hierarchy_key=?",
-                    record.hierarchyKey());
+            store.markPublished(record.hierarchyKey());
             return record.hierarchyKey();
         });
         if (publishedKey == null) return false;

@@ -16,6 +16,7 @@ execution checklist for a later assisted run; creating them does not start tests
 - [Kafka Streams 10K scenario](kafka-streams-10k-scenario.md)
 - [Apache Flink 10K scenario with filesystem checkpoints](flink-10k-scenario.md)
 - [PostgreSQL DB-centric 10K scenario](db-centric-10k-scenario.md)
+- [Optional PostgreSQL JSONB variant](db-centric-jsonb-scenario.md)
 
 Each implementation needs three independent fresh cycles. Preserve the 1K
 warm-up state for its following 10K measurement. Never run two implementations

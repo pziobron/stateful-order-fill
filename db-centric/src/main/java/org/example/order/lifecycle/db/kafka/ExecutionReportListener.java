@@ -1,15 +1,15 @@
 package org.example.order.lifecycle.db.kafka;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.example.order.lifecycle.db.service.RelationalLifecycleProcessor;
+import org.example.order.lifecycle.db.service.LifecycleProcessor;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ExecutionReportListener {
-    private final RelationalLifecycleProcessor processor;
+    private final LifecycleProcessor processor;
 
-    public ExecutionReportListener(RelationalLifecycleProcessor processor) {
+    public ExecutionReportListener(LifecycleProcessor processor) {
         this.processor = processor;
     }
 

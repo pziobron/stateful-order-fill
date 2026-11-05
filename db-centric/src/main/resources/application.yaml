@@ -41,6 +41,7 @@ spring:
         request.timeout.ms: 5000
         max.block.ms: 10000
 app:
+  state-storage: ${STATE_STORAGE:relational}
   executions-topic: ${KAFKA_EXECUTIONS_TOPIC:org.example.order.executions}
   verification-topic: ${KAFKA_VERIFICATION_TOPIC:org.example.order.verification}
   processor-id: ${POD_ID:local-db-centric}

@@ -2,7 +2,10 @@
 
 The three implementations retain intermediate lifecycle state as events arrive.
 This document defines their shared behavior and the deployment differences that
-must be considered when comparing benchmark results.
+must be considered when comparing benchmark results. This document describes
+the measured relational DB baseline. The optional [JSONB variant](db-centric-jsonb-scenario.md)
+uses the shared Java aggregation service and its own document table, with the same
+per-event transactions, replay contract and completion publication loop.
 
 ## Facts and lifecycle behavior
 

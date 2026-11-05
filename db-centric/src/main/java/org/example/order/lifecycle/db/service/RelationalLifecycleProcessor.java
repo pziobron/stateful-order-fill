@@ -2,10 +2,10 @@ package org.example.order.lifecycle.db.service;
 
 import org.example.order.fix.model.ExecutionReport;
 import org.example.order.lifecycle.model.Fill;
-import org.example.order.lifecycle.util.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -18,7 +18,8 @@ import java.util.Objects;
 
 /** One transaction owns the hierarchy mutation and durable pending completion. */
 @Service
-public class RelationalLifecycleProcessor {
+@ConditionalOnProperty(name = "app.state-storage", havingValue = "relational", matchIfMissing = true)
+public class RelationalLifecycleProcessor implements LifecycleProcessor {
     private static final Logger log = LoggerFactory.getLogger(RelationalLifecycleProcessor.class);
     private final JdbcTemplate jdbc;
     private final TransactionTemplate transaction;
@@ -33,13 +34,11 @@ public class RelationalLifecycleProcessor {
         transaction.setTimeout(20);
     }
 
+    @Override
     public void process(String payload) {
         // This POC assumes reports satisfy the shared input contract.
         // Input-field validation is outside the benchmark scope.
-        ExecutionReport report = parseReport(payload);
-        if (report.getType() != 'O' && report.getType() != 'F') {
-            throw new IllegalArgumentException("Unsupported report type: " + report.getType());
-        }
+        ExecutionReport report = ExecutionReportParser.parse(payload);
         String key = report.getParentId() == null ? report.getOrderId() : report.getParentId();
 
         Boolean completed = transaction.execute(ignored -> {
@@ -52,16 +51,6 @@ public class RelationalLifecycleProcessor {
         if (Boolean.TRUE.equals(completed)) {
             log.info("Hierarchy completed; verification pending: hierarchy={}, processorId={}",
                     key, processorId);
-        }
-    }
-
-    private ExecutionReport parseReport(String payload) {
-        try {
-            return Objects.requireNonNull(
-                    JsonUtils.getObjectMapper().readValue(payload, ExecutionReport.class),
-                    "Execution report must not be null");
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Invalid execution report", e);
         }
     }
 

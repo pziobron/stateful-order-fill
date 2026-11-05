@@ -11,7 +11,8 @@ public class StartupConfig {
     @Bean
     ApplicationRunner describeProcessingConfiguration(Environment environment) {
         return arguments -> LoggerFactory.getLogger(StartupConfig.class).info(
-                "DB-centric config: bootstrapServers={}, executionsTopic={}, verificationTopic={}, processorId={}, consumerEnabled={}, group={}, consumers={}, pool={}, ackMode={}, autoCommit={}, publicationEnabled={}, publicationDelayMs={}",
+                "DB-centric config: stateStorage={}, bootstrapServers={}, executionsTopic={}, verificationTopic={}, processorId={}, consumerEnabled={}, group={}, consumers={}, pool={}, ackMode={}, autoCommit={}, publicationEnabled={}, publicationDelayMs={}",
+                environment.getProperty("app.state-storage"),
                 environment.getProperty("spring.kafka.bootstrap-servers"),
                 environment.getProperty("app.executions-topic"),
                 environment.getProperty("app.verification-topic"),

@@ -3,8 +3,16 @@
 `db-centric` consumes the same ExecutionReport JSON as Kafka Streams and Flink,
 maintains lifecycle state in relational PostgreSQL tables, and publishes the same
 VerificationRecord JSON to Kafka. PostgreSQL is the processing state store, not
-just a sink for another processor. Business quantities and statuses are calculated
-by SQL views; the processor does not reconstruct OrderState or call FillOrderService.
+just a sink for another processor. In the default relational mode, quantities
+and statuses are calculated by SQL views; that processor does not reconstruct
+OrderState or call FillOrderService.
+
+The default `STATE_STORAGE=relational` implementation is described below.
+An optional [JSONB variant](../docs/part6/db-centric-jsonb-scenario.md) stores one
+`OrderState` document per hierarchy and reuses common's `FillOrderService`.
+Select it with `STATE_STORAGE=jsonb`; the Kafka listener, transaction settings,
+publication loop, container image and resource limits are shared. Only the
+selected implementation consumes and publishes. Unknown storage values fail startup.
 
 ## Processing and correctness
 
@@ -176,6 +184,7 @@ budgets, clean rounds, and the limitations of the verifier.
 
 | Environment variable | Default | Meaning |
 |---|---|---|
+| STATE_STORAGE | relational | State model: relational or jsonb |
 | DB_URL | jdbc:postgresql://localhost:5432/order_lifecycle | JDBC database |
 | DB_USER / DB_PASSWORD | orders / orders-local | POC database credentials |
 | DB_POOL_SIZE | 4 | Total connections per application instance, including publisher |

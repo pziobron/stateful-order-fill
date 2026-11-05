@@ -74,7 +74,8 @@ A relational PostgreSQL implementation using:
 
 - JDBC transactions and Flyway migrations
 - Relational orders and fills with SQL quantity/status calculation
-- Per-hierarchy row locking and Kafka delivery deduplication
+- Optional JSONB lifecycle documents reusing the shared `FillOrderService`
+- Per-hierarchy row locking and business-key fill deduplication
 - Durable completion publication from hierarchy rows to the existing verification topic
 
 ➡ Module: [db-centric](db-centric/README.md)

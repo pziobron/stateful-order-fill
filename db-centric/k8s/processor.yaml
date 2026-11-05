@@ -21,6 +21,8 @@ spec:
           image: order-lifecycle-db-centric:latest
           imagePullPolicy: IfNotPresent
           env:
+            - name: STATE_STORAGE
+              value: relational
             - name: DB_URL
               value: jdbc:postgresql://db-centric-postgres:5432/order_lifecycle
             - name: DB_USER
