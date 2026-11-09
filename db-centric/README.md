@@ -116,7 +116,10 @@ pod alone does not prove that its consumer is running.
 
 ## Build and test
 
-Java 17 and a working Docker daemon are required for the new integration tests:
+JDK 25 and a working Docker daemon are required for the integration tests.
+Both relational and JSONB processors run on Java 25; the Docker image uses
+`eclipse-temurin:25-jre`. Historical Part 6 results used Java 17 and must be
+distinguished from new benchmark runs.
 
 ```bash
 ./gradlew :db-centric:test :db-centric:bootJar
