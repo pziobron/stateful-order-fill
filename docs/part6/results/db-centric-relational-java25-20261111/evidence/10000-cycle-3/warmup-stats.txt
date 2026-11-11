@@ -1,0 +1,10 @@
+10163903
+62576|1828|15938174
+||1
+Activity|WalWriterMain|1
+Activity|LogicalLauncherMain|1
+Activity|AutovacuumMain|1
+Client|ClientRead|16
+Activity|CheckpointerMain|1
+Activity|BgwriterMain|1
+Activity|IoWorkerMain|3

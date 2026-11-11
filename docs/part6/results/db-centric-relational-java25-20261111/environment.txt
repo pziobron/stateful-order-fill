@@ -1,0 +1,4 @@
+Docker Desktop Kubernetes v1.34.1, arm64, default namespace
+Docker VM CPUs=14 MemoryBytes=8216887296
+Metrics API not available; no continuous resource measurements.
+AC power and caffeinate -dims throughout; no sleep/wake events during session.

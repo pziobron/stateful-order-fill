@@ -1,0 +1,5 @@
+implementation,hierarchies,cycle,messages,verificationRecords,hierarchyKeys,processors,inputSubmissionMs,drainAfterSubmissionMs,endToEndMs,processingWindowMs,endToEndMsgPerSec,processingInputMsgPerSec,completedHierarchiesPerSec
+db-centric,10000,1,50000,10000,10000,4,1831,14138,15969,15643,3131.07,3196.32,639.26
+db-centric,10000,2,50000,10000,10000,4,1782,13609,15391,15105,3248.65,3310.16,662.03
+db-centric,10000,3,50000,10000,10000,4,1685,13205,14891,14684,3357.73,3405.07,681.01
+db-centric,100000,1,500000,100000,100000,4,7673,113515,121189,120843,4125.79,4137.6,827.52

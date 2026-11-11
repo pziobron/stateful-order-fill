@@ -1,0 +1,6 @@
+
+GROUP                      CONSUMER-ID                                                                HOST            CLIENT-ID                             #PARTITIONS     
+order-lifecycle-db-centric consumer-order-lifecycle-db-centric-1-ea44c3be-e1cd-436b-a878-d5945e42f882 /10.1.7.8       consumer-order-lifecycle-db-centric-1 1               
+order-lifecycle-db-centric consumer-order-lifecycle-db-centric-1-eda26de9-ffd0-4539-b033-d4edb8ed45b3 /10.1.7.6       consumer-order-lifecycle-db-centric-1 1               
+order-lifecycle-db-centric consumer-order-lifecycle-db-centric-1-93a0d188-d3c9-4c24-9614-41fc7afa0f69 /10.1.7.7       consumer-order-lifecycle-db-centric-1 2               
+order-lifecycle-db-centric consumer-order-lifecycle-db-centric-1-4a60afce-3b4b-4a8f-babd-fd3e7ddedd03 /10.1.7.9       consumer-order-lifecycle-db-centric-1 2               

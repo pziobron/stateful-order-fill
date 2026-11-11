@@ -1,0 +1,13 @@
+ wait_event_type |     wait_event      | count 
+-----------------+---------------------+-------
+                 |                     |     2
+ Activity        | WalWriterMain       |     1
+ Activity        | LogicalLauncherMain |     1
+ Activity        | AutovacuumMain      |     1
+ Client          | ClientRead          |    14
+ Activity        | CheckpointerMain    |     1
+ IO              | WalSync             |     1
+ Activity        | BgwriterMain        |     1
+ Activity        | IoWorkerMain        |     3
+(9 rows)
+

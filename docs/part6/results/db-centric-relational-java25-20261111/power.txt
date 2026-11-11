@@ -1,0 +1,39 @@
+2026-11-11 15:42:37 +0100 
+Assertion status system-wide:
+   BackgroundTask                 0
+   PreventDiskIdle                1
+   ApplePushServiceTask           0
+   UserIsActive                   1
+   PreventUserIdleDisplaySleep    1
+   PreventSystemSleep             1
+   ExternalMedia                  0
+   PreventUserIdleSystemSleep     1
+   NetworkClientActive            0
+Listed by owning process:
+   pid 2006(caffeinate): [0x0000026e00018708] 00:03:03 PreventUserIdleSystemSleep named: "caffeinate command-line tool"  
+	Details: caffeinate asserting forever
+	Localized=THE CAFFEINATE TOOL IS PREVENTING SLEEP.
+   pid 2006(caffeinate): [0x0000026e00058709] 00:03:03 PreventUserIdleDisplaySleep named: "caffeinate command-line tool"  
+	Details: caffeinate asserting forever
+	Localized=THE CAFFEINATE TOOL IS PREVENTING SLEEP.
+   pid 2006(caffeinate): [0x0000026e0007870a] 00:03:03 PreventSystemSleep named: "caffeinate command-line tool"  
+	Details: caffeinate asserting forever
+	Localized=THE CAFFEINATE TOOL IS PREVENTING SLEEP.
+   pid 2006(caffeinate): [0x0000026e000f870b] 00:03:03 PreventDiskIdle named: "caffeinate command-line tool"  
+	Details: caffeinate asserting forever
+	Localized=THE CAFFEINATE TOOL IS PREVENTING SLEEP.
+   pid 307(mds_stores): [0x00000324000b8728] 00:00:01 BackgroundTask named: "com.apple.metadata.mds_stores.power"  
+   pid 166(WindowServer): [0x0000002f000980b1] 00:02:30 UserIsActive named: "com.apple.iohideventsystem.queue.tickle serviceID:100000fc0 service:AppleMultitouchDevice product:Magic Mouse (Patryk) eventType:17"  
+	Timeout will fire in 7049 secs Action=TimeoutActionRelease
+   pid 110(powerd): [0x0000000c00018000] 00:13:12 PreventUserIdleSystemSleep named: "Powerd - Prevent sleep while display is on"  
+   pid 110(powerd): [0x0000000c00098001] 00:13:12 UserIsActive named: "com.apple.powerd.ws.initialize"  
+	Timeout will fire in 6407 secs Action=TimeoutActionRelease
+   pid 159(bluetoothd): [0x0000001500098096] 00:13:03 UserIsActive named: "Bluetooth Incoming Connection Request"  
+	Timeout will fire in 6416 secs Action=TimeoutActionRelease
+   pid 159(bluetoothd): [0x0000002d000980b0] 00:12:40 UserIsActive named: "Bluetooth LE HID Activity"  
+	Timeout will fire in 6440 secs Action=TimeoutActionRelease
+Kernel Assertions: 0x104=USB,MAGICWAKE
+   id=553  level=255 0x4=USB creat=11.11.2026, 15:39 description=com.apple.usb.externaldevice.02100000 owner=IOUSBHostDevice
+   id=554  level=255 0x4=USB creat=11.11.2026, 15:45 description=com.apple.usb.externaldevice.00100000 owner=USB2.1 Hub
+   id=555  level=255 0x4=USB creat=11.11.2026, 15:45 description=com.apple.usb.externaldevice.00200000 owner=USB3.2 Hub
+   id=563  level=255 0x100=MAGICWAKE creat=11.11.2026, 15:38 description=en0 owner=IOSkywalkNetworkBSDClient

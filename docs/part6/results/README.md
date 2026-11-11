@@ -1,5 +1,9 @@
 # Part 6 benchmark results — 2026-10-30
 
+> Historical comparison: PostgreSQL results below use Java 17. The separate
+> [Java 25 relational rerun (2026-11-11)](db-centric-relational-java25-20261111/README.md)
+> preserves new results without replacing these original measurements.
+
 Implementation revision: `9dee62acb1ac9058139d03a243d2536ea951d705`.
 All variants use the simplified O/F contract, retain partial state continuously,
 deduplicate fill identities, and emit one logical completion per hierarchy.
@@ -32,7 +36,7 @@ drain and processing-window timings; elapsed end-to-end time is primary.
 | PostgreSQL | 121.189 s | 120.843 s | 7.673 s | 4,125.79 |
 
 The DB 100K cycle was accepted earlier in the same session/day; its original
-[validation report](db-centric-100k-validation.md) is preserved. Streams and Flink
+[validation report](db-centric-relational-java17-20261030/db-centric-100k-validation.md) is preserved. Streams and Flink
 100K were subsequently run using the same revision, images, broker patch and
 resource configuration. Submission overlaps processing. Output receipt excludes
 later durability/lag acceptance checks from the measured time.
@@ -90,11 +94,13 @@ that does not mean exclusive ownership of all events for that hierarchy.
 
 ## Artifacts
 
+PostgreSQL Java 17 artifacts are grouped in [their own directory](db-centric-relational-java17-20261030/README.md). The CSV files below retain the original combined comparison.
+
 - [Measurement CSV](benchmark-results.csv), [warm-up CSV](warmup-results.csv).
 - 10K raw logs: [Streams](kafka-streams-10k-raw.txt), [Flink](flink-10k-raw.txt),
-  [DB](db-centric-10k-raw.txt). Each file contains all three measured cycles.
+  [DB](db-centric-relational-java17-20261030/db-centric-10k-raw.txt). Each file contains all three measured cycles.
 - 100K raw logs: [Streams](kafka-streams-100k-raw.txt), [Flink](flink-100k-raw.txt),
-  [DB](db-centric-100k-raw.txt).
+  [DB](db-centric-relational-java17-20261030/db-centric-100k-raw.txt).
 - Warm-up raw files are retained alongside each implementation's measurements.
 - Full local evidence: `/Users/pziobron/benchmark-results/part6/comparison-20261030/`.
   Earlier DB 100K evidence: `/Users/pziobron/benchmark-results/part6/db-centric-100k-validation-20261030/`.

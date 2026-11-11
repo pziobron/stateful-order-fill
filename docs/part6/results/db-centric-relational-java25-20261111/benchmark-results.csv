@@ -1,0 +1,5 @@
+implementation,java,hierarchies,cycle,measuredWorkloadHierarchies,messages,verificationRecords,hierarchyKeys,processors,inputSubmissionMs,drainAfterSubmissionMs,endToEndMs,processingWindowMs,endToEndMsgPerSec,processingInputMsgPerSec,completedHierarchiesPerSec
+db-centric-relational,25.0.5,10000,1,10000,50000,10000,10000,4,1618,12863,14482,14228,3452.56,3514.20,702.84
+db-centric-relational,25.0.5,10000,2,10000,50000,10000,10000,4,1716,13383,15100,14831,3311.26,3371.32,674.26
+db-centric-relational,25.0.5,10000,3,10000,50000,10000,10000,4,1658,13210,14868,14601,3362.93,3424.42,684.88
+db-centric-relational,25.0.5,100000,1,100000,500000,100000,100000,4,6959,108905,115864,115556,4315.40,4326.91,865.38

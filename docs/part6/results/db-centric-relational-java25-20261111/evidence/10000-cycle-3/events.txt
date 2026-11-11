@@ -1,0 +1,524 @@
+LAST SEEN   TYPE      REASON                    OBJECT                                             MESSAGE
+45h         Normal    NodeHasSufficientMemory   node/docker-desktop                                Node docker-desktop status is now: NodeHasSufficientMemory
+45h         Normal    NodeHasSufficientPID      node/docker-desktop                                Node docker-desktop status is now: NodeHasSufficientPID
+45h         Normal    Starting                  node/docker-desktop                                Starting kubelet.
+45h         Normal    NodeHasNoDiskPressure     node/docker-desktop                                Node docker-desktop status is now: NodeHasNoDiskPressure
+45h         Warning   Rebooted                  node/docker-desktop                                Node docker-desktop has been rebooted, boot id: b5111f7c-1140-4f92-a9c6-7156fb01c8bb
+45h         Normal    NodeAllocatableEnforced   node/docker-desktop                                Updated Node Allocatable limit across pods
+45h         Normal    Started                   pod/kafka-broker-0                                 Started container kafka
+45h         Normal    Created                   pod/kafka-broker-0                                 Created container: kafka
+45h         Normal    SandboxChanged            pod/kafka-broker-0                                 Pod sandbox changed, it will be killed and re-created.
+45h         Normal    Pulled                    pod/kafka-broker-0                                 Container image "apache/kafka:4.1.2" already present on machine
+45h         Normal    Starting                  node/docker-desktop                                
+45h         Normal    RegisteredNode            node/docker-desktop                                Node docker-desktop event: Registered Node docker-desktop in Controller
+45h         Warning   BackOff                   pod/kafka-broker-0                                 Back-off restarting failed container kafka in pod kafka-broker-0_default(84b43f97-b99f-4a6b-889f-123a6b47e3cc)
+41h         Warning   Unhealthy                 pod/kafka-broker-0                                 Liveness probe failed: command timed out: "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092" timed out after 5s
+10m         Normal    Starting                  node/docker-desktop                                
+10m         Normal    RegisteredNode            node/docker-desktop                                Node docker-desktop event: Registered Node docker-desktop in Controller
+10m         Normal    NodeAllocatableEnforced   node/docker-desktop                                Updated Node Allocatable limit across pods
+10m         Normal    NodeHasSufficientMemory   node/docker-desktop                                Node docker-desktop status is now: NodeHasSufficientMemory
+10m         Normal    NodeHasNoDiskPressure     node/docker-desktop                                Node docker-desktop status is now: NodeHasNoDiskPressure
+10m         Normal    NodeHasSufficientPID      node/docker-desktop                                Node docker-desktop status is now: NodeHasSufficientPID
+10m         Normal    Started                   pod/kafka-broker-0                                 Started container kafka
+10m         Warning   Rebooted                  node/docker-desktop                                Node docker-desktop has been rebooted, boot id: fae8a863-3b91-4d5b-90c4-b0ad51e5df7e
+10m         Normal    Starting                  node/docker-desktop                                Starting kubelet.
+10m         Normal    SandboxChanged            pod/kafka-broker-0                                 Pod sandbox changed, it will be killed and re-created.
+10m         Normal    Pulled                    pod/kafka-broker-0                                 Container image "apache/kafka:4.1.2" already present on machine
+10m         Normal    Created                   pod/kafka-broker-0                                 Created container: kafka
+9m35s       Warning   Unhealthy                 pod/kafka-broker-0                                 Liveness probe failed: command timed out: "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092" timed out after 5s
+8m13s       Normal    Killing                   pod/kafka-broker-0                                 Stopping container kafka
+8m11s       Normal    SuccessfulCreate          statefulset/kafka-broker                           create Claim kafka-data-kafka-broker-0 Pod kafka-broker-0 in StatefulSet kafka-broker success
+8m11s       Normal    Started                   pod/kafka-topic-creator-5qw24                      Started container wait-for-kafka
+8m11s       Warning   FailedScheduling          pod/kafka-broker-0                                 0/1 nodes are available: pod has unbound immediate PersistentVolumeClaims. not found
+8m11s       Normal    Provisioning              persistentvolumeclaim/kafka-data-kafka-broker-0    External provisioner is provisioning volume for claim "default/kafka-data-kafka-broker-0"
+8m11s       Normal    SuccessfulCreate          job/kafka-topic-creator                            Created pod: kafka-topic-creator-5qw24
+8m11s       Normal    Scheduled                 pod/kafka-broker-0                                 Successfully assigned default/kafka-broker-0 to docker-desktop
+8m11s       Normal    Pulled                    pod/kafka-broker-0                                 Container image "apache/kafka:4.1.2" already present on machine
+8m11s       Normal    Created                   pod/kafka-broker-0                                 Created container: kafka
+8m11s       Normal    Started                   pod/kafka-broker-0                                 Started container kafka
+8m11s       Normal    Created                   pod/kafka-topic-creator-5qw24                      Created container: wait-for-kafka
+8m11s       Normal    ExternalProvisioning      persistentvolumeclaim/kafka-data-kafka-broker-0    Waiting for a volume to be created either by the external provisioner 'docker.io/hostpath' or manually by the system administrator. If volume creation is delayed, please verify that the provisioner is running and correctly registered.
+8m11s       Normal    ProvisioningSucceeded     persistentvolumeclaim/kafka-data-kafka-broker-0    Successfully provisioned volume pvc-b02b2a75-6e1f-45dd-84c4-bdcb2c5cd9ab
+8m11s       Normal    SuccessfulCreate          statefulset/kafka-broker                           create Pod kafka-broker-0 in StatefulSet kafka-broker successful
+8m11s       Normal    Scheduled                 pod/kafka-topic-creator-5qw24                      Successfully assigned default/kafka-topic-creator-5qw24 to docker-desktop
+8m11s       Normal    Pulled                    pod/kafka-topic-creator-5qw24                      Container image "apache/kafka:4.1.2" already present on machine
+7m34s       Normal    Created                   pod/kafka-topic-creator-5qw24                      Created container: topic-creator
+7m34s       Normal    Started                   pod/kafka-topic-creator-5qw24                      Started container topic-creator
+7m34s       Normal    Pulled                    pod/kafka-topic-creator-5qw24                      Container image "apache/kafka:4.1.2" already present on machine
+7m30s       Normal    Completed                 job/kafka-topic-creator                            Job completed
+7m29s       Normal    SuccessfulCreate          statefulset/db-centric-postgres                    create Pod db-centric-postgres-0 in StatefulSet db-centric-postgres successful
+7m29s       Warning   FailedScheduling          pod/db-centric-postgres-0                          0/1 nodes are available: pod has unbound immediate PersistentVolumeClaims. not found
+7m29s       Normal    SuccessfulCreate          statefulset/db-centric-postgres                    create Claim data-db-centric-postgres-0 Pod db-centric-postgres-0 in StatefulSet db-centric-postgres success
+7m29s       Normal    Scheduled                 pod/db-centric-postgres-0                          Successfully assigned default/db-centric-postgres-0 to docker-desktop
+7m29s       Normal    ProvisioningSucceeded     persistentvolumeclaim/data-db-centric-postgres-0   Successfully provisioned volume pvc-50f8b585-83a8-46c1-b67e-3551ba097a59
+7m29s       Normal    Provisioning              persistentvolumeclaim/data-db-centric-postgres-0   External provisioner is provisioning volume for claim "default/data-db-centric-postgres-0"
+7m29s       Normal    ExternalProvisioning      persistentvolumeclaim/data-db-centric-postgres-0   Waiting for a volume to be created either by the external provisioner 'docker.io/hostpath' or manually by the system administrator. If volume creation is delayed, please verify that the provisioner is running and correctly registered.
+7m28s       Normal    Started                   pod/db-centric-postgres-0                          Started container postgres
+7m28s       Normal    Created                   pod/db-centric-postgres-0                          Created container: postgres
+7m28s       Normal    Pulled                    pod/db-centric-postgres-0                          Container image "postgres:18.6" already present on machine
+7m22s       Normal    SuccessfulCreate          replicaset/db-centric-f48d754b8                    Created pod: db-centric-f48d754b8-nxhjb
+7m22s       Normal    Scheduled                 pod/db-centric-5c5675745f-xlrkh                    Successfully assigned default/db-centric-5c5675745f-xlrkh to docker-desktop
+7m22s       Normal    SuccessfulCreate          replicaset/db-centric-5c5675745f                   Created pod: db-centric-5c5675745f-vl5m4
+7m22s       Normal    SuccessfulCreate          replicaset/db-centric-5c5675745f                   Created pod: db-centric-5c5675745f-xlrkh
+7m22s       Normal    SuccessfulCreate          replicaset/db-centric-5c5675745f                   Created pod: db-centric-5c5675745f-9bv7v
+7m22s       Normal    SuccessfulCreate          replicaset/db-centric-5c5675745f                   Created pod: db-centric-5c5675745f-szt5p
+7m22s       Normal    SuccessfulDelete          replicaset/db-centric-5c5675745f                   Deleted pod: db-centric-5c5675745f-vl5m4
+7m22s       Normal    Scheduled                 pod/db-centric-f48d754b8-nxhjb                     Successfully assigned default/db-centric-f48d754b8-nxhjb to docker-desktop
+7m22s       Normal    Scheduled                 pod/db-centric-f48d754b8-pht6q                     Successfully assigned default/db-centric-f48d754b8-pht6q to docker-desktop
+7m22s       Normal    Scheduled                 pod/db-centric-5c5675745f-9bv7v                    Successfully assigned default/db-centric-5c5675745f-9bv7v to docker-desktop
+7m22s       Normal    SuccessfulCreate          replicaset/db-centric-f48d754b8                    Created pod: db-centric-f48d754b8-pht6q
+7m22s       Normal    Scheduled                 pod/db-centric-5c5675745f-vl5m4                    Successfully assigned default/db-centric-5c5675745f-vl5m4 to docker-desktop
+7m22s       Normal    ScalingReplicaSet         deployment/db-centric                              Scaled up replica set db-centric-5c5675745f from 0 to 4
+7m22s       Normal    ScalingReplicaSet         deployment/db-centric                              Scaled up replica set db-centric-f48d754b8 from 0 to 1
+7m22s       Normal    Scheduled                 pod/db-centric-5c5675745f-szt5p                    Successfully assigned default/db-centric-5c5675745f-szt5p to docker-desktop
+7m22s       Normal    ScalingReplicaSet         deployment/db-centric                              Scaled down replica set db-centric-5c5675745f from 4 to 3
+7m22s       Normal    ScalingReplicaSet         deployment/db-centric                              Scaled up replica set db-centric-f48d754b8 from 1 to 2
+7m21s       Normal    Started                   pod/db-centric-f48d754b8-pht6q                     Started container wait-for-postgres
+7m21s       Normal    Pulled                    pod/db-centric-f48d754b8-nxhjb                     Container image "order-lifecycle-db-centric:latest" already present on machine
+7m21s       Normal    Created                   pod/db-centric-5c5675745f-szt5p                    Created container: processor
+7m21s       Normal    Started                   pod/db-centric-5c5675745f-szt5p                    Started container processor
+7m21s       Normal    Pulled                    pod/db-centric-f48d754b8-nxhjb                     Container image "busybox:1.36" already present on machine
+7m21s       Normal    Started                   pod/db-centric-5c5675745f-szt5p                    Started container wait-for-postgres
+7m21s       Normal    Created                   pod/db-centric-5c5675745f-szt5p                    Created container: wait-for-postgres
+7m21s       Normal    Pulled                    pod/db-centric-5c5675745f-szt5p                    Container image "busybox:1.36" already present on machine
+7m21s       Normal    Created                   pod/db-centric-f48d754b8-nxhjb                     Created container: wait-for-postgres
+7m21s       Normal    Started                   pod/db-centric-f48d754b8-nxhjb                     Started container wait-for-postgres
+7m21s       Normal    Created                   pod/db-centric-f48d754b8-nxhjb                     Created container: processor
+7m21s       Normal    Started                   pod/db-centric-f48d754b8-nxhjb                     Started container processor
+7m21s       Normal    Pulled                    pod/db-centric-f48d754b8-pht6q                     Container image "busybox:1.36" already present on machine
+7m21s       Normal    Created                   pod/db-centric-f48d754b8-pht6q                     Created container: wait-for-postgres
+7m21s       Normal    Pulled                    pod/db-centric-f48d754b8-pht6q                     Container image "order-lifecycle-db-centric:latest" already present on machine
+7m21s       Normal    Created                   pod/db-centric-f48d754b8-pht6q                     Created container: processor
+7m21s       Normal    Started                   pod/db-centric-f48d754b8-pht6q                     Started container processor
+7m21s       Normal    Pulled                    pod/db-centric-5c5675745f-szt5p                    Container image "order-lifecycle-db-centric:latest" already present on machine
+7m21s       Normal    Started                   pod/db-centric-5c5675745f-9bv7v                    Started container processor
+7m21s       Normal    Created                   pod/db-centric-5c5675745f-9bv7v                    Created container: processor
+7m21s       Normal    Pulled                    pod/db-centric-5c5675745f-9bv7v                    Container image "order-lifecycle-db-centric:latest" already present on machine
+7m21s       Normal    Started                   pod/db-centric-5c5675745f-9bv7v                    Started container wait-for-postgres
+7m21s       Normal    Created                   pod/db-centric-5c5675745f-9bv7v                    Created container: wait-for-postgres
+7m21s       Normal    Pulled                    pod/db-centric-5c5675745f-xlrkh                    Container image "busybox:1.36" already present on machine
+7m21s       Normal    Created                   pod/db-centric-5c5675745f-xlrkh                    Created container: wait-for-postgres
+7m21s       Normal    Started                   pod/db-centric-5c5675745f-xlrkh                    Started container wait-for-postgres
+7m21s       Normal    Pulled                    pod/db-centric-5c5675745f-xlrkh                    Container image "order-lifecycle-db-centric:latest" already present on machine
+7m21s       Normal    Created                   pod/db-centric-5c5675745f-xlrkh                    Created container: processor
+7m21s       Normal    Started                   pod/db-centric-5c5675745f-xlrkh                    Started container processor
+7m21s       Normal    Pulled                    pod/db-centric-5c5675745f-9bv7v                    Container image "busybox:1.36" already present on machine
+7m20s       Normal    SuccessfulDelete          replicaset/db-centric-5c5675745f                   Deleted pod: db-centric-5c5675745f-xlrkh
+7m20s       Normal    Scheduled                 pod/db-centric-f48d754b8-mfx77                     Successfully assigned default/db-centric-f48d754b8-mfx77 to docker-desktop
+7m20s       Normal    Scheduled                 pod/db-centric-f48d754b8-6qv7k                     Successfully assigned default/db-centric-f48d754b8-6qv7k to docker-desktop
+7m20s       Normal    ScalingReplicaSet         deployment/db-centric                              Scaled down replica set db-centric-5c5675745f from 3 to 2
+7m20s       Normal    ScalingReplicaSet         deployment/db-centric                              Scaled down replica set db-centric-5c5675745f from 2 to 1
+7m20s       Normal    ScalingReplicaSet         deployment/db-centric                              Scaled up replica set db-centric-f48d754b8 from 3 to 4
+7m20s       Normal    SuccessfulCreate          replicaset/db-centric-f48d754b8                    Created pod: db-centric-f48d754b8-6qv7k
+7m20s       Normal    SuccessfulCreate          replicaset/db-centric-f48d754b8                    Created pod: db-centric-f48d754b8-mfx77
+7m20s       Normal    ScalingReplicaSet         deployment/db-centric                              Scaled up replica set db-centric-f48d754b8 from 2 to 3
+7m20s       Normal    SuccessfulDelete          replicaset/db-centric-5c5675745f                   Deleted pod: db-centric-5c5675745f-9bv7v
+7m19s       Normal    Pulled                    pod/db-centric-f48d754b8-6qv7k                     Container image "order-lifecycle-db-centric:latest" already present on machine
+7m19s       Normal    Created                   pod/db-centric-f48d754b8-mfx77                     Created container: processor
+7m19s       Normal    Pulled                    pod/db-centric-f48d754b8-mfx77                     Container image "busybox:1.36" already present on machine
+7m19s       Normal    Started                   pod/db-centric-f48d754b8-6qv7k                     Started container processor
+7m19s       Normal    Started                   pod/db-centric-f48d754b8-mfx77                     Started container processor
+7m19s       Normal    Created                   pod/db-centric-f48d754b8-6qv7k                     Created container: processor
+7m19s       Normal    Created                   pod/db-centric-f48d754b8-mfx77                     Created container: wait-for-postgres
+7m19s       Normal    Pulled                    pod/db-centric-f48d754b8-mfx77                     Container image "order-lifecycle-db-centric:latest" already present on machine
+7m19s       Normal    Killing                   pod/db-centric-5c5675745f-xlrkh                    Stopping container processor
+7m19s       Normal    Started                   pod/db-centric-f48d754b8-6qv7k                     Started container wait-for-postgres
+7m19s       Normal    Killing                   pod/db-centric-5c5675745f-9bv7v                    Stopping container processor
+7m19s       Normal    Created                   pod/db-centric-f48d754b8-6qv7k                     Created container: wait-for-postgres
+7m19s       Normal    Started                   pod/db-centric-f48d754b8-mfx77                     Started container wait-for-postgres
+7m19s       Normal    Pulled                    pod/db-centric-f48d754b8-6qv7k                     Container image "busybox:1.36" already present on machine
+7m18s       Normal    SuccessfulDelete          replicaset/db-centric-5c5675745f                   Deleted pod: db-centric-5c5675745f-szt5p
+7m18s       Normal    ScalingReplicaSet         deployment/db-centric                              Scaled down replica set db-centric-5c5675745f from 1 to 0
+7m18s       Normal    Killing                   pod/db-centric-5c5675745f-szt5p                    Stopping container processor
+7m9s        Normal    SuccessfulCreate          job/integration-test                               Created pod: integration-test-dtxc6
+7m9s        Normal    Scheduled                 pod/integration-test-dtxc6                         Successfully assigned default/integration-test-dtxc6 to docker-desktop
+7m8s        Normal    Pulled                    pod/integration-test-dtxc6                         Container image "busybox:1.36" already present on machine
+7m8s        Normal    Created                   pod/integration-test-dtxc6                         Created container: wait-for-kafka
+7m8s        Normal    Started                   pod/integration-test-dtxc6                         Started container wait-for-kafka
+7m7s        Normal    Pulled                    pod/integration-test-dtxc6                         Container image "order-state-processor-test:latest" already present on machine
+7m6s        Normal    Started                   pod/integration-test-dtxc6                         Started container test-runner
+7m6s        Normal    Created                   pod/integration-test-dtxc6                         Created container: test-runner
+6m53s       Normal    Killing                   pod/db-centric-f48d754b8-6qv7k                     Stopping container processor
+6m53s       Normal    Killing                   pod/db-centric-f48d754b8-pht6q                     Stopping container processor
+6m53s       Normal    Killing                   pod/integration-test-dtxc6                         Stopping container test-runner
+6m53s       Normal    Killing                   pod/db-centric-postgres-0                          Stopping container postgres
+6m53s       Normal    Killing                   pod/db-centric-f48d754b8-mfx77                     Stopping container processor
+6m53s       Normal    Killing                   pod/kafka-broker-0                                 Stopping container kafka
+6m53s       Normal    Killing                   pod/db-centric-f48d754b8-nxhjb                     Stopping container processor
+6m51s       Normal    Provisioning              persistentvolumeclaim/kafka-data-kafka-broker-0    External provisioner is provisioning volume for claim "default/kafka-data-kafka-broker-0"
+6m51s       Normal    Scheduled                 pod/kafka-broker-0                                 Successfully assigned default/kafka-broker-0 to docker-desktop
+6m51s       Normal    SuccessfulCreate          job/kafka-topic-creator                            Created pod: kafka-topic-creator-xgxgd
+6m51s       Normal    ProvisioningSucceeded     persistentvolumeclaim/kafka-data-kafka-broker-0    Successfully provisioned volume pvc-e496cd1e-2a5d-4f9d-b1ff-a8865bc6ebeb
+6m51s       Normal    SuccessfulCreate          statefulset/kafka-broker                           create Claim kafka-data-kafka-broker-0 Pod kafka-broker-0 in StatefulSet kafka-broker success
+6m51s       Normal    ExternalProvisioning      persistentvolumeclaim/kafka-data-kafka-broker-0    Waiting for a volume to be created either by the external provisioner 'docker.io/hostpath' or manually by the system administrator. If volume creation is delayed, please verify that the provisioner is running and correctly registered.
+6m51s       Normal    SuccessfulCreate          statefulset/kafka-broker                           create Pod kafka-broker-0 in StatefulSet kafka-broker successful
+6m51s       Warning   FailedScheduling          pod/kafka-broker-0                                 0/1 nodes are available: pod has unbound immediate PersistentVolumeClaims. not found
+6m51s       Normal    Scheduled                 pod/kafka-topic-creator-xgxgd                      Successfully assigned default/kafka-topic-creator-xgxgd to docker-desktop
+6m50s       Normal    Pulled                    pod/kafka-topic-creator-xgxgd                      Container image "apache/kafka:4.1.2" already present on machine
+6m50s       Normal    Started                   pod/kafka-topic-creator-xgxgd                      Started container wait-for-kafka
+6m50s       Normal    Created                   pod/kafka-topic-creator-xgxgd                      Created container: wait-for-kafka
+6m50s       Normal    Pulled                    pod/kafka-broker-0                                 Container image "apache/kafka:4.1.2" already present on machine
+6m50s       Normal    Started                   pod/kafka-broker-0                                 Started container kafka
+6m50s       Normal    Created                   pod/kafka-broker-0                                 Created container: kafka
+6m14s       Normal    Started                   pod/kafka-topic-creator-xgxgd                      Started container topic-creator
+6m14s       Normal    Created                   pod/kafka-topic-creator-xgxgd                      Created container: topic-creator
+6m14s       Normal    Pulled                    pod/kafka-topic-creator-xgxgd                      Container image "apache/kafka:4.1.2" already present on machine
+6m10s       Normal    Completed                 job/kafka-topic-creator                            Job completed
+6m9s        Normal    SuccessfulCreate          statefulset/db-centric-postgres                    create Claim data-db-centric-postgres-0 Pod db-centric-postgres-0 in StatefulSet db-centric-postgres success
+6m9s        Normal    Scheduled                 pod/db-centric-postgres-0                          Successfully assigned default/db-centric-postgres-0 to docker-desktop
+6m9s        Warning   FailedScheduling          pod/db-centric-postgres-0                          0/1 nodes are available: pod has unbound immediate PersistentVolumeClaims. not found
+6m9s        Normal    SuccessfulCreate          statefulset/db-centric-postgres                    create Pod db-centric-postgres-0 in StatefulSet db-centric-postgres successful
+6m9s        Normal    ExternalProvisioning      persistentvolumeclaim/data-db-centric-postgres-0   Waiting for a volume to be created either by the external provisioner 'docker.io/hostpath' or manually by the system administrator. If volume creation is delayed, please verify that the provisioner is running and correctly registered.
+6m9s        Normal    Provisioning              persistentvolumeclaim/data-db-centric-postgres-0   External provisioner is provisioning volume for claim "default/data-db-centric-postgres-0"
+6m9s        Normal    ProvisioningSucceeded     persistentvolumeclaim/data-db-centric-postgres-0   Successfully provisioned volume pvc-b1f0d7e1-9efe-4d4d-99ad-6fe5076389f3
+6m8s        Normal    Started                   pod/db-centric-postgres-0                          Started container postgres
+6m8s        Normal    Created                   pod/db-centric-postgres-0                          Created container: postgres
+6m8s        Normal    Pulled                    pod/db-centric-postgres-0                          Container image "postgres:18.6" already present on machine
+6m2s        Normal    ScalingReplicaSet         deployment/db-centric                              Scaled up replica set db-centric-f48d754b8 from 0 to 1
+6m2s        Normal    SuccessfulCreate          replicaset/db-centric-f48d754b8                    Created pod: db-centric-f48d754b8-5ml4m
+6m2s        Normal    ScalingReplicaSet         deployment/db-centric                              Scaled up replica set db-centric-f48d754b8 from 1 to 2
+6m2s        Normal    Scheduled                 pod/db-centric-f48d754b8-5ml4m                     Successfully assigned default/db-centric-f48d754b8-5ml4m to docker-desktop
+6m2s        Normal    ScalingReplicaSet         deployment/db-centric                              Scaled down replica set db-centric-5c5675745f from 4 to 3
+6m2s        Normal    ScalingReplicaSet         deployment/db-centric                              Scaled up replica set db-centric-5c5675745f from 0 to 4
+6m2s        Normal    SuccessfulDelete          replicaset/db-centric-5c5675745f                   Deleted pod: db-centric-5c5675745f-6d9pz
+6m2s        Normal    SuccessfulCreate          replicaset/db-centric-5c5675745f                   Created pod: db-centric-5c5675745f-jpsnz
+6m2s        Normal    Scheduled                 pod/db-centric-5c5675745f-jpsnz                    Successfully assigned default/db-centric-5c5675745f-jpsnz to docker-desktop
+6m2s        Normal    SuccessfulCreate          replicaset/db-centric-5c5675745f                   Created pod: db-centric-5c5675745f-xvbcn
+6m2s        Normal    SuccessfulCreate          replicaset/db-centric-5c5675745f                   Created pod: db-centric-5c5675745f-mwmvf
+6m2s        Normal    Scheduled                 pod/db-centric-5c5675745f-mwmvf                    Successfully assigned default/db-centric-5c5675745f-mwmvf to docker-desktop
+6m2s        Normal    Scheduled                 pod/db-centric-5c5675745f-xvbcn                    Successfully assigned default/db-centric-5c5675745f-xvbcn to docker-desktop
+6m2s        Normal    SuccessfulCreate          replicaset/db-centric-5c5675745f                   Created pod: db-centric-5c5675745f-6d9pz
+6m2s        Normal    SuccessfulCreate          replicaset/db-centric-f48d754b8                    Created pod: db-centric-f48d754b8-lctsb
+6m2s        Normal    Scheduled                 pod/db-centric-5c5675745f-6d9pz                    Successfully assigned default/db-centric-5c5675745f-6d9pz to docker-desktop
+6m2s        Normal    Scheduled                 pod/db-centric-f48d754b8-lctsb                     Successfully assigned default/db-centric-f48d754b8-lctsb to docker-desktop
+6m1s        Normal    Created                   pod/db-centric-f48d754b8-lctsb                     Created container: processor
+6m1s        Normal    Created                   pod/db-centric-f48d754b8-5ml4m                     Created container: processor
+6m1s        Normal    Created                   pod/db-centric-5c5675745f-xvbcn                    Created container: processor
+6m1s        Normal    Created                   pod/db-centric-5c5675745f-jpsnz                    Created container: processor
+6m1s        Normal    Pulled                    pod/db-centric-5c5675745f-jpsnz                    Container image "order-lifecycle-db-centric:latest" already present on machine
+6m1s        Normal    Started                   pod/db-centric-5c5675745f-xvbcn                    Started container wait-for-postgres
+6m1s        Normal    Created                   pod/db-centric-5c5675745f-xvbcn                    Created container: wait-for-postgres
+6m1s        Normal    Pulled                    pod/db-centric-f48d754b8-lctsb                     Container image "busybox:1.36" already present on machine
+6m1s        Normal    Created                   pod/db-centric-f48d754b8-lctsb                     Created container: wait-for-postgres
+6m1s        Normal    Started                   pod/db-centric-f48d754b8-lctsb                     Started container wait-for-postgres
+6m1s        Normal    Pulled                    pod/db-centric-f48d754b8-lctsb                     Container image "order-lifecycle-db-centric:latest" already present on machine
+6m1s        Normal    Started                   pod/db-centric-5c5675745f-jpsnz                    Started container processor
+6m1s        Normal    Started                   pod/db-centric-f48d754b8-lctsb                     Started container processor
+6m1s        Normal    Started                   pod/db-centric-5c5675745f-jpsnz                    Started container wait-for-postgres
+6m1s        Normal    Started                   pod/db-centric-5c5675745f-xvbcn                    Started container processor
+6m1s        Normal    Pulled                    pod/db-centric-5c5675745f-xvbcn                    Container image "busybox:1.36" already present on machine
+6m1s        Normal    Pulled                    pod/db-centric-5c5675745f-mwmvf                    Container image "busybox:1.36" already present on machine
+6m1s        Normal    Created                   pod/db-centric-5c5675745f-mwmvf                    Created container: wait-for-postgres
+6m1s        Normal    Pulled                    pod/db-centric-5c5675745f-jpsnz                    Container image "busybox:1.36" already present on machine
+6m1s        Normal    Started                   pod/db-centric-5c5675745f-mwmvf                    Started container wait-for-postgres
+6m1s        Normal    Started                   pod/db-centric-f48d754b8-5ml4m                     Started container processor
+6m1s        Normal    Pulled                    pod/db-centric-5c5675745f-xvbcn                    Container image "order-lifecycle-db-centric:latest" already present on machine
+6m1s        Normal    Created                   pod/db-centric-5c5675745f-jpsnz                    Created container: wait-for-postgres
+6m1s        Normal    Pulled                    pod/db-centric-5c5675745f-mwmvf                    Container image "order-lifecycle-db-centric:latest" already present on machine
+6m1s        Normal    Started                   pod/db-centric-5c5675745f-mwmvf                    Started container processor
+6m1s        Normal    Created                   pod/db-centric-5c5675745f-mwmvf                    Created container: processor
+6m1s        Normal    Pulled                    pod/db-centric-f48d754b8-5ml4m                     Container image "busybox:1.36" already present on machine
+6m1s        Normal    Created                   pod/db-centric-f48d754b8-5ml4m                     Created container: wait-for-postgres
+6m1s        Normal    Started                   pod/db-centric-f48d754b8-5ml4m                     Started container wait-for-postgres
+6m1s        Normal    Pulled                    pod/db-centric-f48d754b8-5ml4m                     Container image "order-lifecycle-db-centric:latest" already present on machine
+6m          Normal    ScalingReplicaSet         deployment/db-centric                              Scaled up replica set db-centric-f48d754b8 from 2 to 3
+6m          Normal    ScalingReplicaSet         deployment/db-centric                              Scaled down replica set db-centric-5c5675745f from 2 to 1
+6m          Normal    ScalingReplicaSet         deployment/db-centric                              Scaled up replica set db-centric-f48d754b8 from 3 to 4
+6m          Normal    SuccessfulDelete          replicaset/db-centric-5c5675745f                   Deleted pod: db-centric-5c5675745f-xvbcn
+6m          Normal    Killing                   pod/db-centric-5c5675745f-mwmvf                    Stopping container processor
+6m          Normal    SuccessfulDelete          replicaset/db-centric-5c5675745f                   Deleted pod: db-centric-5c5675745f-mwmvf
+6m          Normal    Scheduled                 pod/db-centric-f48d754b8-c6knb                     Successfully assigned default/db-centric-f48d754b8-c6knb to docker-desktop
+6m          Normal    ScalingReplicaSet         deployment/db-centric                              Scaled down replica set db-centric-5c5675745f from 3 to 2
+6m          Normal    Scheduled                 pod/db-centric-f48d754b8-rjx6j                     Successfully assigned default/db-centric-f48d754b8-rjx6j to docker-desktop
+6m          Normal    SuccessfulCreate          replicaset/db-centric-f48d754b8                    Created pod: db-centric-f48d754b8-rjx6j
+6m          Normal    SuccessfulCreate          replicaset/db-centric-f48d754b8                    Created pod: db-centric-f48d754b8-c6knb
+5m59s       Normal    Started                   pod/db-centric-f48d754b8-rjx6j                     Started container wait-for-postgres
+5m59s       Normal    Pulled                    pod/db-centric-f48d754b8-rjx6j                     Container image "order-lifecycle-db-centric:latest" already present on machine
+5m59s       Normal    Created                   pod/db-centric-f48d754b8-rjx6j                     Created container: wait-for-postgres
+5m59s       Normal    Created                   pod/db-centric-f48d754b8-c6knb                     Created container: wait-for-postgres
+5m59s       Normal    Started                   pod/db-centric-f48d754b8-c6knb                     Started container wait-for-postgres
+5m59s       Normal    Pulled                    pod/db-centric-f48d754b8-c6knb                     Container image "busybox:1.36" already present on machine
+5m59s       Normal    Pulled                    pod/db-centric-f48d754b8-c6knb                     Container image "order-lifecycle-db-centric:latest" already present on machine
+5m59s       Normal    Created                   pod/db-centric-f48d754b8-c6knb                     Created container: processor
+5m59s       Normal    Started                   pod/db-centric-f48d754b8-c6knb                     Started container processor
+5m59s       Normal    Killing                   pod/db-centric-5c5675745f-xvbcn                    Stopping container processor
+5m59s       Normal    Started                   pod/db-centric-f48d754b8-rjx6j                     Started container processor
+5m59s       Normal    Created                   pod/db-centric-f48d754b8-rjx6j                     Created container: processor
+5m59s       Normal    Pulled                    pod/db-centric-f48d754b8-rjx6j                     Container image "busybox:1.36" already present on machine
+5m58s       Normal    Killing                   pod/db-centric-5c5675745f-jpsnz                    Stopping container processor
+5m58s       Normal    ScalingReplicaSet         deployment/db-centric                              Scaled down replica set db-centric-5c5675745f from 1 to 0
+5m58s       Normal    SuccessfulDelete          replicaset/db-centric-5c5675745f                   Deleted pod: db-centric-5c5675745f-jpsnz
+5m49s       Normal    SuccessfulCreate          job/integration-test                               Created pod: integration-test-vlfzl
+5m49s       Normal    Scheduled                 pod/integration-test-vlfzl                         Successfully assigned default/integration-test-vlfzl to docker-desktop
+5m48s       Normal    Started                   pod/integration-test-vlfzl                         Started container wait-for-kafka
+5m48s       Normal    Pulled                    pod/integration-test-vlfzl                         Container image "busybox:1.36" already present on machine
+5m48s       Normal    Created                   pod/integration-test-vlfzl                         Created container: wait-for-kafka
+5m47s       Normal    Created                   pod/integration-test-vlfzl                         Created container: test-runner
+5m47s       Normal    Pulled                    pod/integration-test-vlfzl                         Container image "order-state-processor-test:latest" already present on machine
+5m46s       Normal    Started                   pod/integration-test-vlfzl                         Started container test-runner
+5m24s       Normal    Completed                 job/integration-test                               Job completed
+5m19s       Normal    Scheduled                 pod/integration-test-vqmhg                         Successfully assigned default/integration-test-vqmhg to docker-desktop
+5m19s       Normal    SuccessfulCreate          job/integration-test                               Created pod: integration-test-vqmhg
+5m19s       Normal    Pulled                    pod/integration-test-vqmhg                         Container image "busybox:1.36" already present on machine
+5m19s       Normal    Created                   pod/integration-test-vqmhg                         Created container: wait-for-kafka
+5m19s       Normal    Started                   pod/integration-test-vqmhg                         Started container wait-for-kafka
+5m18s       Normal    Pulled                    pod/integration-test-vqmhg                         Container image "order-state-processor-test:latest" already present on machine
+5m17s       Normal    Started                   pod/integration-test-vqmhg                         Started container test-runner
+5m17s       Normal    Created                   pod/integration-test-vqmhg                         Created container: test-runner
+4m44s       Normal    Completed                 job/integration-test                               Job completed
+4m39s       Normal    Killing                   pod/db-centric-f48d754b8-c6knb                     Stopping container processor
+4m39s       Normal    Killing                   pod/db-centric-postgres-0                          Stopping container postgres
+4m39s       Normal    Killing                   pod/db-centric-f48d754b8-5ml4m                     Stopping container processor
+4m39s       Normal    Killing                   pod/db-centric-f48d754b8-rjx6j                     Stopping container processor
+4m39s       Normal    Killing                   pod/db-centric-f48d754b8-lctsb                     Stopping container processor
+4m39s       Normal    Killing                   pod/kafka-broker-0                                 Stopping container kafka
+4m38s       Warning   Unhealthy                 pod/kafka-broker-0                                 Readiness probe failed: [2026-11-11 14:44:51,863] WARN [LegacyAdminClient clientId=admin-1] Connection to node -1 (localhost/127.0.0.1:9092) could not be established. Node may not be available. (org.apache.kafka.clients.NetworkClient)...
+4m37s       Normal    SuccessfulCreate          statefulset/kafka-broker                           create Pod kafka-broker-0 in StatefulSet kafka-broker successful
+4m37s       Normal    SuccessfulCreate          job/kafka-topic-creator                            Created pod: kafka-topic-creator-kpvlm
+4m37s       Normal    Scheduled                 pod/kafka-broker-0                                 Successfully assigned default/kafka-broker-0 to docker-desktop
+4m37s       Normal    ExternalProvisioning      persistentvolumeclaim/kafka-data-kafka-broker-0    Waiting for a volume to be created either by the external provisioner 'docker.io/hostpath' or manually by the system administrator. If volume creation is delayed, please verify that the provisioner is running and correctly registered.
+4m37s       Normal    Pulled                    pod/kafka-broker-0                                 Container image "apache/kafka:4.1.2" already present on machine
+4m37s       Normal    Provisioning              persistentvolumeclaim/kafka-data-kafka-broker-0    External provisioner is provisioning volume for claim "default/kafka-data-kafka-broker-0"
+4m37s       Normal    Created                   pod/kafka-broker-0                                 Created container: kafka
+4m37s       Normal    Scheduled                 pod/kafka-topic-creator-kpvlm                      Successfully assigned default/kafka-topic-creator-kpvlm to docker-desktop
+4m37s       Normal    Started                   pod/kafka-broker-0                                 Started container kafka
+4m37s       Normal    SuccessfulCreate          statefulset/kafka-broker                           create Claim kafka-data-kafka-broker-0 Pod kafka-broker-0 in StatefulSet kafka-broker success
+4m37s       Warning   FailedScheduling          pod/kafka-broker-0                                 0/1 nodes are available: pod has unbound immediate PersistentVolumeClaims. not found
+4m37s       Normal    ProvisioningSucceeded     persistentvolumeclaim/kafka-data-kafka-broker-0    Successfully provisioned volume pvc-76a4cc4a-9902-4841-8638-da0050573f38
+4m36s       Normal    Pulled                    pod/kafka-topic-creator-kpvlm                      Container image "apache/kafka:4.1.2" already present on machine
+4m36s       Normal    Started                   pod/kafka-topic-creator-kpvlm                      Started container wait-for-kafka
+4m36s       Normal    Created                   pod/kafka-topic-creator-kpvlm                      Created container: wait-for-kafka
+3m59s       Normal    Pulled                    pod/kafka-topic-creator-kpvlm                      Container image "apache/kafka:4.1.2" already present on machine
+3m59s       Normal    Created                   pod/kafka-topic-creator-kpvlm                      Created container: topic-creator
+3m59s       Normal    Started                   pod/kafka-topic-creator-kpvlm                      Started container topic-creator
+3m55s       Normal    Completed                 job/kafka-topic-creator                            Job completed
+3m54s       Normal    Scheduled                 pod/db-centric-postgres-0                          Successfully assigned default/db-centric-postgres-0 to docker-desktop
+3m54s       Normal    ProvisioningSucceeded     persistentvolumeclaim/data-db-centric-postgres-0   Successfully provisioned volume pvc-c92c1b3d-9c9d-4a74-871e-ba38d72f9633
+3m54s       Normal    ExternalProvisioning      persistentvolumeclaim/data-db-centric-postgres-0   Waiting for a volume to be created either by the external provisioner 'docker.io/hostpath' or manually by the system administrator. If volume creation is delayed, please verify that the provisioner is running and correctly registered.
+3m54s       Warning   FailedScheduling          pod/db-centric-postgres-0                          0/1 nodes are available: pod has unbound immediate PersistentVolumeClaims. not found
+3m54s       Normal    SuccessfulCreate          statefulset/db-centric-postgres                    create Pod db-centric-postgres-0 in StatefulSet db-centric-postgres successful
+3m54s       Normal    Pulled                    pod/db-centric-postgres-0                          Container image "postgres:18.6" already present on machine
+3m54s       Normal    Created                   pod/db-centric-postgres-0                          Created container: postgres
+3m54s       Normal    SuccessfulCreate          statefulset/db-centric-postgres                    create Claim data-db-centric-postgres-0 Pod db-centric-postgres-0 in StatefulSet db-centric-postgres success
+3m54s       Normal    Provisioning              persistentvolumeclaim/data-db-centric-postgres-0   External provisioner is provisioning volume for claim "default/data-db-centric-postgres-0"
+3m53s       Normal    Started                   pod/db-centric-postgres-0                          Started container postgres
+3m47s       Normal    Scheduled                 pod/db-centric-5c5675745f-ltgxh                    Successfully assigned default/db-centric-5c5675745f-ltgxh to docker-desktop
+3m47s       Normal    SuccessfulCreate          replicaset/db-centric-f48d754b8                    Created pod: db-centric-f48d754b8-tpdw9
+3m47s       Normal    Scheduled                 pod/db-centric-5c5675745f-xb5f9                    Successfully assigned default/db-centric-5c5675745f-xb5f9 to docker-desktop
+3m47s       Normal    ScalingReplicaSet         deployment/db-centric                              Scaled up replica set db-centric-f48d754b8 from 0 to 1
+3m47s       Normal    ScalingReplicaSet         deployment/db-centric                              Scaled up replica set db-centric-f48d754b8 from 1 to 2
+3m47s       Normal    SuccessfulCreate          replicaset/db-centric-f48d754b8                    Created pod: db-centric-f48d754b8-n9tw6
+3m47s       Normal    ScalingReplicaSet         deployment/db-centric                              Scaled up replica set db-centric-5c5675745f from 0 to 4
+3m47s       Normal    Scheduled                 pod/db-centric-f48d754b8-tpdw9                     Successfully assigned default/db-centric-f48d754b8-tpdw9 to docker-desktop
+3m47s       Normal    Scheduled                 pod/db-centric-f48d754b8-n9tw6                     Successfully assigned default/db-centric-f48d754b8-n9tw6 to docker-desktop
+3m47s       Normal    SuccessfulCreate          replicaset/db-centric-5c5675745f                   Created pod: db-centric-5c5675745f-chvvg
+3m47s       Normal    ScalingReplicaSet         deployment/db-centric                              Scaled down replica set db-centric-5c5675745f from 4 to 3
+3m47s       Normal    SuccessfulCreate          replicaset/db-centric-5c5675745f                   Created pod: db-centric-5c5675745f-ltgxh
+3m47s       Normal    Scheduled                 pod/db-centric-5c5675745f-8j6gg                    Successfully assigned default/db-centric-5c5675745f-8j6gg to docker-desktop
+3m47s       Normal    SuccessfulCreate          replicaset/db-centric-5c5675745f                   Created pod: db-centric-5c5675745f-8j6gg
+3m47s       Normal    SuccessfulCreate          replicaset/db-centric-5c5675745f                   Created pod: db-centric-5c5675745f-xb5f9
+3m47s       Normal    SuccessfulDelete          replicaset/db-centric-5c5675745f                   Deleted pod: db-centric-5c5675745f-chvvg
+3m47s       Normal    Scheduled                 pod/db-centric-5c5675745f-chvvg                    Successfully assigned default/db-centric-5c5675745f-chvvg to docker-desktop
+3m46s       Normal    Started                   pod/db-centric-5c5675745f-xb5f9                    Started container processor
+3m46s       Normal    Created                   pod/db-centric-5c5675745f-8j6gg                    Created container: wait-for-postgres
+3m46s       Normal    Started                   pod/db-centric-5c5675745f-xb5f9                    Started container wait-for-postgres
+3m46s       Normal    Started                   pod/db-centric-f48d754b8-tpdw9                     Started container processor
+3m46s       Normal    Created                   pod/db-centric-f48d754b8-tpdw9                     Created container: processor
+3m46s       Normal    Pulled                    pod/db-centric-f48d754b8-tpdw9                     Container image "order-lifecycle-db-centric:latest" already present on machine
+3m46s       Normal    Started                   pod/db-centric-f48d754b8-tpdw9                     Started container wait-for-postgres
+3m46s       Normal    Created                   pod/db-centric-f48d754b8-tpdw9                     Created container: wait-for-postgres
+3m46s       Normal    Pulled                    pod/db-centric-f48d754b8-tpdw9                     Container image "busybox:1.36" already present on machine
+3m46s       Normal    Started                   pod/db-centric-f48d754b8-n9tw6                     Started container processor
+3m46s       Normal    Created                   pod/db-centric-f48d754b8-n9tw6                     Created container: processor
+3m46s       Normal    Pulled                    pod/db-centric-f48d754b8-n9tw6                     Container image "order-lifecycle-db-centric:latest" already present on machine
+3m46s       Normal    Started                   pod/db-centric-f48d754b8-n9tw6                     Started container wait-for-postgres
+3m46s       Normal    Created                   pod/db-centric-f48d754b8-n9tw6                     Created container: wait-for-postgres
+3m46s       Normal    Pulled                    pod/db-centric-f48d754b8-n9tw6                     Container image "busybox:1.36" already present on machine
+3m46s       Normal    Pulled                    pod/db-centric-5c5675745f-xb5f9                    Container image "order-lifecycle-db-centric:latest" already present on machine
+3m46s       Normal    Pulled                    pod/db-centric-5c5675745f-8j6gg                    Container image "busybox:1.36" already present on machine
+3m46s       Normal    Created                   pod/db-centric-5c5675745f-xb5f9                    Created container: processor
+3m46s       Normal    Pulled                    pod/db-centric-5c5675745f-xb5f9                    Container image "busybox:1.36" already present on machine
+3m46s       Normal    Started                   pod/db-centric-5c5675745f-ltgxh                    Started container processor
+3m46s       Normal    Created                   pod/db-centric-5c5675745f-ltgxh                    Created container: processor
+3m46s       Normal    Created                   pod/db-centric-5c5675745f-xb5f9                    Created container: wait-for-postgres
+3m46s       Normal    Started                   pod/db-centric-5c5675745f-8j6gg                    Started container wait-for-postgres
+3m46s       Normal    Pulled                    pod/db-centric-5c5675745f-8j6gg                    Container image "order-lifecycle-db-centric:latest" already present on machine
+3m46s       Normal    Created                   pod/db-centric-5c5675745f-8j6gg                    Created container: processor
+3m46s       Normal    Pulled                    pod/db-centric-5c5675745f-ltgxh                    Container image "order-lifecycle-db-centric:latest" already present on machine
+3m46s       Normal    Started                   pod/db-centric-5c5675745f-ltgxh                    Started container wait-for-postgres
+3m46s       Normal    Started                   pod/db-centric-5c5675745f-8j6gg                    Started container processor
+3m46s       Normal    Pulled                    pod/db-centric-5c5675745f-ltgxh                    Container image "busybox:1.36" already present on machine
+3m46s       Normal    Created                   pod/db-centric-5c5675745f-ltgxh                    Created container: wait-for-postgres
+3m45s       Normal    Scheduled                 pod/db-centric-f48d754b8-hnrf4                     Successfully assigned default/db-centric-f48d754b8-hnrf4 to docker-desktop
+3m45s       Normal    Pulled                    pod/db-centric-f48d754b8-hnrf4                     Container image "busybox:1.36" already present on machine
+3m45s       Normal    ScalingReplicaSet         deployment/db-centric                              Scaled up replica set db-centric-f48d754b8 from 3 to 4
+3m45s       Normal    Scheduled                 pod/db-centric-f48d754b8-g9shn                     Successfully assigned default/db-centric-f48d754b8-g9shn to docker-desktop
+3m45s       Normal    ScalingReplicaSet         deployment/db-centric                              Scaled down replica set db-centric-5c5675745f from 2 to 1
+3m45s       Normal    SuccessfulDelete          replicaset/db-centric-5c5675745f                   Deleted pod: db-centric-5c5675745f-ltgxh
+3m45s       Normal    SuccessfulDelete          replicaset/db-centric-5c5675745f                   Deleted pod: db-centric-5c5675745f-xb5f9
+3m45s       Normal    ScalingReplicaSet         deployment/db-centric                              Scaled up replica set db-centric-f48d754b8 from 2 to 3
+3m45s       Normal    ScalingReplicaSet         deployment/db-centric                              Scaled down replica set db-centric-5c5675745f from 3 to 2
+3m45s       Normal    SuccessfulCreate          replicaset/db-centric-f48d754b8                    Created pod: db-centric-f48d754b8-g9shn
+3m45s       Normal    SuccessfulCreate          replicaset/db-centric-f48d754b8                    Created pod: db-centric-f48d754b8-hnrf4
+3m44s       Normal    Started                   pod/db-centric-f48d754b8-hnrf4                     Started container processor
+3m44s       Normal    Pulled                    pod/db-centric-f48d754b8-g9shn                     Container image "order-lifecycle-db-centric:latest" already present on machine
+3m44s       Normal    Killing                   pod/db-centric-5c5675745f-ltgxh                    Stopping container processor
+3m44s       Normal    Created                   pod/db-centric-f48d754b8-hnrf4                     Created container: processor
+3m44s       Normal    Pulled                    pod/db-centric-f48d754b8-g9shn                     Container image "busybox:1.36" already present on machine
+3m44s       Normal    Created                   pod/db-centric-f48d754b8-g9shn                     Created container: wait-for-postgres
+3m44s       Normal    Started                   pod/db-centric-f48d754b8-g9shn                     Started container wait-for-postgres
+3m44s       Normal    Killing                   pod/db-centric-5c5675745f-xb5f9                    Stopping container processor
+3m44s       Normal    Created                   pod/db-centric-f48d754b8-g9shn                     Created container: processor
+3m44s       Normal    Pulled                    pod/db-centric-f48d754b8-hnrf4                     Container image "order-lifecycle-db-centric:latest" already present on machine
+3m44s       Normal    Started                   pod/db-centric-f48d754b8-g9shn                     Started container processor
+3m44s       Normal    Created                   pod/db-centric-f48d754b8-hnrf4                     Created container: wait-for-postgres
+3m44s       Normal    Started                   pod/db-centric-f48d754b8-hnrf4                     Started container wait-for-postgres
+3m43s       Normal    Killing                   pod/db-centric-5c5675745f-8j6gg                    Stopping container processor
+3m43s       Normal    ScalingReplicaSet         deployment/db-centric                              Scaled down replica set db-centric-5c5675745f from 1 to 0
+3m43s       Normal    SuccessfulDelete          replicaset/db-centric-5c5675745f                   Deleted pod: db-centric-5c5675745f-8j6gg
+3m34s       Normal    Pulled                    pod/integration-test-nt8gc                         Container image "busybox:1.36" already present on machine
+3m34s       Normal    SuccessfulCreate          job/integration-test                               Created pod: integration-test-nt8gc
+3m34s       Normal    Created                   pod/integration-test-nt8gc                         Created container: wait-for-kafka
+3m34s       Normal    Started                   pod/integration-test-nt8gc                         Started container wait-for-kafka
+3m34s       Normal    Scheduled                 pod/integration-test-nt8gc                         Successfully assigned default/integration-test-nt8gc to docker-desktop
+3m33s       Normal    Pulled                    pod/integration-test-nt8gc                         Container image "order-state-processor-test:latest" already present on machine
+3m32s       Normal    Started                   pod/integration-test-nt8gc                         Started container test-runner
+3m32s       Normal    Created                   pod/integration-test-nt8gc                         Created container: test-runner
+3m10s       Normal    Completed                 job/integration-test                               Job completed
+3m4s        Normal    SuccessfulCreate          job/integration-test                               Created pod: integration-test-k6lhk
+3m4s        Normal    Started                   pod/integration-test-k6lhk                         Started container wait-for-kafka
+3m4s        Normal    Created                   pod/integration-test-k6lhk                         Created container: wait-for-kafka
+3m4s        Normal    Pulled                    pod/integration-test-k6lhk                         Container image "busybox:1.36" already present on machine
+3m4s        Normal    Scheduled                 pod/integration-test-k6lhk                         Successfully assigned default/integration-test-k6lhk to docker-desktop
+3m3s        Normal    Pulled                    pod/integration-test-k6lhk                         Container image "order-state-processor-test:latest" already present on machine
+3m3s        Normal    Started                   pod/integration-test-k6lhk                         Started container test-runner
+3m3s        Normal    Created                   pod/integration-test-k6lhk                         Created container: test-runner
+2m29s       Normal    Completed                 job/integration-test                               Job completed
+2m24s       Normal    Killing                   pod/db-centric-f48d754b8-hnrf4                     Stopping container processor
+2m24s       Normal    Killing                   pod/db-centric-f48d754b8-n9tw6                     Stopping container processor
+2m24s       Normal    Killing                   pod/db-centric-f48d754b8-tpdw9                     Stopping container processor
+2m24s       Normal    Killing                   pod/db-centric-postgres-0                          Stopping container postgres
+2m24s       Normal    Killing                   pod/db-centric-f48d754b8-g9shn                     Stopping container processor
+2m24s       Normal    Killing                   pod/kafka-broker-0                                 Stopping container kafka
+2m24s       Warning   Unhealthy                 pod/kafka-broker-0                                 Readiness probe failed: OCI runtime exec failed: exec failed: cannot exec in a stopped container
+2m12s       Normal    ProvisioningSucceeded     persistentvolumeclaim/kafka-data-kafka-broker-0    Successfully provisioned volume pvc-f6c73edf-83b0-4f54-9cbb-0214a4fd15d7
+2m12s       Normal    SuccessfulCreate          statefulset/kafka-broker                           create Pod kafka-broker-0 in StatefulSet kafka-broker successful
+2m12s       Normal    Scheduled                 pod/kafka-broker-0                                 Successfully assigned default/kafka-broker-0 to docker-desktop
+2m12s       Normal    SuccessfulCreate          job/kafka-topic-creator                            Created pod: kafka-topic-creator-6kwt6
+2m12s       Normal    Scheduled                 pod/kafka-topic-creator-6kwt6                      Successfully assigned default/kafka-topic-creator-6kwt6 to docker-desktop
+2m12s       Normal    Provisioning              persistentvolumeclaim/kafka-data-kafka-broker-0    External provisioner is provisioning volume for claim "default/kafka-data-kafka-broker-0"
+2m12s       Normal    ExternalProvisioning      persistentvolumeclaim/kafka-data-kafka-broker-0    Waiting for a volume to be created either by the external provisioner 'docker.io/hostpath' or manually by the system administrator. If volume creation is delayed, please verify that the provisioner is running and correctly registered.
+2m12s       Normal    SuccessfulCreate          statefulset/kafka-broker                           create Claim kafka-data-kafka-broker-0 Pod kafka-broker-0 in StatefulSet kafka-broker success
+2m12s       Warning   FailedScheduling          pod/kafka-broker-0                                 0/1 nodes are available: pod has unbound immediate PersistentVolumeClaims. not found
+2m11s       Normal    Pulled                    pod/kafka-broker-0                                 Container image "apache/kafka:4.1.2" already present on machine
+2m11s       Normal    Started                   pod/kafka-topic-creator-6kwt6                      Started container wait-for-kafka
+2m11s       Normal    Created                   pod/kafka-topic-creator-6kwt6                      Created container: wait-for-kafka
+2m11s       Normal    Started                   pod/kafka-broker-0                                 Started container kafka
+2m11s       Normal    Created                   pod/kafka-broker-0                                 Created container: kafka
+2m11s       Normal    Pulled                    pod/kafka-topic-creator-6kwt6                      Container image "apache/kafka:4.1.2" already present on machine
+94s         Normal    Created                   pod/kafka-topic-creator-6kwt6                      Created container: topic-creator
+94s         Normal    Pulled                    pod/kafka-topic-creator-6kwt6                      Container image "apache/kafka:4.1.2" already present on machine
+94s         Normal    Started                   pod/kafka-topic-creator-6kwt6                      Started container topic-creator
+90s         Normal    Completed                 job/kafka-topic-creator                            Job completed
+89s         Normal    SuccessfulCreate          statefulset/db-centric-postgres                    create Pod db-centric-postgres-0 in StatefulSet db-centric-postgres successful
+89s         Normal    Started                   pod/db-centric-postgres-0                          Started container postgres
+89s         Normal    SuccessfulCreate          statefulset/db-centric-postgres                    create Claim data-db-centric-postgres-0 Pod db-centric-postgres-0 in StatefulSet db-centric-postgres success
+89s         Normal    Pulled                    pod/db-centric-postgres-0                          Container image "postgres:18.6" already present on machine
+89s         Normal    Created                   pod/db-centric-postgres-0                          Created container: postgres
+89s         Warning   FailedScheduling          pod/db-centric-postgres-0                          0/1 nodes are available: pod has unbound immediate PersistentVolumeClaims. not found
+89s         Normal    ProvisioningSucceeded     persistentvolumeclaim/data-db-centric-postgres-0   Successfully provisioned volume pvc-615ab658-0fd1-470a-9713-6a8883c53e09
+89s         Normal    Provisioning              persistentvolumeclaim/data-db-centric-postgres-0   External provisioner is provisioning volume for claim "default/data-db-centric-postgres-0"
+89s         Normal    ExternalProvisioning      persistentvolumeclaim/data-db-centric-postgres-0   Waiting for a volume to be created either by the external provisioner 'docker.io/hostpath' or manually by the system administrator. If volume creation is delayed, please verify that the provisioner is running and correctly registered.
+89s         Normal    Scheduled                 pod/db-centric-postgres-0                          Successfully assigned default/db-centric-postgres-0 to docker-desktop
+82s         Normal    SuccessfulCreate          replicaset/db-centric-f48d754b8                    Created pod: db-centric-f48d754b8-pddpn
+82s         Normal    SuccessfulCreate          replicaset/db-centric-5c5675745f                   Created pod: db-centric-5c5675745f-lb96m
+82s         Normal    Scheduled                 pod/db-centric-5c5675745f-f2kvp                    Successfully assigned default/db-centric-5c5675745f-f2kvp to docker-desktop
+82s         Normal    Pulled                    pod/db-centric-5c5675745f-f2kvp                    Container image "busybox:1.36" already present on machine
+82s         Normal    Created                   pod/db-centric-5c5675745f-f2kvp                    Created container: wait-for-postgres
+82s         Normal    SuccessfulCreate          replicaset/db-centric-f48d754b8                    Created pod: db-centric-f48d754b8-4w68h
+82s         Normal    SuccessfulCreate          replicaset/db-centric-5c5675745f                   Created pod: db-centric-5c5675745f-vvr74
+82s         Normal    SuccessfulCreate          replicaset/db-centric-5c5675745f                   Created pod: db-centric-5c5675745f-f2kvp
+82s         Normal    SuccessfulCreate          replicaset/db-centric-5c5675745f                   Created pod: db-centric-5c5675745f-gh25k
+82s         Normal    Scheduled                 pod/db-centric-5c5675745f-gh25k                    Successfully assigned default/db-centric-5c5675745f-gh25k to docker-desktop
+82s         Normal    Scheduled                 pod/db-centric-5c5675745f-lb96m                    Successfully assigned default/db-centric-5c5675745f-lb96m to docker-desktop
+82s         Normal    ScalingReplicaSet         deployment/db-centric                              Scaled up replica set db-centric-f48d754b8 from 1 to 2
+82s         Normal    Scheduled                 pod/db-centric-f48d754b8-4w68h                     Successfully assigned default/db-centric-f48d754b8-4w68h to docker-desktop
+82s         Normal    Pulled                    pod/db-centric-f48d754b8-4w68h                     Container image "busybox:1.36" already present on machine
+82s         Normal    Created                   pod/db-centric-5c5675745f-vvr74                    Created container: wait-for-postgres
+82s         Normal    Pulled                    pod/db-centric-5c5675745f-vvr74                    Container image "busybox:1.36" already present on machine
+82s         Normal    Pulled                    pod/db-centric-f48d754b8-pddpn                     Container image "busybox:1.36" already present on machine
+82s         Normal    Scheduled                 pod/db-centric-f48d754b8-pddpn                     Successfully assigned default/db-centric-f48d754b8-pddpn to docker-desktop
+82s         Normal    Pulled                    pod/db-centric-5c5675745f-lb96m                    Container image "busybox:1.36" already present on machine
+82s         Normal    Scheduled                 pod/db-centric-5c5675745f-vvr74                    Successfully assigned default/db-centric-5c5675745f-vvr74 to docker-desktop
+82s         Normal    ScalingReplicaSet         deployment/db-centric                              Scaled up replica set db-centric-5c5675745f from 0 to 4
+82s         Normal    ScalingReplicaSet         deployment/db-centric                              Scaled up replica set db-centric-f48d754b8 from 0 to 1
+82s         Normal    ScalingReplicaSet         deployment/db-centric                              Scaled down replica set db-centric-5c5675745f from 4 to 3
+82s         Normal    SuccessfulDelete          replicaset/db-centric-5c5675745f                   Deleted pod: db-centric-5c5675745f-gh25k
+81s         Normal    Started                   pod/db-centric-5c5675745f-lb96m                    Started container processor
+81s         Normal    Created                   pod/db-centric-5c5675745f-lb96m                    Created container: processor
+81s         Normal    Pulled                    pod/db-centric-5c5675745f-lb96m                    Container image "order-lifecycle-db-centric:latest" already present on machine
+81s         Normal    Started                   pod/db-centric-5c5675745f-lb96m                    Started container wait-for-postgres
+81s         Normal    Started                   pod/db-centric-f48d754b8-4w68h                     Started container processor
+82s         Normal    Created                   pod/db-centric-5c5675745f-lb96m                    Created container: wait-for-postgres
+81s         Normal    Created                   pod/db-centric-f48d754b8-pddpn                     Created container: wait-for-postgres
+81s         Normal    Started                   pod/db-centric-f48d754b8-pddpn                     Started container wait-for-postgres
+81s         Normal    Started                   pod/db-centric-5c5675745f-vvr74                    Started container wait-for-postgres
+81s         Normal    Pulled                    pod/db-centric-5c5675745f-vvr74                    Container image "order-lifecycle-db-centric:latest" already present on machine
+81s         Normal    Created                   pod/db-centric-5c5675745f-vvr74                    Created container: processor
+81s         Normal    Started                   pod/db-centric-5c5675745f-vvr74                    Started container processor
+81s         Normal    Created                   pod/db-centric-f48d754b8-4w68h                     Created container: processor
+81s         Normal    Pulled                    pod/db-centric-f48d754b8-4w68h                     Container image "order-lifecycle-db-centric:latest" already present on machine
+81s         Normal    Started                   pod/db-centric-f48d754b8-4w68h                     Started container wait-for-postgres
+81s         Normal    Created                   pod/db-centric-f48d754b8-4w68h                     Created container: wait-for-postgres
+81s         Normal    Pulled                    pod/db-centric-f48d754b8-pddpn                     Container image "order-lifecycle-db-centric:latest" already present on machine
+81s         Normal    Created                   pod/db-centric-f48d754b8-pddpn                     Created container: processor
+81s         Normal    Started                   pod/db-centric-f48d754b8-pddpn                     Started container processor
+81s         Normal    Started                   pod/db-centric-5c5675745f-f2kvp                    Started container processor
+81s         Normal    Created                   pod/db-centric-5c5675745f-f2kvp                    Created container: processor
+81s         Normal    Pulled                    pod/db-centric-5c5675745f-f2kvp                    Container image "order-lifecycle-db-centric:latest" already present on machine
+81s         Normal    Started                   pod/db-centric-5c5675745f-f2kvp                    Started container wait-for-postgres
+80s         Normal    SuccessfulDelete          replicaset/db-centric-5c5675745f                   Deleted pod: db-centric-5c5675745f-f2kvp
+80s         Normal    Created                   pod/db-centric-f48d754b8-ww2pv                     Created container: wait-for-postgres
+80s         Normal    ScalingReplicaSet         deployment/db-centric                              Scaled up replica set db-centric-f48d754b8 from 3 to 4
+80s         Normal    ScalingReplicaSet         deployment/db-centric                              Scaled down replica set db-centric-5c5675745f from 2 to 1
+80s         Normal    ScalingReplicaSet         deployment/db-centric                              Scaled up replica set db-centric-f48d754b8 from 2 to 3
+80s         Normal    Started                   pod/db-centric-f48d754b8-ww2pv                     Started container wait-for-postgres
+80s         Normal    SuccessfulDelete          replicaset/db-centric-5c5675745f                   Deleted pod: db-centric-5c5675745f-lb96m
+80s         Normal    Pulled                    pod/db-centric-f48d754b8-ww2pv                     Container image "busybox:1.36" already present on machine
+80s         Normal    Killing                   pod/db-centric-5c5675745f-f2kvp                    Stopping container processor
+80s         Normal    Scheduled                 pod/db-centric-f48d754b8-ww2pv                     Successfully assigned default/db-centric-f48d754b8-ww2pv to docker-desktop
+80s         Normal    ScalingReplicaSet         deployment/db-centric                              Scaled down replica set db-centric-5c5675745f from 3 to 2
+80s         Normal    Started                   pod/db-centric-f48d754b8-c2jmr                     Started container wait-for-postgres
+80s         Normal    SuccessfulCreate          replicaset/db-centric-f48d754b8                    Created pod: db-centric-f48d754b8-ww2pv
+80s         Normal    SuccessfulCreate          replicaset/db-centric-f48d754b8                    Created pod: db-centric-f48d754b8-c2jmr
+80s         Normal    Created                   pod/db-centric-f48d754b8-c2jmr                     Created container: wait-for-postgres
+80s         Normal    Pulled                    pod/db-centric-f48d754b8-c2jmr                     Container image "busybox:1.36" already present on machine
+80s         Normal    Scheduled                 pod/db-centric-f48d754b8-c2jmr                     Successfully assigned default/db-centric-f48d754b8-c2jmr to docker-desktop
+79s         Normal    Started                   pod/db-centric-f48d754b8-ww2pv                     Started container processor
+79s         Normal    Pulled                    pod/db-centric-f48d754b8-ww2pv                     Container image "order-lifecycle-db-centric:latest" already present on machine
+79s         Normal    Created                   pod/db-centric-f48d754b8-ww2pv                     Created container: processor
+79s         Normal    Started                   pod/db-centric-f48d754b8-c2jmr                     Started container processor
+79s         Normal    Created                   pod/db-centric-f48d754b8-c2jmr                     Created container: processor
+79s         Normal    Pulled                    pod/db-centric-f48d754b8-c2jmr                     Container image "order-lifecycle-db-centric:latest" already present on machine
+79s         Normal    Killing                   pod/db-centric-5c5675745f-lb96m                    Stopping container processor
+78s         Normal    ScalingReplicaSet         deployment/db-centric                              Scaled down replica set db-centric-5c5675745f from 1 to 0
+78s         Normal    Killing                   pod/db-centric-5c5675745f-vvr74                    Stopping container processor
+78s         Normal    SuccessfulDelete          replicaset/db-centric-5c5675745f                   Deleted pod: db-centric-5c5675745f-vvr74
+69s         Normal    Created                   pod/integration-test-hdrjw                         Created container: wait-for-kafka
+69s         Normal    Scheduled                 pod/integration-test-hdrjw                         Successfully assigned default/integration-test-hdrjw to docker-desktop
+69s         Normal    SuccessfulCreate          job/integration-test                               Created pod: integration-test-hdrjw
+69s         Normal    Pulled                    pod/integration-test-hdrjw                         Container image "busybox:1.36" already present on machine
+69s         Normal    Started                   pod/integration-test-hdrjw                         Started container wait-for-kafka
+68s         Normal    Pulled                    pod/integration-test-hdrjw                         Container image "order-state-processor-test:latest" already present on machine
+66s         Normal    Created                   pod/integration-test-hdrjw                         Created container: test-runner
+66s         Normal    Started                   pod/integration-test-hdrjw                         Started container test-runner
+44s         Normal    Completed                 job/integration-test                               Job completed
+39s         Normal    Started                   pod/integration-test-st685                         Started container wait-for-kafka
+39s         Normal    Scheduled                 pod/integration-test-st685                         Successfully assigned default/integration-test-st685 to docker-desktop
+39s         Normal    Pulled                    pod/integration-test-st685                         Container image "order-state-processor-test:latest" already present on machine
+39s         Normal    Pulled                    pod/integration-test-st685                         Container image "busybox:1.36" already present on machine
+39s         Normal    Created                   pod/integration-test-st685                         Created container: wait-for-kafka
+39s         Normal    SuccessfulCreate          job/integration-test                               Created pod: integration-test-st685
+38s         Normal    Started                   pod/integration-test-st685                         Started container test-runner
+38s         Normal    Created                   pod/integration-test-st685                         Created container: test-runner
+4s          Normal    Completed                 job/integration-test                               Job completed

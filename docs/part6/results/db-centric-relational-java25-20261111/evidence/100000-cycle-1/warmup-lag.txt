@@ -1,0 +1,8 @@
+
+GROUP                      TOPIC                        PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG             CONSUMER-ID                                                                HOST            CLIENT-ID
+order-lifecycle-db-centric org.example.order.executions 2          832             832             0               consumer-order-lifecycle-db-centric-1-603465fc-569f-4ae0-a3d6-25bbf05d7302 /10.1.7.31      consumer-order-lifecycle-db-centric-1
+order-lifecycle-db-centric org.example.order.executions 3          864             864             0               consumer-order-lifecycle-db-centric-1-603465fc-569f-4ae0-a3d6-25bbf05d7302 /10.1.7.31      consumer-order-lifecycle-db-centric-1
+order-lifecycle-db-centric org.example.order.executions 0          793             793             0               consumer-order-lifecycle-db-centric-1-1928cf95-8de2-466c-bb5c-ce4d016ae181 /10.1.7.33      consumer-order-lifecycle-db-centric-1
+order-lifecycle-db-centric org.example.order.executions 1          884             884             0               consumer-order-lifecycle-db-centric-1-1928cf95-8de2-466c-bb5c-ce4d016ae181 /10.1.7.33      consumer-order-lifecycle-db-centric-1
+order-lifecycle-db-centric org.example.order.executions 5          810             810             0               consumer-order-lifecycle-db-centric-1-cc8f21cf-5fef-4487-844e-712620162ea4 /10.1.7.30      consumer-order-lifecycle-db-centric-1
+order-lifecycle-db-centric org.example.order.executions 4          817             817             0               consumer-order-lifecycle-db-centric-1-62f347d2-8014-41a9-8853-9f2ddfd93290 /10.1.7.32      consumer-order-lifecycle-db-centric-1
