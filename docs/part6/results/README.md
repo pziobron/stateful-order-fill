@@ -4,6 +4,9 @@
 > [Java 25 relational rerun (2026-11-11)](db-centric-relational-java25-20261111/README.md)
 > preserves new results without replacing these original measurements.
 
+The separate [JSONB Java 25 benchmark](db-centric-jsonb-java25-20261111/README.md)
+records three 10K cycles and one exploratory 100K cycle, with relational comparison.
+
 Implementation revision: `9dee62acb1ac9058139d03a243d2536ea951d705`.
 All variants use the simplified O/F contract, retain partial state continuously,
 deduplicate fill identities, and emit one logical completion per hierarchy.

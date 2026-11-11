@@ -1,0 +1,5 @@
+implementation,java,hierarchies,cycle,measuredWorkloadHierarchies,messages,verificationRecords,hierarchyKeys,processors,inputSubmissionMs,drainAfterSubmissionMs,endToEndMs,processingWindowMs,endToEndMsgPerSec,processingInputMsgPerSec,completedHierarchiesPerSec
+db-centric-jsonb,25.0.5,1000,1,10000,5000,1000,1000,4,617,3817,4435,4158,1127.40,1202.50,240.50
+db-centric-jsonb,25.0.5,1000,2,10000,5000,1000,1000,4,510,4217,4727,4444,1057.75,1125.11,225.02
+db-centric-jsonb,25.0.5,1000,3,10000,5000,1000,1000,4,553,4134,4688,4343,1066.55,1151.28,230.26
+db-centric-jsonb,25.0.5,1000,1,100000,5000,1000,1000,4,569,4132,4701,4364,1063.60,1145.74,229.15

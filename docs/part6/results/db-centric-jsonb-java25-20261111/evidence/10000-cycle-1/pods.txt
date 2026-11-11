@@ -1,0 +1,1688 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2026-11-11T16:03:27Z"
+    generateName: db-centric-596994fdd7-
+    generation: 1
+    labels:
+      app: db-centric
+      pod-template-hash: 596994fdd7
+    name: db-centric-596994fdd7-btrc2
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: db-centric-596994fdd7
+      uid: 71c8b580-84a6-4bf5-a5af-f46a0185f839
+    resourceVersion: "1173752"
+    uid: 0959d2dd-12db-4393-8939-be0ad3dd2e4b
+  spec:
+    containers:
+    - env:
+      - name: STATE_STORAGE
+        value: jsonb
+      - name: DB_URL
+        value: jdbc:postgresql://db-centric-postgres:5432/order_lifecycle
+      - name: DB_USER
+        valueFrom:
+          secretKeyRef:
+            key: POSTGRES_USER
+            name: db-centric-postgres
+      - name: DB_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            key: POSTGRES_PASSWORD
+            name: db-centric-postgres
+      - name: KAFKA_BOOTSTRAP_SERVERS
+        value: kafka-broker:29092
+      - name: DB_CONSUMERS
+        value: "1"
+      - name: DB_POOL_SIZE
+        value: "4"
+      - name: POD_ID
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.name
+      - name: KAFKA_GROUP_ID
+        value: order-lifecycle-db-centric-jsonb
+      - name: LOGGING_LEVEL_ORG_EXAMPLE_ORDER_LIFECYCLE_SERVICE
+        value: WARN
+      - name: LOGGING_LEVEL_ORG_EXAMPLE_ORDER_LIFECYCLE_DB_SERVICE
+        value: WARN
+      - name: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_KAFKA_LISTENER
+        value: INFO
+      image: order-lifecycle-db-centric:latest
+      imagePullPolicy: IfNotPresent
+      name: processor
+      resources:
+        limits:
+          cpu: 500m
+          memory: 512Mi
+        requests:
+          cpu: 250m
+          memory: 384Mi
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-k5hxs
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    initContainers:
+    - command:
+      - sh
+      - -c
+      - until nc -z db-centric-postgres 5432; do sleep 2; done
+      env:
+      - name: STATE_STORAGE
+        value: jsonb
+      - name: KAFKA_GROUP_ID
+        value: order-lifecycle-db-centric-jsonb
+      - name: LOGGING_LEVEL_ORG_EXAMPLE_ORDER_LIFECYCLE_SERVICE
+        value: WARN
+      - name: LOGGING_LEVEL_ORG_EXAMPLE_ORDER_LIFECYCLE_DB_SERVICE
+        value: WARN
+      - name: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_KAFKA_LISTENER
+        value: INFO
+      image: busybox:1.36
+      imagePullPolicy: IfNotPresent
+      name: wait-for-postgres
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-k5hxs
+        readOnly: true
+    nodeName: docker-desktop
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: kube-api-access-k5hxs
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:03:28Z"
+      observedGeneration: 1
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:03:28Z"
+      observedGeneration: 1
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:03:29Z"
+      observedGeneration: 1
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:03:29Z"
+      observedGeneration: 1
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:03:27Z"
+      observedGeneration: 1
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - allocatedResources:
+        cpu: 250m
+        memory: 384Mi
+      containerID: docker://cec2b0105a8c20e29f922ba162a0df1938c976c791ab5e449ce9ec79c54192da
+      image: order-lifecycle-db-centric:jdk25
+      imageID: docker://sha256:b014397dfa19de28e74f6b9d0b0c783f495e39adfefd07c191d9445b8bf28549
+      lastState: {}
+      name: processor
+      ready: true
+      resources:
+        limits:
+          cpu: 500m
+          memory: 512Mi
+        requests:
+          cpu: 250m
+          memory: 384Mi
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2026-11-11T16:03:28Z"
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-k5hxs
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 192.168.65.3
+    hostIPs:
+    - ip: 192.168.65.3
+    initContainerStatuses:
+    - containerID: docker://0de731720347c6e28783fbcd231b957295d8c25ea030ccc99c165660b8b1c38b
+      image: busybox:1.36
+      imageID: docker-pullable://busybox@sha256:73aaf090f3d85aa34ee199857f03fa3a95c8ede2ffd4cc2cdb5b94e566b11662
+      lastState: {}
+      name: wait-for-postgres
+      ready: true
+      resources: {}
+      restartCount: 0
+      started: false
+      state:
+        terminated:
+          containerID: docker://0de731720347c6e28783fbcd231b957295d8c25ea030ccc99c165660b8b1c38b
+          exitCode: 0
+          finishedAt: "2026-11-11T16:03:27Z"
+          reason: Completed
+          startedAt: "2026-11-11T16:03:27Z"
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-k5hxs
+        readOnly: true
+        recursiveReadOnly: Disabled
+    observedGeneration: 1
+    phase: Running
+    podIP: 10.1.7.42
+    podIPs:
+    - ip: 10.1.7.42
+    qosClass: Burstable
+    startTime: "2026-11-11T16:03:27Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2026-11-11T16:03:29Z"
+    generateName: db-centric-596994fdd7-
+    generation: 1
+    labels:
+      app: db-centric
+      pod-template-hash: 596994fdd7
+    name: db-centric-596994fdd7-h5m4h
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: db-centric-596994fdd7
+      uid: 71c8b580-84a6-4bf5-a5af-f46a0185f839
+    resourceVersion: "1173817"
+    uid: d5e24388-deeb-4a25-b2a7-be7ef9e30b0a
+  spec:
+    containers:
+    - env:
+      - name: STATE_STORAGE
+        value: jsonb
+      - name: DB_URL
+        value: jdbc:postgresql://db-centric-postgres:5432/order_lifecycle
+      - name: DB_USER
+        valueFrom:
+          secretKeyRef:
+            key: POSTGRES_USER
+            name: db-centric-postgres
+      - name: DB_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            key: POSTGRES_PASSWORD
+            name: db-centric-postgres
+      - name: KAFKA_BOOTSTRAP_SERVERS
+        value: kafka-broker:29092
+      - name: DB_CONSUMERS
+        value: "1"
+      - name: DB_POOL_SIZE
+        value: "4"
+      - name: POD_ID
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.name
+      - name: KAFKA_GROUP_ID
+        value: order-lifecycle-db-centric-jsonb
+      - name: LOGGING_LEVEL_ORG_EXAMPLE_ORDER_LIFECYCLE_SERVICE
+        value: WARN
+      - name: LOGGING_LEVEL_ORG_EXAMPLE_ORDER_LIFECYCLE_DB_SERVICE
+        value: WARN
+      - name: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_KAFKA_LISTENER
+        value: INFO
+      image: order-lifecycle-db-centric:latest
+      imagePullPolicy: IfNotPresent
+      name: processor
+      resources:
+        limits:
+          cpu: 500m
+          memory: 512Mi
+        requests:
+          cpu: 250m
+          memory: 384Mi
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-lwqhp
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    initContainers:
+    - command:
+      - sh
+      - -c
+      - until nc -z db-centric-postgres 5432; do sleep 2; done
+      env:
+      - name: STATE_STORAGE
+        value: jsonb
+      - name: KAFKA_GROUP_ID
+        value: order-lifecycle-db-centric-jsonb
+      - name: LOGGING_LEVEL_ORG_EXAMPLE_ORDER_LIFECYCLE_SERVICE
+        value: WARN
+      - name: LOGGING_LEVEL_ORG_EXAMPLE_ORDER_LIFECYCLE_DB_SERVICE
+        value: WARN
+      - name: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_KAFKA_LISTENER
+        value: INFO
+      image: busybox:1.36
+      imagePullPolicy: IfNotPresent
+      name: wait-for-postgres
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-lwqhp
+        readOnly: true
+    nodeName: docker-desktop
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: kube-api-access-lwqhp
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:03:30Z"
+      observedGeneration: 1
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:03:30Z"
+      observedGeneration: 1
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:03:31Z"
+      observedGeneration: 1
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:03:31Z"
+      observedGeneration: 1
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:03:29Z"
+      observedGeneration: 1
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - allocatedResources:
+        cpu: 250m
+        memory: 384Mi
+      containerID: docker://2e026c6e3bc51581d3899dca73188fc7993fff74b1d8d7e0fb42f9d98f377de2
+      image: order-lifecycle-db-centric:jdk25
+      imageID: docker://sha256:b014397dfa19de28e74f6b9d0b0c783f495e39adfefd07c191d9445b8bf28549
+      lastState: {}
+      name: processor
+      ready: true
+      resources:
+        limits:
+          cpu: 500m
+          memory: 512Mi
+        requests:
+          cpu: 250m
+          memory: 384Mi
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2026-11-11T16:03:30Z"
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-lwqhp
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 192.168.65.3
+    hostIPs:
+    - ip: 192.168.65.3
+    initContainerStatuses:
+    - containerID: docker://30b8184431560986f1640dfafcc9bc59b3e436787cb87d4cd3f3ad83b6424088
+      image: busybox:1.36
+      imageID: docker-pullable://busybox@sha256:73aaf090f3d85aa34ee199857f03fa3a95c8ede2ffd4cc2cdb5b94e566b11662
+      lastState: {}
+      name: wait-for-postgres
+      ready: true
+      resources: {}
+      restartCount: 0
+      started: false
+      state:
+        terminated:
+          containerID: docker://30b8184431560986f1640dfafcc9bc59b3e436787cb87d4cd3f3ad83b6424088
+          exitCode: 0
+          finishedAt: "2026-11-11T16:03:29Z"
+          reason: Completed
+          startedAt: "2026-11-11T16:03:29Z"
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-lwqhp
+        readOnly: true
+        recursiveReadOnly: Disabled
+    observedGeneration: 1
+    phase: Running
+    podIP: 10.1.7.45
+    podIPs:
+    - ip: 10.1.7.45
+    qosClass: Burstable
+    startTime: "2026-11-11T16:03:29Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2026-11-11T16:03:29Z"
+    generateName: db-centric-596994fdd7-
+    generation: 1
+    labels:
+      app: db-centric
+      pod-template-hash: 596994fdd7
+    name: db-centric-596994fdd7-kt886
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: db-centric-596994fdd7
+      uid: 71c8b580-84a6-4bf5-a5af-f46a0185f839
+    resourceVersion: "1173828"
+    uid: 1351621b-16e5-4388-8600-2d16c19225e5
+  spec:
+    containers:
+    - env:
+      - name: STATE_STORAGE
+        value: jsonb
+      - name: DB_URL
+        value: jdbc:postgresql://db-centric-postgres:5432/order_lifecycle
+      - name: DB_USER
+        valueFrom:
+          secretKeyRef:
+            key: POSTGRES_USER
+            name: db-centric-postgres
+      - name: DB_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            key: POSTGRES_PASSWORD
+            name: db-centric-postgres
+      - name: KAFKA_BOOTSTRAP_SERVERS
+        value: kafka-broker:29092
+      - name: DB_CONSUMERS
+        value: "1"
+      - name: DB_POOL_SIZE
+        value: "4"
+      - name: POD_ID
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.name
+      - name: KAFKA_GROUP_ID
+        value: order-lifecycle-db-centric-jsonb
+      - name: LOGGING_LEVEL_ORG_EXAMPLE_ORDER_LIFECYCLE_SERVICE
+        value: WARN
+      - name: LOGGING_LEVEL_ORG_EXAMPLE_ORDER_LIFECYCLE_DB_SERVICE
+        value: WARN
+      - name: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_KAFKA_LISTENER
+        value: INFO
+      image: order-lifecycle-db-centric:latest
+      imagePullPolicy: IfNotPresent
+      name: processor
+      resources:
+        limits:
+          cpu: 500m
+          memory: 512Mi
+        requests:
+          cpu: 250m
+          memory: 384Mi
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-6hjtv
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    initContainers:
+    - command:
+      - sh
+      - -c
+      - until nc -z db-centric-postgres 5432; do sleep 2; done
+      env:
+      - name: STATE_STORAGE
+        value: jsonb
+      - name: KAFKA_GROUP_ID
+        value: order-lifecycle-db-centric-jsonb
+      - name: LOGGING_LEVEL_ORG_EXAMPLE_ORDER_LIFECYCLE_SERVICE
+        value: WARN
+      - name: LOGGING_LEVEL_ORG_EXAMPLE_ORDER_LIFECYCLE_DB_SERVICE
+        value: WARN
+      - name: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_KAFKA_LISTENER
+        value: INFO
+      image: busybox:1.36
+      imagePullPolicy: IfNotPresent
+      name: wait-for-postgres
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-6hjtv
+        readOnly: true
+    nodeName: docker-desktop
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: kube-api-access-6hjtv
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:03:30Z"
+      observedGeneration: 1
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:03:30Z"
+      observedGeneration: 1
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:03:31Z"
+      observedGeneration: 1
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:03:31Z"
+      observedGeneration: 1
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:03:29Z"
+      observedGeneration: 1
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - allocatedResources:
+        cpu: 250m
+        memory: 384Mi
+      containerID: docker://7407de11301447b8b5bd2eed7740c447941e310fe6f3e61ba52199cfc584c32d
+      image: order-lifecycle-db-centric:jdk25
+      imageID: docker://sha256:b014397dfa19de28e74f6b9d0b0c783f495e39adfefd07c191d9445b8bf28549
+      lastState: {}
+      name: processor
+      ready: true
+      resources:
+        limits:
+          cpu: 500m
+          memory: 512Mi
+        requests:
+          cpu: 250m
+          memory: 384Mi
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2026-11-11T16:03:30Z"
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-6hjtv
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 192.168.65.3
+    hostIPs:
+    - ip: 192.168.65.3
+    initContainerStatuses:
+    - containerID: docker://58b1e9e46354e8c40bb8a429bb42233ae5a325a69ec00139910b852c50f5eaf4
+      image: busybox:1.36
+      imageID: docker-pullable://busybox@sha256:73aaf090f3d85aa34ee199857f03fa3a95c8ede2ffd4cc2cdb5b94e566b11662
+      lastState: {}
+      name: wait-for-postgres
+      ready: true
+      resources: {}
+      restartCount: 0
+      started: false
+      state:
+        terminated:
+          containerID: docker://58b1e9e46354e8c40bb8a429bb42233ae5a325a69ec00139910b852c50f5eaf4
+          exitCode: 0
+          finishedAt: "2026-11-11T16:03:29Z"
+          reason: Completed
+          startedAt: "2026-11-11T16:03:29Z"
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-6hjtv
+        readOnly: true
+        recursiveReadOnly: Disabled
+    observedGeneration: 1
+    phase: Running
+    podIP: 10.1.7.44
+    podIPs:
+    - ip: 10.1.7.44
+    qosClass: Burstable
+    startTime: "2026-11-11T16:03:29Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2026-11-11T16:03:27Z"
+    generateName: db-centric-596994fdd7-
+    generation: 1
+    labels:
+      app: db-centric
+      pod-template-hash: 596994fdd7
+    name: db-centric-596994fdd7-l9wsx
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: db-centric-596994fdd7
+      uid: 71c8b580-84a6-4bf5-a5af-f46a0185f839
+    resourceVersion: "1173749"
+    uid: 52a27993-51cc-411a-b7d3-6dfc577462dc
+  spec:
+    containers:
+    - env:
+      - name: STATE_STORAGE
+        value: jsonb
+      - name: DB_URL
+        value: jdbc:postgresql://db-centric-postgres:5432/order_lifecycle
+      - name: DB_USER
+        valueFrom:
+          secretKeyRef:
+            key: POSTGRES_USER
+            name: db-centric-postgres
+      - name: DB_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            key: POSTGRES_PASSWORD
+            name: db-centric-postgres
+      - name: KAFKA_BOOTSTRAP_SERVERS
+        value: kafka-broker:29092
+      - name: DB_CONSUMERS
+        value: "1"
+      - name: DB_POOL_SIZE
+        value: "4"
+      - name: POD_ID
+        valueFrom:
+          fieldRef:
+            apiVersion: v1
+            fieldPath: metadata.name
+      - name: KAFKA_GROUP_ID
+        value: order-lifecycle-db-centric-jsonb
+      - name: LOGGING_LEVEL_ORG_EXAMPLE_ORDER_LIFECYCLE_SERVICE
+        value: WARN
+      - name: LOGGING_LEVEL_ORG_EXAMPLE_ORDER_LIFECYCLE_DB_SERVICE
+        value: WARN
+      - name: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_KAFKA_LISTENER
+        value: INFO
+      image: order-lifecycle-db-centric:latest
+      imagePullPolicy: IfNotPresent
+      name: processor
+      resources:
+        limits:
+          cpu: 500m
+          memory: 512Mi
+        requests:
+          cpu: 250m
+          memory: 384Mi
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-tg2hc
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    initContainers:
+    - command:
+      - sh
+      - -c
+      - until nc -z db-centric-postgres 5432; do sleep 2; done
+      env:
+      - name: STATE_STORAGE
+        value: jsonb
+      - name: KAFKA_GROUP_ID
+        value: order-lifecycle-db-centric-jsonb
+      - name: LOGGING_LEVEL_ORG_EXAMPLE_ORDER_LIFECYCLE_SERVICE
+        value: WARN
+      - name: LOGGING_LEVEL_ORG_EXAMPLE_ORDER_LIFECYCLE_DB_SERVICE
+        value: WARN
+      - name: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_KAFKA_LISTENER
+        value: INFO
+      image: busybox:1.36
+      imagePullPolicy: IfNotPresent
+      name: wait-for-postgres
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-tg2hc
+        readOnly: true
+    nodeName: docker-desktop
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: kube-api-access-tg2hc
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:03:27Z"
+      observedGeneration: 1
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:03:27Z"
+      observedGeneration: 1
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:03:29Z"
+      observedGeneration: 1
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:03:29Z"
+      observedGeneration: 1
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:03:27Z"
+      observedGeneration: 1
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - allocatedResources:
+        cpu: 250m
+        memory: 384Mi
+      containerID: docker://67696275151c4428fc8b143dd247dc7454eff980ef9e11361edf8d7da11f9b48
+      image: order-lifecycle-db-centric:jdk25
+      imageID: docker://sha256:b014397dfa19de28e74f6b9d0b0c783f495e39adfefd07c191d9445b8bf28549
+      lastState: {}
+      name: processor
+      ready: true
+      resources:
+        limits:
+          cpu: 500m
+          memory: 512Mi
+        requests:
+          cpu: 250m
+          memory: 384Mi
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2026-11-11T16:03:28Z"
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-tg2hc
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 192.168.65.3
+    hostIPs:
+    - ip: 192.168.65.3
+    initContainerStatuses:
+    - containerID: docker://3df179334c007ecc3a76753a035d87f34449413459679b17d234668f289b1e94
+      image: busybox:1.36
+      imageID: docker-pullable://busybox@sha256:73aaf090f3d85aa34ee199857f03fa3a95c8ede2ffd4cc2cdb5b94e566b11662
+      lastState: {}
+      name: wait-for-postgres
+      ready: true
+      resources: {}
+      restartCount: 0
+      started: false
+      state:
+        terminated:
+          containerID: docker://3df179334c007ecc3a76753a035d87f34449413459679b17d234668f289b1e94
+          exitCode: 0
+          finishedAt: "2026-11-11T16:03:27Z"
+          reason: Completed
+          startedAt: "2026-11-11T16:03:27Z"
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-tg2hc
+        readOnly: true
+        recursiveReadOnly: Disabled
+    observedGeneration: 1
+    phase: Running
+    podIP: 10.1.7.41
+    podIPs:
+    - ip: 10.1.7.41
+    qosClass: Burstable
+    startTime: "2026-11-11T16:03:27Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2026-11-11T16:03:19Z"
+    generateName: db-centric-postgres-
+    generation: 1
+    labels:
+      app: db-centric-postgres
+      apps.kubernetes.io/pod-index: "0"
+      controller-revision-hash: db-centric-postgres-985cb6d8d
+      statefulset.kubernetes.io/pod-name: db-centric-postgres-0
+    name: db-centric-postgres-0
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: StatefulSet
+      name: db-centric-postgres
+      uid: 0390d384-a7ad-44c0-88cd-6888df56eec5
+    resourceVersion: "1173641"
+    uid: afc88710-7026-413c-932c-f7574662bd50
+  spec:
+    containers:
+    - envFrom:
+      - secretRef:
+          name: db-centric-postgres
+      image: postgres:18.6
+      imagePullPolicy: IfNotPresent
+      name: postgres
+      ports:
+      - containerPort: 5432
+        protocol: TCP
+      readinessProbe:
+        exec:
+          command:
+          - sh
+          - -c
+          - pg_isready -U orders -d order_lifecycle
+        failureThreshold: 3
+        initialDelaySeconds: 5
+        periodSeconds: 5
+        successThreshold: 1
+        timeoutSeconds: 1
+      resources:
+        limits:
+          cpu: "2"
+          memory: 2Gi
+        requests:
+          cpu: "1"
+          memory: 2Gi
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/lib/postgresql
+        name: data
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-zgtdz
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    hostname: db-centric-postgres-0
+    nodeName: docker-desktop
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    subdomain: db-centric-postgres
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: data
+      persistentVolumeClaim:
+        claimName: data-db-centric-postgres-0
+    - name: kube-api-access-zgtdz
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:03:20Z"
+      observedGeneration: 1
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:03:19Z"
+      observedGeneration: 1
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:03:26Z"
+      observedGeneration: 1
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:03:26Z"
+      observedGeneration: 1
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:03:19Z"
+      observedGeneration: 1
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - allocatedResources:
+        cpu: "1"
+        memory: 2Gi
+      containerID: docker://3802f41b069844e58984cbc4d2121d400fecf39c59ddb18e0e7062281ed4b61d
+      image: postgres:18.6
+      imageID: docker-pullable://postgres@sha256:979bccfde35445db618c65107d27d08c6c21339d8dc3ad4c830c6633947be0e4
+      lastState: {}
+      name: postgres
+      ready: true
+      resources:
+        limits:
+          cpu: "2"
+          memory: 2Gi
+        requests:
+          cpu: "1"
+          memory: 2Gi
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2026-11-11T16:03:20Z"
+      volumeMounts:
+      - mountPath: /var/lib/postgresql
+        name: data
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-zgtdz
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 192.168.65.3
+    hostIPs:
+    - ip: 192.168.65.3
+    observedGeneration: 1
+    phase: Running
+    podIP: 10.1.7.38
+    podIPs:
+    - ip: 10.1.7.38
+    qosClass: Burstable
+    startTime: "2026-11-11T16:03:19Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2026-11-11T16:04:10Z"
+    generateName: integration-test-
+    generation: 1
+    labels:
+      app: integration-test
+      batch.kubernetes.io/controller-uid: 592137af-7ab8-4a9c-8b31-f0a3d50afb14
+      batch.kubernetes.io/job-name: integration-test
+      controller-uid: 592137af-7ab8-4a9c-8b31-f0a3d50afb14
+      job-name: integration-test
+    name: integration-test-p6gl2
+    namespace: default
+    ownerReferences:
+    - apiVersion: batch/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Job
+      name: integration-test
+      uid: 592137af-7ab8-4a9c-8b31-f0a3d50afb14
+    resourceVersion: "1173982"
+    uid: 54339f68-ae3d-4b06-a54f-a5d40b3d75f1
+  spec:
+    containers:
+    - args:
+      - :kafka-streams:test
+      - -PincludeIntegrationTests
+      - -PtestMaxHeap=512m
+      - -Dkafka.bootstrapServers=kafka-broker:29092
+      - --tests
+      - org.example.order.lifecycle.processor.integration.OrderLifecycleKafkaScenarioTest.testParentOrderFill
+      - --no-daemon
+      - --info
+      command:
+      - ./gradlew
+      env:
+      - name: TEST_ITERATIONS
+        value: "10000"
+      image: order-state-processor-test:latest
+      imagePullPolicy: IfNotPresent
+      name: test-runner
+      resources:
+        limits:
+          cpu: "2"
+          memory: 2Gi
+        requests:
+          cpu: 250m
+          memory: 512Mi
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-hv6lm
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    initContainers:
+    - command:
+      - /bin/sh
+      - -c
+      - |
+        echo 'Waiting for Kafka broker to be ready...'
+        until nc -z kafka-broker 29092; do
+          echo 'Kafka not ready yet, waiting...'
+          sleep 5
+        done
+        echo 'Kafka is ready!'
+      image: busybox:1.36
+      imagePullPolicy: IfNotPresent
+      name: wait-for-kafka
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-hv6lm
+        readOnly: true
+    nodeName: docker-desktop
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Never
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: kube-api-access-hv6lm
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:04:44Z"
+      observedGeneration: 1
+      status: "False"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:04:11Z"
+      observedGeneration: 1
+      reason: PodCompleted
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:04:43Z"
+      observedGeneration: 1
+      reason: PodCompleted
+      status: "False"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:04:43Z"
+      observedGeneration: 1
+      reason: PodCompleted
+      status: "False"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:04:10Z"
+      observedGeneration: 1
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - allocatedResources:
+        cpu: 250m
+        memory: 512Mi
+      containerID: docker://fead83b5003d8b560b3fb723f29ab2841fa5b6f6c56e22927503ef9f81e65ab1
+      image: order-state-processor-test:latest
+      imageID: docker://sha256:dd5914dd0b411efe6883ac3cb1ccfb38e77bb37917470c29a4f0bb726a821a51
+      lastState: {}
+      name: test-runner
+      ready: false
+      resources:
+        limits:
+          cpu: "2"
+          memory: 2Gi
+        requests:
+          cpu: 250m
+          memory: 512Mi
+      restartCount: 0
+      started: false
+      state:
+        terminated:
+          containerID: docker://fead83b5003d8b560b3fb723f29ab2841fa5b6f6c56e22927503ef9f81e65ab1
+          exitCode: 0
+          finishedAt: "2026-11-11T16:04:43Z"
+          reason: Completed
+          startedAt: "2026-11-11T16:04:12Z"
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-hv6lm
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 192.168.65.3
+    hostIPs:
+    - ip: 192.168.65.3
+    initContainerStatuses:
+    - containerID: docker://8de0b25d255d77b850ef1b8012f9a5896a748c16f6717f7f1ac3b489217d54b5
+      image: busybox:1.36
+      imageID: docker-pullable://busybox@sha256:73aaf090f3d85aa34ee199857f03fa3a95c8ede2ffd4cc2cdb5b94e566b11662
+      lastState: {}
+      name: wait-for-kafka
+      ready: true
+      resources: {}
+      restartCount: 0
+      started: false
+      state:
+        terminated:
+          containerID: docker://8de0b25d255d77b850ef1b8012f9a5896a748c16f6717f7f1ac3b489217d54b5
+          exitCode: 0
+          finishedAt: "2026-11-11T16:04:10Z"
+          reason: Completed
+          startedAt: "2026-11-11T16:04:10Z"
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-hv6lm
+        readOnly: true
+        recursiveReadOnly: Disabled
+    observedGeneration: 1
+    phase: Succeeded
+    podIP: 10.1.7.47
+    podIPs:
+    - ip: 10.1.7.47
+    qosClass: Burstable
+    startTime: "2026-11-11T16:04:10Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2026-11-11T16:02:37Z"
+    generateName: kafka-broker-
+    generation: 1
+    labels:
+      app: kafka-broker
+      apps.kubernetes.io/pod-index: "0"
+      controller-revision-hash: kafka-broker-79dcc76b54
+      statefulset.kubernetes.io/pod-name: kafka-broker-0
+    name: kafka-broker-0
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: StatefulSet
+      name: kafka-broker
+      uid: 0ae859e9-c9e3-488b-88b3-5cabdfeb1458
+    resourceVersion: "1173565"
+    uid: fde0d336-8a6b-4f5d-b0a3-9beb162d91df
+  spec:
+    containers:
+    - env:
+      - name: KAFKA_BROKER_ID
+        value: "1"
+      - name: KAFKA_NODE_ID
+        value: "1"
+      - name: KAFKA_PROCESS_ROLES
+        value: broker,controller
+      - name: KAFKA_CONTROLLER_QUORUM_VOTERS
+        value: 1@localhost:29093
+      - name: KAFKA_LISTENERS
+        value: PLAINTEXT://:29092,CONTROLLER://:29093,PLAINTEXT_HOST://:9092
+      - name: KAFKA_ADVERTISED_LISTENERS
+        value: PLAINTEXT://kafka-broker:29092,PLAINTEXT_HOST://kafka-broker:9092
+      - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
+        value: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,CONTROLLER:PLAINTEXT
+      - name: KAFKA_INTER_BROKER_LISTENER_NAME
+        value: PLAINTEXT
+      - name: KAFKA_CONTROLLER_LISTENER_NAMES
+        value: CONTROLLER
+      - name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
+        value: "1"
+      - name: KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS
+        value: "0"
+      - name: KAFKA_TRANSACTION_STATE_LOG_MIN_ISR
+        value: "1"
+      - name: KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR
+        value: "1"
+      - name: KAFKA_LOG_DIRS
+        value: /var/lib/kafka/data
+      - name: CLUSTER_ID
+        value: MkU3OEVBNTcwNTJENDM2Qk
+      image: apache/kafka:4.1.2
+      imagePullPolicy: IfNotPresent
+      livenessProbe:
+        exec:
+          command:
+          - /opt/kafka/bin/kafka-broker-api-versions.sh
+          - --bootstrap-server
+          - localhost:9092
+        failureThreshold: 5
+        initialDelaySeconds: 30
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 5
+      name: kafka
+      ports:
+      - containerPort: 9092
+        name: plaintext-host
+        protocol: TCP
+      - containerPort: 29092
+        name: plaintext
+        protocol: TCP
+      - containerPort: 29093
+        name: controller
+        protocol: TCP
+      readinessProbe:
+        exec:
+          command:
+          - /opt/kafka/bin/kafka-broker-api-versions.sh
+          - --bootstrap-server
+          - localhost:9092
+        failureThreshold: 5
+        initialDelaySeconds: 30
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 5
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/lib/kafka/data
+        name: kafka-data
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-nwwpt
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    hostname: kafka-broker-0
+    nodeName: docker-desktop
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    subdomain: kafka-broker
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: kafka-data
+      persistentVolumeClaim:
+        claimName: kafka-data-kafka-broker-0
+    - name: kube-api-access-nwwpt
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:02:38Z"
+      observedGeneration: 1
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:02:37Z"
+      observedGeneration: 1
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:03:10Z"
+      observedGeneration: 1
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:03:10Z"
+      observedGeneration: 1
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:02:37Z"
+      observedGeneration: 1
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: docker://f46f41bc21e0507924738ce8c9d566bd2aab19123baac0f75ec59bdda5ce14a3
+      image: apache/kafka:4.1.2
+      imageID: docker-pullable://apache/kafka@sha256:5cc2a2fd93fa2687b44015eee04fb2c3edd9e526bd64bf8bec5ff1e268772e0e
+      lastState: {}
+      name: kafka
+      ready: true
+      resources: {}
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2026-11-11T16:02:38Z"
+      volumeMounts:
+      - mountPath: /var/lib/kafka/data
+        name: kafka-data
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-nwwpt
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 192.168.65.3
+    hostIPs:
+    - ip: 192.168.65.3
+    observedGeneration: 1
+    phase: Running
+    podIP: 10.1.7.36
+    podIPs:
+    - ip: 10.1.7.36
+    qosClass: BestEffort
+    startTime: "2026-11-11T16:02:37Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2026-11-11T16:02:37Z"
+    generateName: kafka-topic-creator-
+    generation: 1
+    labels:
+      app: kafka-topic-creator
+      batch.kubernetes.io/controller-uid: cb93d6ab-a687-4481-a0c2-a3df56b9b5eb
+      batch.kubernetes.io/job-name: kafka-topic-creator
+      controller-uid: cb93d6ab-a687-4481-a0c2-a3df56b9b5eb
+      job-name: kafka-topic-creator
+    name: kafka-topic-creator-22wkn
+    namespace: default
+    ownerReferences:
+    - apiVersion: batch/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Job
+      name: kafka-topic-creator
+      uid: cb93d6ab-a687-4481-a0c2-a3df56b9b5eb
+    resourceVersion: "1173593"
+    uid: 82fd3903-e5ed-420d-af27-3d66144a83ab
+  spec:
+    containers:
+    - command:
+      - /bin/sh
+      - -c
+      - |
+        echo 'Creating topic org.example.order.executions...'
+        /opt/kafka/bin/kafka-topics.sh \
+          --bootstrap-server kafka-broker:29092 \
+          --create \
+          --if-not-exists \
+          --topic org.example.order.executions \
+          --partitions 6 \
+          --replication-factor 1
+        echo 'Topic org.example.order.executions created successfully'
+
+        echo 'Creating topic org.example.order.verification...'
+        /opt/kafka/bin/kafka-topics.sh \
+          --bootstrap-server kafka-broker:29092 \
+          --create \
+          --if-not-exists \
+          --topic org.example.order.verification \
+          --partitions 6 \
+          --replication-factor 1
+        echo 'Topic org.example.order.verification created successfully'
+      image: apache/kafka:4.1.2
+      imagePullPolicy: IfNotPresent
+      name: topic-creator
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-rxf9q
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    initContainers:
+    - command:
+      - /bin/sh
+      - -c
+      - |
+        echo 'Waiting for Kafka broker to be ready...'
+        until /opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server kafka-broker:29092; do
+          echo 'Kafka not ready yet, waiting...'
+          sleep 5
+        done
+        echo 'Kafka is ready!'
+      image: apache/kafka:4.1.2
+      imagePullPolicy: IfNotPresent
+      name: wait-for-kafka
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-rxf9q
+        readOnly: true
+    nodeName: docker-desktop
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: OnFailure
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: kube-api-access-rxf9q
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:03:18Z"
+      observedGeneration: 1
+      status: "False"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:03:14Z"
+      observedGeneration: 1
+      reason: PodCompleted
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:03:16Z"
+      observedGeneration: 1
+      reason: PodCompleted
+      status: "False"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:03:16Z"
+      observedGeneration: 1
+      reason: PodCompleted
+      status: "False"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-11-11T16:02:37Z"
+      observedGeneration: 1
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: docker://ab35e6ac46b84bce17aced338d70a60e8fc3c739d13703d33b67e21af9cf09e7
+      image: apache/kafka:4.1.2
+      imageID: docker-pullable://apache/kafka@sha256:5cc2a2fd93fa2687b44015eee04fb2c3edd9e526bd64bf8bec5ff1e268772e0e
+      lastState: {}
+      name: topic-creator
+      ready: false
+      resources: {}
+      restartCount: 0
+      started: false
+      state:
+        terminated:
+          containerID: docker://ab35e6ac46b84bce17aced338d70a60e8fc3c739d13703d33b67e21af9cf09e7
+          exitCode: 0
+          finishedAt: "2026-11-11T16:03:16Z"
+          reason: Completed
+          startedAt: "2026-11-11T16:03:14Z"
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-rxf9q
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 192.168.65.3
+    hostIPs:
+    - ip: 192.168.65.3
+    initContainerStatuses:
+    - containerID: docker://bbba20ca17860eb662611c8c8f32e30a33b2dca99954dc89623a4e42c668d640
+      image: apache/kafka:4.1.2
+      imageID: docker-pullable://apache/kafka@sha256:5cc2a2fd93fa2687b44015eee04fb2c3edd9e526bd64bf8bec5ff1e268772e0e
+      lastState: {}
+      name: wait-for-kafka
+      ready: true
+      resources: {}
+      restartCount: 0
+      started: false
+      state:
+        terminated:
+          containerID: docker://bbba20ca17860eb662611c8c8f32e30a33b2dca99954dc89623a4e42c668d640
+          exitCode: 0
+          finishedAt: "2026-11-11T16:03:14Z"
+          reason: Completed
+          startedAt: "2026-11-11T16:02:38Z"
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-rxf9q
+        readOnly: true
+        recursiveReadOnly: Disabled
+    observedGeneration: 1
+    phase: Succeeded
+    podIP: 10.1.7.37
+    podIPs:
+    - ip: 10.1.7.37
+    qosClass: BestEffort
+    startTime: "2026-11-11T16:02:37Z"
+kind: List
+metadata:
+  resourceVersion: ""

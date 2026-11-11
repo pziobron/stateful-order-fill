@@ -1,0 +1,10 @@
+11818687
+51719|1826|19399727
+||1
+Activity|WalWriterMain|1
+Activity|LogicalLauncherMain|1
+Activity|AutovacuumMain|1
+Client|ClientRead|16
+Activity|CheckpointerMain|1
+Activity|BgwriterMain|1
+Activity|IoWorkerMain|3

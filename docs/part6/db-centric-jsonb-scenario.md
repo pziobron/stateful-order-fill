@@ -5,7 +5,7 @@ and image. `STATE_STORAGE=relational` remains the default;
 `STATE_STORAGE=jsonb` selects JsonbLifecycleProcessor and JsonbCompletionStore.
 Exactly one processor and one completion store are active in a process. Invalid
 storage values fail startup. Existing relational benchmark results are unchanged;
-no JSONB benchmark results have been recorded yet.
+[JSONB Java 25 results](results/db-centric-jsonb-java25-20261111/README.md) are recorded separately.
 
 ## State and transaction
 
@@ -66,7 +66,7 @@ For an independent benchmark, reset Kafka and database state together. Do not
 mix storage variants in one group or run them simultaneously against the shared
 benchmark input/output topics.
 
-## Kubernetes and future benchmark procedure
+## Kubernetes benchmark procedure
 
 Use the [shared fresh-cycle procedure](benchmark-common.md) with
 `BENCH_IMPL=db-centric-jsonb` and the existing DB resource budget. Rebuild the
@@ -97,7 +97,7 @@ Applying the base processor manifest again restores its explicit relational mode
 reapply the JSONB environment overrides before running input.
 
 Run the existing 1K warm-up and verifier, then a measured workload, retaining
-warm-up state. This is a procedure for later execution, not a recorded JSONB run.
+warm-up state. See the [recorded JSONB runs](results/db-centric-jsonb-java25-20261111/README.md) for results and evidence.
 For 10K, require messages=50000 and verificationRecords=hierarchyKeys=10000,
 processors=4. For 100K, use the corresponding job/timeout from the shared procedure.
 
@@ -151,5 +151,5 @@ It does not measure growth of a single large hierarchy.
 First/completion processing timestamps are captured by FillOrderService after
 loading the document; they exclude the initial read/lock interval. End-to-end
 timing remains the primary comparison. Durability boundaries, JVM versions and
-resource differences from the other deployments still apply. No performance
-improvement is assumed until this variant is benchmarked.
+resource differences from the other deployments still apply. The recorded results apply to this workload and configuration; they do not
+establish a general performance advantage.
